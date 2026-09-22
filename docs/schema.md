@@ -24,11 +24,28 @@ FinancialReport
 
 Every block has `id` and a `type` discriminator (`paragraph` | `table` | `chart`).
 
-- **ParagraphBlock** — a heading, body paragraph, or note. `style` distinguishes them so
-  the frontend can render each with its own component/typography.
+- **ParagraphBlock** — a heading, body paragraph, note, or list item. `style`
+  distinguishes them so the frontend can render each with its own component/typography.
 - **TableBlock** — a financial statement table (income statement, balance sheet, etc.).
 - **ChartBlock** — a trend or breakdown chart, expressed as structured series data (not
   an image) so the frontend renders it with its own charting component.
+
+## Paragraph text is extracted verbatim, and lists are split per-item
+
+`ParagraphBlock.text` must be the source document's exact original wording — not a
+paraphrase, summary, or cleanup pass. This is a deliberate line between the phases:
+Phase 1 (parsing) is a faithful transcription of what the document says, while Phase 2
+(narration script generation) is the layer that's allowed to reinterpret it into
+conversational, analytical narration. If Phase 1 already paraphrased the source, Phase 2
+would be paraphrasing a paraphrase, with no faithful copy of the original left anywhere
+in the pipeline — and for forward-looking/guidance language in particular, even
+subtle rewording can shift meaning.
+
+For the same reason, a bulleted or numbered list in the source is never merged into one
+paragraph block — each item becomes its own `ParagraphBlock` with `style: "list_item"`,
+verbatim, without the bullet marker itself. This preserves the source's structure and,
+consistent with the row/cell id rationale below, gives narration a separate id to target
+and highlight per list item instead of one all-or-nothing block for the whole list.
 
 ## Why rows and cells have their own ids
 
@@ -52,6 +69,16 @@ responsible for guaranteeing uniqueness and deriving the rest:
 | Block id | `{type_prefix}_{slug}`, e.g. `t_income_statement`, `p_3` (sequential when no slug), `c_revenue_trend`. Backend appends a numeric suffix on collision. |
 | Row id | `{table_id}__r{row_index}` |
 | Cell id | `{table_id}__r{row_index}_{col_id}` |
+
+Concretely, this is two separate Pydantic schemas, not one:
+
+- `backend/app/models/llm_report.py` — what the LLM's structured output actually
+  produces. Same shape as `report.py`, but blocks and sections carry `slug` instead of
+  `id`, and rows/cells carry no id field at all.
+- `backend/app/services/id_assigner.py` — `assign_ids(llm_report, source_filename) ->
+  FinancialReport`, the pure function that applies the table above and produces the
+  schema this document otherwise describes. It also fills in `meta.source_filename` and
+  `meta.parsed_at`, which the LLM is never asked for.
 
 ## Validation and confidence flags
 

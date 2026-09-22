@@ -18,7 +18,15 @@ cp .env.example .env               # fill in OPENAI_API_KEY (and OPENAI_BASE_URL
 uvicorn app.main:app --reload      # serves http://localhost:8000, health at /api/health
 ```
 
-There is no test suite yet.
+Tests (`pip install -r requirements-dev.txt` first — adds pytest/httpx/reportlab on top
+of `requirements.txt`, kept separate since those have no business in production):
+
+```bash
+pytest -q                                    # full suite, no network calls, no API cost
+pytest tests/test_id_assigner.py -q          # single file
+pytest tests/test_id_assigner.py::test_colliding_slugs_get_unique_ids -q  # single test
+python scripts/parse_sample.py path/to.pdf   # manual end-to-end run against the real API - costs money, not part of the suite
+```
 
 ### Frontend (`frontend/`, React + TypeScript + Vite)
 
@@ -73,12 +81,40 @@ self-reported certainty) and `flags` (populated by a separate backend validation
 e.g. an arithmetic check like `revenue - cost == gross_profit`) — kept separate so
 validation logic can evolve independently of the parsing prompt.
 
+### PDF parsing pipeline (`POST /api/reports/parse`, `app/routers/reports.py`)
+
+`pdf_gatekeeper.check_pdf()` (`app/services/pdf_gatekeeper.py`) runs first and returns
+a rejection reason (or `None`) — all local, free checks, to avoid spending an LLM call
+on an upload that's empty, oversized/too many pages (guards against huge-context cost),
+corrupt, or just a keyword sniff-test miss over the PDF's text layer via `pypdf`. This
+is the one place a traditional PDF library touches the pipeline; it never feeds text to
+the LLM, and it lets non-text-layer PDFs (scans) through the keyword check rather than
+blocking them, since there's no signal either way.
+
+`llm_client.parse_report()` (`app/services/llm_client.py`) sends the PDF inline as
+base64 to the OpenAI Responses API (`client.responses.parse(..., text_format=
+LLMFinancialReport)`) and logs token usage + cost (`app/core/pricing.py`) on every call.
+It returns an `LLMFinancialReport` (`app/models/llm_report.py`) — the schema the LLM
+actually fills in, which is id-free (slugs instead; see the schema section above).
+
+`id_assigner.assign_ids()` (`app/services/id_assigner.py`) converts that into the real
+`FinancialReport`, then `report_validator.validate()` (`app/services/report_validator.py`)
+attaches arithmetic-mismatch `Flag`s in place. Both are pure functions with no I/O, so
+they're covered by fast unit tests independent of the API (`tests/test_id_assigner.py`,
+`tests/test_report_validator.py`) — the LLM call itself is only exercised by
+`scripts/parse_sample.py` (manual, costs money) or stubbed out via monkeypatching
+`app.services.llm_client.parse_report` in endpoint tests
+(`tests/test_reports_endpoint.py`).
+
 ## Project status and roadmap
 
 The project is built in phases; each phase has its own acceptance criteria before
-moving to the next. Current state: **Phase 0 (project skeleton + schema) is done** —
-both services boot and the frontend can reach the backend through the dev proxy; no PDF
-parsing or LLM calls exist yet.
+moving to the next. Current state: **Phase 0 done; Phase 1 (PDF parsing) implemented**
+— upload → gatekeeper → LLM extraction → id assignment → arithmetic validation, with a
+frontend drag-and-drop uploader wired to it. Not yet done within Phase 1: a real
+end-to-end run against a live financial report has not been verified (pending API
+access and a sample PDF), and `report_validator`'s row-label matching is expected to
+need tuning once tested against real filing labels.
 
 - **Phase 1** — PDF parsing: a multimodal LLM reads the PDF directly (no traditional
   PDF-to-text/Markdown library in the pipeline) and outputs JSON matching the schema

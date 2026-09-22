@@ -24,7 +24,7 @@ class Flag(BaseModel):
 class ParagraphBlock(BaseModel):
     id: str
     type: Literal["paragraph"] = "paragraph"
-    style: Literal["heading", "body", "note"]
+    style: Literal["heading", "body", "note", "list_item"]
     text: str
     page: int | None = None
 
