@@ -23,7 +23,7 @@ export interface Flag {
 export interface ParagraphBlock {
   id: string
   type: 'paragraph'
-  style: 'heading' | 'body' | 'note'
+  style: 'heading' | 'body' | 'note' | 'list_item'
   text: string
   page: number | null
 }

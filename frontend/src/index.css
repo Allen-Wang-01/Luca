@@ -1,8 +1,82 @@
 :root {
   color-scheme: light dark;
-  font: 16px/1.5 system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  /* Deep indigo reads as professional/financial without the finance-app cliche of
+     green, and doubles as "intelligent assistant" branding. Amber is reserved as the
+     accent for the narration/karaoke highlight in Phase 3+ - kept distinct from
+     primary so "what's being explained right now" always pops against the UI chrome. */
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-soft: #eef2ff;
+  --color-accent: #f59e0b;
+  --color-accent-soft: #fffbeb;
+
+  /* Reserved for actual financial figures (gain/loss) later - never used decoratively,
+     since red/green already carry strong meaning in financial UIs. */
+  --color-positive: #16a34a;
+  --color-negative: #dc2626;
+  --color-negative-soft: rgba(220, 38, 38, 0.1);
+
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+
+  font: 16px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #818cf8;
+    --color-primary-hover: #6366f1;
+    --color-primary-soft: rgba(129, 140, 248, 0.12);
+    --color-accent: #fbbf24;
+    --color-accent-soft: rgba(251, 191, 36, 0.1);
+
+    --color-positive: #4ade80;
+    --color-negative: #f87171;
+    --color-negative-soft: rgba(248, 113, 113, 0.12);
+
+    --color-bg: #0b1120;
+    --color-surface: #131b2e;
+    --color-border: #24314d;
+    --color-text: #e2e8f0;
+    --color-text-muted: #94a3b8;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Shared across the status banner and the uploader's submit button. */
+.spinner {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
