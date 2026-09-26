@@ -15,3 +15,6 @@ frontend/dist/
 .DS_Store
 .vscode/
 .idea/
+
+# Scratch files (sample PDFs, manual parse output) - never committed
+/temp/
