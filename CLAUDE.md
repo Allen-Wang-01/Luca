@@ -109,12 +109,19 @@ they're covered by fast unit tests independent of the API (`tests/test_id_assign
 ## Project status and roadmap
 
 The project is built in phases; each phase has its own acceptance criteria before
-moving to the next. Current state: **Phase 0 done; Phase 1 (PDF parsing) implemented**
-— upload → gatekeeper → LLM extraction → id assignment → arithmetic validation, with a
-frontend drag-and-drop uploader wired to it. Not yet done within Phase 1: a real
-end-to-end run against a live financial report has not been verified (pending API
-access and a sample PDF), and `report_validator`'s row-label matching is expected to
-need tuning once tested against real filing labels.
+moving to the next. Current state: **Phase 0 and Phase 1 done**, starting Phase 3
+(Phase 2 deliberately deferred — see the Phase 3 note below for why). Phase 1 has been
+run end-to-end against a real NVIDIA quarterly report: table figures were verified
+accurate, id generation and arithmetic validation worked correctly on real data. Two
+issues found during that real run were fixed: an `oneOf` in the LLM-facing schema that
+OpenAI's structured-output validator rejects (fixed by removing the discriminator so
+pydantic emits `anyOf` instead — see `llm_report.py`), and paragraph text being
+paraphrased instead of extracted verbatim, plus bullet lists being merged into one
+paragraph instead of split per item (fixed via `llm_client.py` prompt instructions and
+a new `style: "list_item"` — that specific fix has not yet been re-verified against a
+real run). `report_validator`'s row-label matching is still expected to need tuning for
+non-English or differently-worded reports (see the language-independence discussion
+this repo's chat history covered, not yet acted on).
 
 - **Phase 1** — PDF parsing: a multimodal LLM reads the PDF directly (no traditional
   PDF-to-text/Markdown library in the pipeline) and outputs JSON matching the schema
@@ -123,7 +130,13 @@ need tuning once tested against real filing labels.
   `[{text, target_id}, ...]`, analytical rather than a recitation of numbers.
 - **Phase 3** — Frontend sync: render the schema JSON with dedicated components per
   block type (no Markdown renderer), scroll/highlight/zoom driven by `target_id` as
-  narration plays.
+  narration plays. Phase 2 (the real narration script) doesn't exist yet, so Phase 3
+  is built against a stub script instead of waiting: a `NarrationScript =
+  {text: string, target_id: string}[]` contract, fed by a placeholder generated from
+  `report.blocks` in order (block content as `text`, block `id` as `target_id`). The
+  sync engine (scroll/highlight/scale) is built and tested against that stub; swapping
+  in Phase 2's real output later should require no changes to the sync engine itself,
+  only to what produces the script.
 - **Phase 4** — TTS: narration text to streaming audio, synced to the Phase 3 visual
   triggers. TTS provider not yet chosen (ElevenLabs or OpenAI TTS are the candidates);
   word-level timestamp precision is not required for v1.
