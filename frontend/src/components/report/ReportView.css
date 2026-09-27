@@ -1,0 +1,5 @@
+.report-view {
+  padding: 1.25rem;
+  /* Leaves room so the fixed-position NarrationPlayer bar never covers the last block. */
+  padding-bottom: 6rem;
+}

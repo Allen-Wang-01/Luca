@@ -1,0 +1,70 @@
+/* Shared narration-sync visual states, applied via `data-sync` (see
+   NarrationSyncContext). Two variants:
+   - `.sync` - block-level targets (paragraphs, whole tables/charts, list items) that
+     sit in a vertical stack with room to grow, so the "current" one can scale up.
+   - `.sync--dense` - table rows/cells packed edge-to-edge in a grid, where a scale
+     transform would overlap neighboring cells; these get a background/ring highlight
+     instead. */
+
+.sync {
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.sync[data-sync='active'] {
+  position: relative;
+  z-index: 1;
+  transform: scale(1.02);
+  opacity: 1;
+  box-shadow:
+    0 0 0 2px var(--color-accent),
+    var(--shadow-md);
+}
+
+.sync[data-sync='focus'] {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.sync[data-sync='dimmed'] {
+  transform: scale(0.98);
+  opacity: 0.5;
+}
+
+.sync[data-sync='neutral'] {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.sync--dense {
+  /* box-shadow on <tr> doesn't paint reliably across browsers (table-row isn't a real
+     paint box for shadows the way table-cell is) - background-color does, and stays
+     consistent whether this lands on a <tr> or a <td>, so that's the only channel used
+     here. */
+  transition:
+    background-color 0.4s ease,
+    opacity 0.4s ease;
+}
+
+.sync--dense[data-sync='active'] {
+  background-color: var(--color-accent-soft);
+}
+
+.sync--dense[data-sync='dimmed'] {
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sync {
+    transition:
+      opacity 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .sync[data-sync='active'],
+  .sync[data-sync='dimmed'] {
+    transform: none;
+  }
+}

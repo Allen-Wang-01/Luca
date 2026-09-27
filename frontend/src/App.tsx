@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import { parseReport } from './api/reports'
 import { PdfUploader } from './components/PdfUploader'
+import { ReportView } from './components/report/ReportView'
 import type { FinancialReport } from './types/report'
 
 type ParseStatus = 'idle' | 'parsing' | 'success' | 'error'
@@ -74,8 +75,7 @@ function App() {
                 Upload another report
               </button>
             </div>
-            {/* Placeholder rendering - dedicated block components come in Phase 3. */}
-            <pre className="report-panel__body">{JSON.stringify(report, null, 2)}</pre>
+            <ReportView report={report} />
           </section>
         )}
       </main>

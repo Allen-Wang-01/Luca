@@ -111,15 +111,3 @@
   border-color: var(--color-primary);
   color: var(--color-primary);
 }
-
-.report-panel__body {
-  margin: 0;
-  padding: 1.25rem;
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  max-height: 480px;
-  overflow: auto;
-  background: var(--color-bg);
-  white-space: pre-wrap;
-  word-break: break-word;
-}

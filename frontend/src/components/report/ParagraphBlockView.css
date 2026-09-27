@@ -1,0 +1,42 @@
+.paragraph-block {
+  margin: 0 0 1rem;
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+}
+
+.paragraph-block--heading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1.75rem 0 0.75rem;
+  line-height: 1.35;
+}
+
+.paragraph-block--heading:first-child {
+  margin-top: 0;
+}
+
+.paragraph-block--body {
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.paragraph-block--note {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.paragraph-block--list-item {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin: 0 0 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.paragraph-list {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}

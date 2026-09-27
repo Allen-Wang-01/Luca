@@ -2,9 +2,10 @@
   color-scheme: light dark;
 
   /* Deep indigo reads as professional/financial without the finance-app cliche of
-     green, and doubles as "intelligent assistant" branding. Amber is reserved as the
-     accent for the narration/karaoke highlight in Phase 3+ - kept distinct from
-     primary so "what's being explained right now" always pops against the UI chrome. */
+     green, and doubles as "intelligent assistant" branding. Amber is the accent for
+     the narration/karaoke highlight (see NarrationSyncContext + sync.css) - kept
+     distinct from primary so "what's being explained right now" always pops against
+     the UI chrome. */
   --color-primary: #4f46e5;
   --color-primary-hover: #4338ca;
   --color-primary-soft: #eef2ff;
