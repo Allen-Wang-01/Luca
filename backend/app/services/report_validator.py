@@ -1,11 +1,16 @@
 # Post-parse arithmetic consistency checks. Kept independent from the LLM prompt so
 # validation rules can evolve without touching parsing. Flags mutate rows in place.
+import re
+
 from app.models.report import FinancialReport, Flag, Row, TableBlock
 
 _TOLERANCE = 1.0  # absolute, in the table's own unit (usually millions) - rounding slack
 
+_NON_ALNUM_RE = re.compile(r"[^a-z0-9]+")
+
 # Each rule: (minuend label, subtrahend label, result label) meaning
-# minuend - subtrahend ≈ result. Labels are matched by substring, case-insensitive.
+# minuend - subtrahend ≈ result. Labels are matched case-insensitively, ignoring
+# punctuation: an exact match wins, otherwise a substring match (see _find_row).
 _DIFFERENCE_RULES = [
     ("revenue", "cost of revenue", "gross profit"),
 ]
@@ -23,22 +28,46 @@ def validate(report: FinancialReport) -> None:
             _check_table(block)
 
 
+def _normalize(label: str) -> str:
+    return _NON_ALNUM_RE.sub(" ", label.lower()).strip()
+
+
+def _find_row(rows: list[Row], needle: str, rule_labels: tuple[str, ...], taken: set[str]) -> Row | None:
+    # A bare substring match is too loose on its own: in a table with no plain
+    # "Revenue" row, "revenue" would match "GAAP cost of revenue", and the rule would
+    # end up comparing a row against itself. So a row that also mentions another of
+    # the rule's labels is off-limits (looking for "revenue" skips anything with "cost
+    # of revenue"; looking for "stockholders equity" skips "Total liabilities and
+    # stockholders' equity"), rows already matched by the rule are excluded, and an
+    # exact label match beats a substring one.
+    other_labels = [label for label in rule_labels if label != needle and label not in needle]
+    candidates = [
+        row
+        for row in rows
+        if row.id not in taken and not any(label in _normalize(row.label) for label in other_labels)
+    ]
+    exact = next((row for row in candidates if _normalize(row.label) == needle), None)
+    if exact:
+        return exact
+    return next((row for row in candidates if needle in _normalize(row.label)), None)
+
+
+def _find_rule_rows(table: TableBlock, rule_labels: tuple[str, ...]) -> list[Row] | None:
+    """All of a rule's rows, as distinct rows, or None if any is missing."""
+    found: list[Row] = []
+    for needle in rule_labels:
+        row = _find_row(table.rows, needle, rule_labels, {r.id for r in found})
+        if row is None:
+            return None
+        found.append(row)
+    return found
+
+
 def _check_table(table: TableBlock) -> None:
-    rows_by_label = {row.label.lower(): row for row in table.rows}
-
-    def find(needle: str) -> Row | None:
-        for label, row in rows_by_label.items():
-            if needle in label:
-                return row
-        return None
-
-    for minuend_label, subtrahend_label, result_label in _DIFFERENCE_RULES:
-        minuend, subtrahend, result = (
-            find(minuend_label),
-            find(subtrahend_label),
-            find(result_label),
-        )
-        if minuend and subtrahend and result:
+    for rule in _DIFFERENCE_RULES:
+        rows = _find_rule_rows(table, rule)
+        if rows:
+            minuend, subtrahend, result = rows
             _check_relationship(
                 result,
                 lambda a, b: a - b,
@@ -47,9 +76,10 @@ def _check_table(table: TableBlock) -> None:
                 f"{minuend.label} - {subtrahend.label} should equal {result.label}",
             )
 
-    for a_label, b_label, total_label in _SUM_RULES:
-        a, b, total = find(a_label), find(b_label), find(total_label)
-        if a and b and total:
+    for rule in _SUM_RULES:
+        rows = _find_rule_rows(table, rule)
+        if rows:
+            a, b, total = rows
             _check_relationship(
                 total,
                 lambda x, y: x + y,
