@@ -32,7 +32,7 @@ export function NarrationSyncProvider({ activeId, children }: NarrationSyncProvi
   const registryRef = useRef<{
     elements: Map<string, HTMLElement>
     callbacks: Map<string, (el: HTMLElement | null) => void>
-  }>()
+  } | null>(null)
   if (!registryRef.current) {
     registryRef.current = { elements: new Map(), callbacks: new Map() }
   }
