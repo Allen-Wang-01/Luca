@@ -57,6 +57,16 @@ light up the whole table, which is a poor experience. So:
 - `TableBlock.rows[].cells[].id` lets narration target a single value (e.g. "Revenue,
   Q2 FY2026" specifically, as opposed to the prior-year column).
 
+The narration agent (`backend/app/services/narration_agent.py`) is told to pick the
+most specific id for each line: a cell when the line cites one figure, a row for a
+metric across periods, the block for an overview. It sees row ids directly and is given
+the cell id rule below rather than every cell id. Any `target_id` it gets wrong is
+repaired by walking up this same hierarchy (cell → row → block) — which works because
+row and cell ids are derived from their parent's id.
+
+Chart data points have no ids, so narration about a chart always targets the whole
+chart block.
+
 ## Id generation rules (implemented in the Phase 1 parser, not by the LLM)
 
 A multimodal model asked to invent globally-unique ids across a long document is

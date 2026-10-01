@@ -1,0 +1,29 @@
+from app.services.narration_context import collect_target_ids, render_report_for_prompt
+
+
+def test_collects_block_row_and_cell_ids(report):
+    ids = collect_target_ids(report)
+
+    assert {"p_overview", "t_income", "t_income__r0", "t_income__r0_q2", "t_income__r1_q2_ly"} <= ids
+    assert "sec_results" not in ids  # sections are navigation, not narration targets
+
+
+def test_render_lists_rows_with_ids_and_raw_values(report):
+    text = render_report_for_prompt(report)
+
+    assert "[t_income__r0] Revenue: q2=200 | q2_ly=100" in text
+    assert 'q2="Q2 FY26"' in text
+
+
+def test_render_surfaces_flags_and_sections(report):
+    text = render_report_for_prompt(report)
+
+    assert "## Section: Results" in text
+    assert "! FLAG: Other looks wrong" in text
+
+
+def test_render_includes_report_meta(report):
+    text = render_report_for_prompt(report)
+
+    assert "Company: Acme Corp (ACME)" in text
+    assert "figures in millions" in text

@@ -12,11 +12,10 @@ function blockToText(block: Block): string {
   }
 }
 
-// Real narration script generation (an LLM turning the parsed report into
-// analytical narration) doesn't exist yet, so this placeholder stands in for it: one
-// line per block, in document order, block content as the line's text and the block
-// id as its target. Swapping in the real generator later only means swapping what
-// produces the script - the sync engine that consumes it doesn't change.
+// Fallback for when the narration agent (useGeneratedNarration) fails: a basic
+// walkthrough built locally, with no LLM - one line per block, in document order,
+// block content as the line's text and the block id as its target. Same script shape
+// as the generated narration, so the sync engine plays either one unchanged.
 export function buildStubScript(report: FinancialReport): NarrationScript {
   return report.blocks.map((block) => ({
     text: blockToText(block),

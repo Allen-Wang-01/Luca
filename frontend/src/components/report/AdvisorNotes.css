@@ -1,0 +1,148 @@
+/* Floats above the fixed NarrationPlayer bar, on the right, so the report stays
+   readable (and keeps syncing) while the panel is open. */
+.advisor-notes {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 5.5rem;
+  z-index: 11;
+  width: min(420px, calc(100vw - 2rem));
+  max-height: min(60vh, 560px);
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.advisor-notes__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.advisor-notes__title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.advisor-notes__summary {
+  margin: 0.125rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.advisor-notes__close {
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.125rem 0.25rem;
+}
+
+.advisor-notes__close:hover {
+  color: var(--color-text);
+}
+
+.advisor-notes__turns {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 1rem 1rem;
+  overflow-y: auto;
+}
+
+.advisor-notes__turn {
+  padding: 0.625rem 0;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.advisor-notes__turn:last-child {
+  border-bottom: none;
+}
+
+.advisor-notes__turn-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.advisor-notes__turn-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.advisor-notes__turn-stats {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.advisor-notes__turn-summary {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  color: var(--color-text);
+}
+
+.advisor-notes__calls {
+  list-style: none;
+  margin: 0.375rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.advisor-notes__call {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.advisor-notes__tool {
+  flex-shrink: 0;
+  min-width: 4.75rem;
+  padding: 0.0625rem 0.375rem;
+  border-radius: 6px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: 600;
+  text-align: center;
+  align-self: flex-start;
+}
+
+.advisor-notes__call--error .advisor-notes__tool {
+  background: var(--color-negative-soft);
+  color: var(--color-negative);
+}
+
+.advisor-notes__call-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.advisor-notes__inputs {
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.advisor-notes__formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.advisor-notes__error {
+  color: var(--color-negative);
+}

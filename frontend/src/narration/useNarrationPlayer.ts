@@ -30,6 +30,16 @@ export function useNarrationPlayer(script: NarrationScript): NarrationPlayer {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
 
+  // A different script (another language, or the fallback after a failed generation)
+  // starts over from the top rather than landing mid-way at the old index. Adjusting
+  // state during render, not in an effect, so there's no frame showing the old index.
+  const [prevScript, setPrevScript] = useState(script)
+  if (script !== prevScript) {
+    setPrevScript(script)
+    setCurrentIndex(0)
+    setIsPlaying(false)
+  }
+
   const total = script.length
   const currentLine = script[currentIndex] ?? null
   const durationMs = currentLine ? lineDurationMs(currentLine.text) : 0

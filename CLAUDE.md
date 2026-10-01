@@ -106,11 +106,53 @@ they're covered by fast unit tests independent of the API (`tests/test_id_assign
 `app.services.llm_client.parse_report` in endpoint tests
 (`tests/test_reports_endpoint.py`).
 
+### Narration generation (`POST /api/reports/narration`, same router)
+
+Takes a parsed `FinancialReport` (the client sends it back — nothing is stored
+server-side) and returns `{lines: NarrationScript, trace}`. Kept separate from `/parse`
+so the report renders immediately and narration can be retried alone.
+
+`narration_agent.generate_narration()` (`app/services/narration_agent.py`) is a
+hand-rolled tool-calling loop on the Responses API (not an SDK agent runner): each turn
+calls the model with the calculation tools from `narration_tools.py`, executes any calls
+it made, feeds the outputs back, and stops when the model returns the final
+structured script. `MAX_TURNS` caps the loop (the last turn forces `tool_choice="none"`)
+and `MAX_TOOL_CALLS` caps total calculations. Each turn is logged and recorded in a
+`NarrationTrace` (tool calls, tokens, cost, latency) that the frontend shows in its
+"Advisor's notes" panel.
+
+The supporting pieces are pure functions with their own tests, same as the parsing
+pipeline:
+- `narration_context.py` renders the report into compact, id-annotated prompt text
+  (rows listed with their ids; cell ids stated as a rule rather than enumerated) and
+  collects the set of valid target ids.
+- `narration_tools.py` — `percent_change` / `ratio` / `difference`. Operands are
+  **references, not numbers**: `{id: <cell id>, quote: null}` for a table figure, or
+  `{id: <paragraph id>, quote: "$75.2 billion"}` for a figure that only appears in
+  prose — the quote is checked to appear verbatim in that paragraph before use. Values
+  are looked up here, and table (report unit scale) and prose ("billion") figures are
+  put on a common scale when mixed, so figures never pass through the model's own
+  transcription or mental arithmetic. Errors come back as tool output so the model can
+  correct itself.
+- `narration_validator.py` repairs `target_id`s that don't exist (nearest valid
+  ancestor cell → row → block, then the previous line's target) and rejects scripts
+  that are empty or mostly invented (→ 502).
+
+The agent loop is tested with a fake client (`tests/test_narration_agent.py`);
+`scripts/narrate_sample.py parsed.json` runs it against the real API (costs money).
+
+On the frontend, `useGeneratedNarration` requests the script once per report (cached at
+module level so StrictMode's double effect doesn't pay twice) and falls back to
+`buildStubScript` with a retry prompt if generation fails. Narration is English-only for
+now.
+
 ## Project status and roadmap
 
 The project is built in phases; each phase has its own acceptance criteria before
-moving to the next. Current state: **Phase 0 and Phase 1 done**, starting Phase 3
-(Phase 2 deliberately deferred — see the Phase 3 note below for why). Phase 1 has been
+moving to the next. Current state: **Phase 0, 1 and 3 done; Phase 2 implemented** as
+a tool-calling agent (calculation tools only — see "Narration generation" above), not
+yet verified against a real run. The same loop is where Phase 6's web search tool will
+be registered. Phase 1 has been
 run end-to-end against a real NVIDIA quarterly report: table figures were verified
 accurate, id generation and arithmetic validation worked correctly on real data. Two
 issues found during that real run were fixed: an `oneOf` in the LLM-facing schema that

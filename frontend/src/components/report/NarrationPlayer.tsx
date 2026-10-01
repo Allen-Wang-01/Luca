@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import './NarrationPlayer.css'
 
 interface NarrationPlayerProps {
@@ -6,6 +7,14 @@ interface NarrationPlayerProps {
   currentText: string | null
   isPlaying: boolean
   durationMs: number
+  // No script to play yet (e.g. narration still generating) - controls are inert and
+  // `placeholder` takes the caption's place.
+  disabled?: boolean
+  placeholder?: ReactNode
+  // A one-line strip above the controls, e.g. explaining a fallback script.
+  notice?: ReactNode
+  // Right-hand slot for extra controls.
+  actions?: ReactNode
   onPlay: () => void
   onPause: () => void
   onNext: () => void
@@ -21,15 +30,20 @@ export function NarrationPlayer({
   currentText,
   isPlaying,
   durationMs,
+  disabled = false,
+  placeholder,
+  notice,
+  actions,
   onPlay,
   onPause,
   onNext,
   onPrev,
 }: NarrationPlayerProps) {
-  if (total === 0) return null
+  const inert = disabled || total === 0
 
   return (
     <div className="narration-player">
+      {notice && <div className="narration-player__notice">{notice}</div>}
       <div className="narration-player__progress-track">
         <div
           key={currentIndex}
@@ -47,7 +61,7 @@ export function NarrationPlayer({
             type="button"
             className="narration-player__button"
             onClick={onPrev}
-            disabled={currentIndex === 0}
+            disabled={inert || currentIndex === 0}
             aria-label="Previous line"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -59,6 +73,7 @@ export function NarrationPlayer({
             type="button"
             className="narration-player__button narration-player__button--primary"
             onClick={isPlaying ? onPause : onPlay}
+            disabled={inert}
             aria-label={isPlaying ? 'Pause' : 'Play'}
           >
             {isPlaying ? (
@@ -76,7 +91,7 @@ export function NarrationPlayer({
             type="button"
             className="narration-player__button"
             onClick={onNext}
-            disabled={currentIndex >= total - 1}
+            disabled={inert || currentIndex >= total - 1}
             aria-label="Next line"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -84,12 +99,16 @@ export function NarrationPlayer({
             </svg>
           </button>
 
-          <span className="narration-player__counter">
-            {currentIndex + 1} / {total}
-          </span>
+          <span className="narration-player__counter">{inert ? '– / –' : `${currentIndex + 1} / ${total}`}</span>
         </div>
 
-        <p className="narration-player__caption">{currentText}</p>
+        {inert && placeholder ? (
+          <div className="narration-player__caption narration-player__caption--placeholder">{placeholder}</div>
+        ) : (
+          <p className="narration-player__caption">{currentText}</p>
+        )}
+
+        {actions && <div className="narration-player__actions">{actions}</div>}
       </div>
     </div>
   )
