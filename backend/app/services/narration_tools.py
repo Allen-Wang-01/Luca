@@ -1,7 +1,7 @@
 # Calculation tools the narration model can call. Operands are references into the
 # report, never bare numbers, so figures don't pass through the model's own
 # transcription: a table figure is referenced by cell id and looked up here; a figure
-# that only appears in prose (e.g. "$75.2 billion" in a headline bullet) is referenced
+# that only appears in prose (e.g. "$3.2 billion" in a headline bullet) is referenced
 # by paragraph id plus the figure exactly as written, and is only used after checking
 # that it really appears verbatim in that paragraph. Results name their sources, so the
 # model can target the same cell in its narration. Pure functions, no I/O.
@@ -41,7 +41,7 @@ def _parse_quote(quote: str) -> tuple[float, float, bool] | str:
     """(value as written, value in actual units, is_percent), or an error message."""
     numbers = _NUMBER_RE.findall(quote)
     if len(numbers) != 1:
-        return f"Quote must contain exactly one figure (e.g. '$75.2 billion'), got {quote!r}."
+        return f"Quote must contain exactly one figure (e.g. '$3.2 billion'), got {quote!r}."
     value = float(numbers[0].replace(",", ""))
     if "(" in quote and ")" in quote or re.search(r"-\s*\$?\d", quote):
         value = -value
@@ -102,7 +102,7 @@ class FigureIndex:
         if ref_id in self._paragraphs:
             return None, (
                 f"'{ref_id}' is a paragraph; also pass `quote`: the figure exactly as written "
-                "in its text, e.g. '$75.2 billion'."
+                "in its text, e.g. '$3.2 billion'."
             )
         return None, f"Unknown id '{ref_id}'."
 
@@ -142,7 +142,7 @@ def _resolve_pair(index: FigureIndex, a: Any, b: Any) -> tuple[tuple[float, floa
 
     Two table cells are compared as printed (both in the report's unit), which keeps
     formulas readable. As soon as a prose figure is involved, both sides switch to
-    actual units, since "$75.2 billion" and a cell reading 81,615 (millions) are only
+    actual units, since "$3.2 billion" and a cell reading 12,387 (millions) are only
     comparable once scaled.
     """
     first, error = index.resolve(a)
@@ -223,7 +223,7 @@ _TOOLS: dict[str, Callable[..., dict[str, Any]]] = {
 _OPERAND_SCHEMA_DESCRIPTION = (
     "A figure from the report. Table figure: {id: <cell id>, quote: null}. Figure that "
     "only appears in paragraph text: {id: <paragraph id>, quote: <the figure exactly as "
-    "written there, e.g. '$75.2 billion' or '85%'>}."
+    "written there, e.g. '$3.2 billion' or '12%'>}."
 )
 
 

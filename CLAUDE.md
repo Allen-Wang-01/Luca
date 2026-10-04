@@ -138,7 +138,7 @@ pipeline:
   collects the set of valid target ids.
 - `narration_tools.py` — `percent_change` / `ratio` / `difference`. Operands are
   **references, not numbers**: `{id: <cell id>, quote: null}` for a table figure, or
-  `{id: <paragraph id>, quote: "$75.2 billion"}` for a figure that only appears in
+  `{id: <paragraph id>, quote: "$3.2 billion"}` for a figure that only appears in
   prose — the quote is checked to appear verbatim in that paragraph before use. Values
   are looked up here, and table (report unit scale) and prose ("billion") figures are
   put on a common scale when mixed, so figures never pass through the model's own
@@ -228,3 +228,7 @@ cross-report comparison analysis.
 
 - All repository content — code comments, sample/mock data, and UI copy — must be in
   English, regardless of the language used to discuss the project.
+- Model-facing text (prompts, tool descriptions, tool error messages) uses generic,
+  made-up examples — never figures, labels, or ids from a real report used for testing
+  (e.g. the NVIDIA sample). Otherwise test runs on that report overstate how well the
+  prompt generalizes.
