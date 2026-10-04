@@ -28,6 +28,21 @@ def validate(report: FinancialReport) -> None:
             _check_table(block)
 
 
+def revalidate(report: FinancialReport) -> None:
+    """Clears existing flags and validates again with the current rules.
+
+    For reports saved to disk earlier: their flags come from whatever validator version
+    parsed them, and validation is local and free, so re-running it beats trusting
+    stale flags (e.g. a since-fixed false positive).
+    """
+    for block in report.blocks:
+        if isinstance(block, TableBlock):
+            block.flags = []
+            for row in block.rows:
+                row.flags = []
+    validate(report)
+
+
 def _normalize(label: str) -> str:
     return _NON_ALNUM_RE.sub(" ", label.lower()).strip()
 

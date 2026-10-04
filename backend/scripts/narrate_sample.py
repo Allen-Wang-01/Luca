@@ -15,20 +15,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.core.logging import configure_logging
-from app.models.report import FinancialReport, TableBlock
+from app.models.report import FinancialReport
 from app.services import narration_agent, report_validator
-
-
-def _revalidate(report: FinancialReport) -> None:
-    # The saved JSON carries flags from whatever validator version parsed it. Validation
-    # is local and free, so re-run the current rules rather than trusting stale flags -
-    # otherwise a since-fixed false positive would still be narrated to the listener.
-    for block in report.blocks:
-        if isinstance(block, TableBlock):
-            block.flags = []
-            for row in block.rows:
-                row.flags = []
-    report_validator.validate(report)
 
 
 def main() -> None:
@@ -39,7 +27,8 @@ def main() -> None:
     configure_logging()
     report_path = Path(sys.argv[1])
     report = FinancialReport.model_validate(json.loads(report_path.read_text()))
-    _revalidate(report)
+    # Saved flags may be from an older validator - don't narrate a since-fixed false positive.
+    report_validator.revalidate(report)
 
     lines, trace = narration_agent.generate_narration(report)
 
@@ -55,9 +44,14 @@ def main() -> None:
 
     for index, line in enumerate(lines, start=1):
         print(f"{index:>2}. [{line.target_id}] {line.text}")
+        for url in line.sources:
+            print(f"      source: {url}")
     print(
         f"\n{len(lines)} lines, {len(trace.turns)} turns, "
         f"{sum(len(t.tool_calls) for t in trace.turns)} calculations, "
+        f"{trace.total_web_searches} web searches "
+        f"({trace.dropped_source_urls} unverified and {trace.blocked_source_urls} blocked-site "
+        f"source URLs dropped), "
         f"${trace.total_cost_usd:.4f}, {trace.total_duration_ms / 1000:.1f}s "
         f"-> saved to {output_path}"
     )

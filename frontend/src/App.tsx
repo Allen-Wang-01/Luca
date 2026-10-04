@@ -1,22 +1,60 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
+import { loadDevSample } from './api/devSamples'
 import { parseReport } from './api/reports'
 import { PdfUploader } from './components/PdfUploader'
 import { ReportView } from './components/report/ReportView'
+import { seedNarration } from './narration/useGeneratedNarration'
 import type { FinancialReport } from './types/report'
 
 type ParseStatus = 'idle' | 'parsing' | 'success' | 'error'
 
+// Dev-only `?sample=<name>[&version=<v>]`: preview a saved run instead of uploading a
+// PDF. Read once at startup; production builds compile this down to null.
+function readDevSampleParams(): { name: string; version: string | null } | null {
+  if (!import.meta.env.DEV) return null
+  const params = new URLSearchParams(window.location.search)
+  const name = params.get('sample')
+  return name ? { name, version: params.get('version') } : null
+}
+
 function App() {
-  const [status, setStatus] = useState<ParseStatus>('idle')
+  const [devSample] = useState(readDevSampleParams)
+  const [status, setStatus] = useState<ParseStatus>(devSample ? 'parsing' : 'idle')
   const [report, setReport] = useState<FinancialReport | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [isSample, setIsSample] = useState(false)
   // Bumped on reset to remount PdfUploader with fresh internal state (selected file, etc).
   const [uploaderKey, setUploaderKey] = useState(0)
+
+  useEffect(() => {
+    if (!devSample) return
+    let cancelled = false
+    loadDevSample(devSample.name, devSample.version).then(
+      (sample) => {
+        if (cancelled) return
+        // Seeded before the report renders, so the saved narration is used as-is and
+        // no generation request (and no API cost) ever happens.
+        seedNarration(sample.report, sample.narration)
+        setReport(sample.report)
+        setIsSample(true)
+        setStatus('success')
+      },
+      (err: unknown) => {
+        if (cancelled) return
+        setErrorMessage(err instanceof Error ? err.message : 'Failed to load sample.')
+        setStatus('error')
+      },
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [devSample])
 
   const handleFileSelected = async (file: File) => {
     setStatus('parsing')
     setErrorMessage(null)
+    setIsSample(false)
     try {
       const result = await parseReport(file)
       setReport(result)
@@ -31,6 +69,7 @@ function App() {
     setStatus('idle')
     setReport(null)
     setErrorMessage(null)
+    setIsSample(false)
     setUploaderKey((key) => key + 1)
   }
 
@@ -54,7 +93,7 @@ function App() {
         {status === 'parsing' && (
           <div className="status-banner status-banner--loading">
             <span className="spinner" aria-hidden="true" />
-            Parsing report…
+            {devSample && !report ? 'Loading saved sample…' : 'Parsing report…'}
           </div>
         )}
 
@@ -70,6 +109,12 @@ function App() {
                 <span className="report-panel__meta">
                   {report.meta.report_type} · {report.meta.fiscal_period}
                 </span>
+                {isSample && devSample && (
+                  <span className="report-panel__sample-badge" title="Loaded from a saved run - no API calls">
+                    Saved sample: {devSample.name}
+                    {devSample.version ? ` (${devSample.version})` : ''}
+                  </span>
+                )}
               </div>
               <button type="button" className="report-panel__reset" onClick={handleReset}>
                 Upload another report

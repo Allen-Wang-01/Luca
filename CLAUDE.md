@@ -41,6 +41,16 @@ npx tsc --noEmit    # type-check only, no build output
 
 There is no test suite yet.
 
+### Previewing saved runs without API calls (local dev only)
+
+Set `DEV_SAMPLES_DIR=../temp` in `backend/.env` and restart the backend, then open
+`http://localhost:5173/?sample=NVIDIAAn` (optionally `&version=v1`). This loads
+`temp/NVIDIAAn.json` (parsed report, re-validated with the current rules) plus
+`temp/NVIDIAAn.narration.json` (or `.narration.v1.json`, as saved by
+`scripts/narrate_sample.py`) and seeds the narration cache, so no parse or narration
+request is made. The endpoint (`app/routers/dev_samples.py`) isn't registered at all
+unless `DEV_SAMPLES_DIR` is set.
+
 ## Architecture
 
 This is an AI tool that turns an uploaded financial report PDF into a spoken,

@@ -21,6 +21,12 @@ export interface GeneratedNarration {
 // starting (and paying for) a second one.
 const requestCache = new WeakMap<FinancialReport, Promise<NarrationResponse>>()
 
+// Supplies an already-generated narration for a report (e.g. a saved dev sample), so
+// rendering it never triggers a generation request. Call before the report renders.
+export function seedNarration(report: FinancialReport, narration: NarrationResponse): void {
+  requestCache.set(report, Promise.resolve(narration))
+}
+
 function requestNarration(report: FinancialReport): Promise<NarrationResponse> {
   let request = requestCache.get(report)
   if (!request) {
