@@ -135,8 +135,19 @@ pipeline:
   transcription or mental arithmetic. Errors come back as tool output so the model can
   correct itself.
 - `narration_validator.py` repairs `target_id`s that don't exist (nearest valid
-  ancestor cell → row → block, then the previous line's target) and rejects scripts
-  that are empty or mostly invented (→ 502).
+  ancestor cell → row → block, then the previous line's target), drops cited source
+  URLs that didn't come back from a web search in this run or are on a blocked site
+  (forums, social media, video — `BLOCKED_SOURCE_DOMAINS`), and rejects scripts that
+  are empty or mostly invented (→ 502).
+
+The model also has the API's built-in `web_search` tool, for outside context on changes
+the report doesn't explain. Those searches run on OpenAI's side inside a single model
+call, so the loop doesn't execute them: it records each search's query and returned
+URLs (`include=["web_search_call.action.sources"]`) in the trace, caps the total with
+`MAX_WEB_SEARCHES` (passed as `max_tool_calls`, and the tool is withdrawn once used up),
+and uses the returned URLs to verify each line's `sources`. Search calls are billed per
+call ($10 / 1k) on top of tokens; `pricing.py` adds that fee to each turn's cost (the
+search content itself already shows up in the response's input token usage).
 
 The agent loop is tested with a fake client (`tests/test_narration_agent.py`);
 `scripts/narrate_sample.py parsed.json` runs it against the real API (costs money).
@@ -149,10 +160,13 @@ now.
 ## Project status and roadmap
 
 The project is built in phases; each phase has its own acceptance criteria before
-moving to the next. Current state: **Phase 0, 1 and 3 done; Phase 2 implemented** as
-a tool-calling agent (calculation tools only — see "Narration generation" above), not
-yet verified against a real run. The same loop is where Phase 6's web search tool will
-be registered. Phase 1 has been
+moving to the next. Current state: **Phase 0, 1 and 3 done; Phase 2 done** as a
+tool-calling agent with calculation tools (see "Narration generation" above), verified
+against the real NVIDIA report. **Phase 6's web search is implemented** in the same loop
+but not yet run against the real API — neither is the latest prompt change (no prompt
+internals like FLAG markers in the spoken text), so the next real run verifies both,
+and also confirms the API endpoint supports `web_search`. Phases 4–5 (TTS, avatar) are
+next after that. Phase 1 has been
 run end-to-end against a real NVIDIA quarterly report: table figures were verified
 accurate, id generation and arithmetic validation worked correctly on real data. Two
 issues found during that real run were fixed: an `oneOf` in the LLM-facing schema that

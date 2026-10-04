@@ -1,10 +1,13 @@
 import type { ReactNode } from 'react'
+import { sourceLabel } from '../../narration/sourceLabel'
 import './NarrationPlayer.css'
 
 interface NarrationPlayerProps {
   currentIndex: number
   total: number
   currentText: string | null
+  // Web pages the current line draws on, shown as links under the caption.
+  currentSources?: string[]
   isPlaying: boolean
   durationMs: number
   // No script to play yet (e.g. narration still generating) - controls are inert and
@@ -28,6 +31,7 @@ export function NarrationPlayer({
   currentIndex,
   total,
   currentText,
+  currentSources = [],
   isPlaying,
   durationMs,
   disabled = false,
@@ -105,7 +109,22 @@ export function NarrationPlayer({
         {inert && placeholder ? (
           <div className="narration-player__caption narration-player__caption--placeholder">{placeholder}</div>
         ) : (
-          <p className="narration-player__caption">{currentText}</p>
+          <div className="narration-player__caption-group">
+            <p className="narration-player__caption">{currentText}</p>
+            {currentSources.length > 0 && (
+              <p className="narration-player__sources">
+                Source{currentSources.length > 1 ? 's' : ''}:{' '}
+                {currentSources.map((url, i) => (
+                  <span key={url}>
+                    {i > 0 && ', '}
+                    <a href={url} target="_blank" rel="noopener noreferrer" title={url}>
+                      {sourceLabel(url)}
+                    </a>
+                  </span>
+                ))}
+              </p>
+            )}
+          </div>
         )}
 
         {actions && <div className="narration-player__actions">{actions}</div>}

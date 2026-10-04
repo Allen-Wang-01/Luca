@@ -88,6 +88,7 @@ function ReportViewInner({ report, narration, player, onPlay, onNext, onPrev }: 
         currentIndex={player.currentIndex}
         total={player.total}
         currentText={player.currentLine?.text ?? null}
+        currentSources={player.currentLine?.sources}
         isPlaying={player.isPlaying}
         durationMs={player.durationMs}
         disabled={narration.status === 'loading'}

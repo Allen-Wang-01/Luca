@@ -119,6 +119,26 @@
   align-self: flex-start;
 }
 
+.advisor-notes__tool--search {
+  background: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+.advisor-notes__search-sources {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.advisor-notes__search-sources a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.advisor-notes__search-sources a:hover {
+  text-decoration: underline;
+}
+
 .advisor-notes__call--error .advisor-notes__tool {
   background: var(--color-negative-soft);
   color: var(--color-negative);

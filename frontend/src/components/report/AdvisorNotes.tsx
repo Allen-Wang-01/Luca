@@ -1,4 +1,5 @@
-import type { AgentTurn, NarrationTrace, ToolCallTrace } from '../../narration/types'
+import { sourceLabel } from '../../narration/sourceLabel'
+import type { AgentTurn, NarrationTrace, ToolCallTrace, WebSearchTrace } from '../../narration/types'
 import './AdvisorNotes.css'
 
 interface AdvisorNotesProps {
@@ -76,7 +77,52 @@ function ToolCallView({ call }: { call: ToolCallTrace }) {
   )
 }
 
+const SEARCH_ACTION_LABELS: Record<WebSearchTrace['action'], string> = {
+  search: 'Searched',
+  open_page: 'Opened',
+  find_in_page: 'Looked in',
+}
+
+function WebSearchView({ search }: { search: WebSearchTrace }) {
+  return (
+    <li className="advisor-notes__call">
+      <span className="advisor-notes__tool advisor-notes__tool--search">Web</span>
+      <div className="advisor-notes__call-body">
+        <span className="advisor-notes__inputs">
+          {SEARCH_ACTION_LABELS[search.action]}
+          {search.query && <> “{search.query}”</>}
+        </span>
+        {search.sources.length > 0 && (
+          <span className="advisor-notes__search-sources">
+            {search.sources.map((url, i) => (
+              <span key={url}>
+                {i > 0 && ' · '}
+                <a href={url} target="_blank" rel="noopener noreferrer" title={url}>
+                  {sourceLabel(url)}
+                </a>
+              </span>
+            ))}
+          </span>
+        )}
+      </div>
+    </li>
+  )
+}
+
+function pluralize(count: number, word: string): string {
+  return `${count} ${word}${count === 1 ? '' : 's'}`
+}
+
 function TurnView({ turn, isFinal, lineCount }: { turn: AgentTurn; isFinal: boolean; lineCount: number }) {
+  const searches = turn.web_searches ?? []
+  const didWork = turn.tool_calls.length > 0 || searches.length > 0
+  const summary = [
+    searches.length > 0 && `searched the web ${searches.length === 1 ? 'once' : `${searches.length} times`}`,
+    turn.tool_calls.length > 0 && `ran ${pluralize(turn.tool_calls.length, 'calculation')}`,
+  ]
+    .filter(Boolean)
+    .join(', ')
+
   return (
     <li className="advisor-notes__turn">
       <div className="advisor-notes__turn-header">
@@ -85,20 +131,20 @@ function TurnView({ turn, isFinal, lineCount }: { turn: AgentTurn; isFinal: bool
           {formatTokens(turn.input_tokens)} in · {formatTokens(turn.output_tokens)} out · {formatSeconds(turn.duration_ms)}
         </span>
       </div>
-      {turn.tool_calls.length > 0 ? (
+      {didWork && (
         <>
-          <p className="advisor-notes__turn-summary">
-            Ran {turn.tool_calls.length} calculation{turn.tool_calls.length === 1 ? '' : 's'}
-          </p>
+          <p className="advisor-notes__turn-summary">{summary.charAt(0).toUpperCase() + summary.slice(1)}</p>
           <ul className="advisor-notes__calls">
+            {searches.map((search, i) => (
+              <WebSearchView key={`search-${i}`} search={search} />
+            ))}
             {turn.tool_calls.map((call, i) => (
-              <ToolCallView key={i} call={call} />
+              <ToolCallView key={`call-${i}`} call={call} />
             ))}
           </ul>
         </>
-      ) : (
-        isFinal && <p className="advisor-notes__turn-summary">Wrote the narration script ({lineCount} lines)</p>
       )}
+      {isFinal && <p className="advisor-notes__turn-summary">Wrote the narration script ({lineCount} lines)</p>}
     </li>
   )
 }
@@ -114,10 +160,13 @@ export function AdvisorNotes({ trace, lineCount, onClose }: AdvisorNotesProps) {
         <div>
           <h3 className="advisor-notes__title">Advisor's notes</h3>
           <p className="advisor-notes__summary">
-            {trace.turns.length} turns · {calculationCount} calculations ·{' '}
+            {pluralize(trace.turns.length, 'turn')} · {pluralize(calculationCount, 'calculation')} ·{' '}
+            {pluralize(trace.total_web_searches ?? 0, 'web search')} ·{' '}
             {formatTokens(trace.total_input_tokens + trace.total_output_tokens)} tokens · $
             {trace.total_cost_usd.toFixed(4)} · {formatSeconds(trace.total_duration_ms)}
             {trace.repaired_target_ids > 0 && ` · ${trace.repaired_target_ids} highlight targets repaired`}
+            {trace.dropped_source_urls > 0 && ` · ${trace.dropped_source_urls} unverified sources removed`}
+            {trace.blocked_source_urls > 0 && ` · ${trace.blocked_source_urls} forum/social sources removed`}
           </p>
         </div>
         <button type="button" className="advisor-notes__close" onClick={onClose} aria-label="Close advisor's notes">

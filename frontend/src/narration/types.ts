@@ -5,6 +5,9 @@
 export interface NarrationLine {
   text: string
   target_id: string
+  // Web pages the line draws on beyond the report. The backend only keeps URLs that
+  // actually came back from its web searches. Absent on the locally-built stub script.
+  sources?: string[]
 }
 
 export type NarrationScript = NarrationLine[]
@@ -17,9 +20,16 @@ export interface ToolCallTrace {
   output: Record<string, unknown>
 }
 
+export interface WebSearchTrace {
+  action: 'search' | 'open_page' | 'find_in_page'
+  query: string | null
+  sources: string[]
+}
+
 export interface AgentTurn {
   turn: number
   tool_calls: ToolCallTrace[]
+  web_searches: WebSearchTrace[]
   input_tokens: number
   output_tokens: number
   cost_usd: number
@@ -30,9 +40,13 @@ export interface NarrationTrace {
   turns: AgentTurn[]
   total_input_tokens: number
   total_output_tokens: number
+  // Tokens plus the per-call web search fee.
   total_cost_usd: number
   total_duration_ms: number
+  total_web_searches: number
   repaired_target_ids: number
+  dropped_source_urls: number
+  blocked_source_urls: number
 }
 
 export interface NarrationResponse {

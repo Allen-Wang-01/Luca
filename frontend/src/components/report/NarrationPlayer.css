@@ -92,6 +92,29 @@
   min-width: 3.5rem;
 }
 
+.narration-player__caption-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.narration-player__sources {
+  margin: 0.125rem 0 0;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.narration-player__sources a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.narration-player__sources a:hover {
+  text-decoration: underline;
+}
+
 .narration-player__caption {
   flex: 1;
   min-width: 0;

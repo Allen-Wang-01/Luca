@@ -1,10 +1,32 @@
-# Makes sure every narration line's target_id exists in the report, so the frontend
-# sync engine always has something real to scroll to and highlight. The model is given
-# the valid ids, but nothing forces it to use them exactly - a slightly wrong cell id
-# (e.g. a misspelled col_id) is common and mostly recoverable. Pure function, no I/O.
+# Checks the model's narration against what it can actually point to: every line's
+# target_id must exist in the report, so the frontend sync engine always has something
+# real to scroll to and highlight, and every cited URL must have come back from a web
+# search in this run, so a source shown to the listener can't be one the model made up.
+# The model is given the valid ids, but nothing forces it to use them exactly - a
+# slightly wrong cell id (e.g. a misspelled col_id) is common and mostly recoverable.
+# Pure functions, no I/O.
 import re
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from app.models.narration import NarrationLine
+
+# Sites whose pages are user posts or videos rather than reporting - a real search
+# result, but not something to put in front of a listener as a source. Matched as the
+# host itself or any subdomain of it.
+BLOCKED_SOURCE_DOMAINS = frozenset(
+    {
+        "reddit.com",
+        "youtube.com",
+        "youtu.be",
+        "x.com",
+        "twitter.com",
+        "facebook.com",
+        "instagram.com",
+        "tiktok.com",
+        "stocktwits.com",
+        "quora.com",
+    }
+)
 
 # Row and cell ids are `{block_id}__r{row_index}` and `{block_id}__r{row_index}_{col_id}`
 # (docs/schema.md), so an invalid id's ancestors can be recovered from the id itself.
@@ -47,8 +69,45 @@ def repair_target_ids(
                 (candidate for candidate in _ancestors(target) if candidate in valid_ids),
                 repaired[-1].target_id if repaired else fallback_id,
             )
-        repaired.append(NarrationLine(text=text, target_id=target))
+        repaired.append(NarrationLine(text=text, target_id=target, sources=line.sources))
     return repaired, repair_count
+
+
+def _normalize_url(url: str) -> str:
+    # Search results often carry tracking params (e.g. utm_source=openai) and the model
+    # may copy a URL with or without them, or with a trailing slash.
+    parts = urlsplit(url.strip())
+    query = urlencode([(k, v) for k, v in parse_qsl(parts.query) if not k.lower().startswith("utm_")])
+    return urlunsplit((parts.scheme.lower(), parts.netloc.lower(), parts.path.rstrip("/"), query, ""))
+
+
+def _is_blocked(url: str) -> bool:
+    host = urlsplit(url.strip()).hostname or ""
+    return any(host == domain or host.endswith(f".{domain}") for domain in BLOCKED_SOURCE_DOMAINS)
+
+
+def filter_sources(lines: list[NarrationLine], seen_urls: set[str]) -> tuple[list[NarrationLine], int, int]:
+    """Returns (filtered lines, URLs dropped as unverified, URLs dropped as blocked).
+
+    A URL is kept only if it came back from this run's searches and isn't on a blocked
+    site. Kept URLs are replaced by the search result's own spelling of them, and
+    duplicates within a line are removed.
+    """
+    seen = {_normalize_url(url): url for url in seen_urls}
+    filtered: list[NarrationLine] = []
+    unverified = blocked = 0
+    for line in lines:
+        kept: list[str] = []
+        for url in line.sources:
+            match = seen.get(_normalize_url(url))
+            if match is None:
+                unverified += 1
+            elif _is_blocked(match):
+                blocked += 1
+            elif match not in kept:
+                kept.append(match)
+        filtered.append(NarrationLine(text=line.text, target_id=line.target_id, sources=kept))
+    return filtered, unverified, blocked
 
 
 def check_quality(lines: list[NarrationLine], repair_count: int, max_repair_ratio: float = 0.5) -> None:

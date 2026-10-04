@@ -1,7 +1,7 @@
 import pytest
 
 from app.models.narration import NarrationLine
-from app.services.narration_validator import NarrationQualityError, check_quality, repair_target_ids
+from app.services.narration_validator import NarrationQualityError, check_quality, filter_sources, repair_target_ids
 
 VALID_IDS = {"p_overview", "t_income", "t_income__r0", "t_income__r0_q2"}
 
@@ -46,6 +46,63 @@ def test_blank_lines_are_dropped():
     lines, _ = repair_target_ids([_line("p_overview", "   "), _line("p_overview")], VALID_IDS, "p_overview")
 
     assert len(lines) == 1
+
+
+def test_repair_keeps_sources():
+    line = NarrationLine(text="Per the news.", target_id="t_income__r0_q3", sources=["https://a.example"])
+
+    lines, _ = repair_target_ids([line], VALID_IDS, "p_overview")
+
+    assert lines[0].sources == ["https://a.example"]
+
+
+def test_sources_must_come_from_searches():
+    line = NarrationLine(text="x", target_id="p_overview", sources=["https://a.example/x", "https://invented.example"])
+
+    lines, dropped, _ = filter_sources([line], {"https://a.example/x"})
+
+    assert lines[0].sources == ["https://a.example/x"]
+    assert dropped == 1
+
+
+def test_source_matching_ignores_tracking_params_and_trailing_slash():
+    seen = {"https://a.example/story?id=7&utm_source=openai"}
+    line = NarrationLine(
+        text="x",
+        target_id="p_overview",
+        sources=["https://A.example/story/?id=7", "https://a.example/story?id=7&utm_source=openai"],
+    )
+
+    lines, dropped, _ = filter_sources([line], seen)
+
+    # Both spellings are the same page: kept once, in the search result's own spelling.
+    assert lines[0].sources == ["https://a.example/story?id=7&utm_source=openai"]
+    assert dropped == 0
+
+
+def test_forum_social_and_video_sources_are_blocked_even_when_searched():
+    seen = {
+        "https://www.reddit.com/r/stocks/comments/abc",
+        "https://youtu.be/xyz",
+        "https://apnews.com/article/123",
+    }
+    line = NarrationLine(text="x", target_id="p_overview", sources=sorted(seen))
+
+    lines, dropped, blocked = filter_sources([line], seen)
+
+    assert lines[0].sources == ["https://apnews.com/article/123"]
+    assert (dropped, blocked) == (0, 2)
+
+
+def test_blocklist_matches_whole_domains_only():
+    # "x.com" must not catch every host that merely ends in those letters.
+    seen = {"https://www.fedex.com/news", "https://mobile.x.com/post/1"}
+    line = NarrationLine(text="x", target_id="p_overview", sources=sorted(seen))
+
+    lines, _, blocked = filter_sources([line], seen)
+
+    assert lines[0].sources == ["https://www.fedex.com/news"]
+    assert blocked == 1
 
 
 def test_quality_check_rejects_empty_and_mostly_invented_scripts():
