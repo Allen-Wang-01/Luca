@@ -12,6 +12,15 @@ export interface NarrationLine {
 
 export type NarrationScript = NarrationLine[]
 
+// A line's spoken audio. A script's audio is a list parallel to its lines, with null
+// for any line that has no clip - the player times those lines itself.
+export interface AudioClip {
+  url: string
+  duration_ms: number
+}
+
+export type NarrationAudio = (AudioClip | null)[]
+
 // What the agent did to produce a script - one entry per model call, with the
 // calculation tools it ran in that turn. Shown in the "Advisor's notes" panel.
 export interface ToolCallTrace {

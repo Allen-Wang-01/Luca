@@ -17,7 +17,7 @@ interface ReportViewProps {
 
 export function ReportView({ report }: ReportViewProps) {
   const narration = useGeneratedNarration(report)
-  const player = useNarrationPlayer(narration.script)
+  const player = useNarrationPlayer(narration.script, narration.audio)
 
   // Sync (scroll/highlight/scale) only kicks in once the reader has actually engaged
   // with the player - otherwise the first block would appear "active" the instant the
@@ -98,6 +98,7 @@ function ReportViewInner({ report, narration, player, onPlay, onNext, onPrev }: 
         currentSources={player.currentLine?.sources}
         isPlaying={player.isPlaying}
         durationMs={player.durationMs}
+        captionsOnly={narration.audio !== null && !player.isSpoken}
         disabled={narration.status === 'loading'}
         placeholder={
           <>

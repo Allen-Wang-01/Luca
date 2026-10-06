@@ -1,9 +1,11 @@
-import type { NarrationResponse } from '../narration/types'
+import type { NarrationAudio, NarrationResponse } from '../narration/types'
 import type { FinancialReport } from '../types/report'
 
 export interface DevSample {
   report: FinancialReport
   narration: NarrationResponse
+  // Saved speech clips, one entry per narration line (null where none was generated).
+  audio: NarrationAudio
 }
 
 // Local development only: a saved run served by the backend's /api/dev/samples

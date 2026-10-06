@@ -9,6 +9,18 @@ PRICING = {
 WEB_SEARCH_COST_PER_CALL = 10.00 / 1000
 
 
+# gpt-4o-mini-tts: $0.60 per million input text tokens and $12 per million audio output
+# tokens. The speech endpoint doesn't report token usage, so cost is estimated from what
+# can be measured: about 4 characters per text token, and OpenAI's own figure of roughly
+# $0.015 per minute of generated audio.
+TTS_INPUT_COST_PER_CHAR = 0.60 / 1_000_000 / 4
+TTS_COST_PER_AUDIO_MINUTE = 0.015
+
+
+def calculate_tts_cost(input_chars: int, audio_ms: int) -> float:
+    return input_chars * TTS_INPUT_COST_PER_CHAR + (audio_ms / 60_000) * TTS_COST_PER_AUDIO_MINUTE
+
+
 def calculate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
     rates = PRICING.get(model)
     if rates is None:

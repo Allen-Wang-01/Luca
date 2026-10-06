@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { generateNarration } from '../api/narration'
 import type { FinancialReport } from '../types/report'
 import { buildStubScript } from './buildStubScript'
-import type { NarrationResponse, NarrationScript, NarrationTrace } from './types'
+import type { NarrationAudio, NarrationResponse, NarrationScript, NarrationTrace } from './types'
 
 export type NarrationStatus = 'loading' | 'ready' | 'failed'
 
@@ -11,6 +11,8 @@ export interface GeneratedNarration {
   // Empty while loading; the stub script once generation has failed.
   script: NarrationScript
   trace: NarrationTrace | null
+  // Speech for `script`, when there is any; null means every line is timed, not spoken.
+  audio: NarrationAudio | null
   error: string | null
   retry: () => void
 }
@@ -21,10 +23,15 @@ export interface GeneratedNarration {
 // starting (and paying for) a second one.
 const requestCache = new WeakMap<FinancialReport, Promise<NarrationResponse>>()
 
+// Speech clips that came with a seeded narration, per line.
+const audioCache = new WeakMap<FinancialReport, NarrationAudio>()
+
 // Supplies an already-generated narration for a report (e.g. a saved dev sample), so
 // rendering it never triggers a generation request. Call before the report renders.
-export function seedNarration(report: FinancialReport, narration: NarrationResponse): void {
+export function seedNarration(report: FinancialReport, narration: NarrationResponse, audio?: NarrationAudio): void {
   requestCache.set(report, Promise.resolve(narration))
+  // A sample with no clips at all is simply an unvoiced script, not one with gaps.
+  if (audio?.some((clip) => clip !== null)) audioCache.set(report, audio)
 }
 
 function requestNarration(report: FinancialReport): Promise<NarrationResponse> {
@@ -73,11 +80,18 @@ export function useGeneratedNarration(report: FinancialReport): GeneratedNarrati
 
   switch (current.status) {
     case 'loading':
-      return { status: 'loading', script: EMPTY_SCRIPT, trace: null, error: null, retry }
+      return { status: 'loading', script: EMPTY_SCRIPT, trace: null, audio: null, error: null, retry }
     case 'ready':
-      return { status: 'ready', script: current.response.lines, trace: current.response.trace, error: null, retry }
+      return {
+        status: 'ready',
+        script: current.response.lines,
+        trace: current.response.trace,
+        audio: audioCache.get(report) ?? null,
+        error: null,
+        retry,
+      }
     case 'failed':
-      return { status: 'failed', script: stubScript, trace: null, error: current.error, retry }
+      return { status: 'failed', script: stubScript, trace: null, audio: null, error: current.error, retry }
   }
 }
 

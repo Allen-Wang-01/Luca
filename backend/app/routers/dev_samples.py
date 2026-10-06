@@ -1,18 +1,20 @@
 # Local development only - registered by app/main.py when DEV_SAMPLES_DIR is set.
-# Serves a saved run (a parsed report plus the narration scripts/narrate_sample.py
-# generated for it) so the frontend can be previewed with real model output without
-# making any API calls.
+# Serves a saved run (a parsed report, the narration scripts/narrate_sample.py generated
+# for it, and any speech clips scripts/synthesize_sample.py saved for that narration) so
+# the frontend can be previewed with real model output without making any API calls.
 import json
 import re
+import wave
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, ValidationError
+from fastapi.responses import FileResponse
+from pydantic import BaseModel, Field, ValidationError
 
 from app.config import settings
 from app.models.narration import NarrationResponse
 from app.models.report import FinancialReport
-from app.services import report_validator
+from app.services import report_validator, tts_client
 
 router = APIRouter(prefix="/api/dev/samples")
 
@@ -21,9 +23,33 @@ router = APIRouter(prefix="/api/dev/samples")
 _NAME_RE = re.compile(r"^[A-Za-z0-9_-]+$")
 
 
+_CLIP_RE = re.compile(r"^[0-9a-f]+\.wav$")
+
+
+class DevAudioClip(BaseModel):
+    url: str
+    duration_ms: int
+
+
 class DevSample(BaseModel):
     report: FinancialReport
     narration: NarrationResponse
+    # One entry per narration line: the clip scripts/synthesize_sample.py saved for that
+    # exact text, or None where there isn't one (the frontend then times the line itself).
+    audio: list[DevAudioClip | None] = Field(default_factory=list)
+
+
+def _saved_clip(name: str, text: str) -> DevAudioClip | None:
+    filename = tts_client.clip_filename(text)
+    path = Path(settings.dev_samples_dir or "") / f"{name}.audio" / filename
+    if not path.is_file():
+        return None
+    try:
+        with wave.open(str(path), "rb") as wav:
+            duration_ms = round(wav.getnframes() / wav.getframerate() * 1000)
+    except (wave.Error, EOFError):
+        return None
+    return DevAudioClip(url=f"{router.prefix}/{name}/audio/{filename}", duration_ms=duration_ms)
 
 
 def _read(path: Path, model: type[BaseModel]) -> BaseModel:
@@ -50,4 +76,15 @@ def get_sample(name: str, version: str | None = None) -> DevSample:
     report = _read(directory / f"{name}.json", FinancialReport)
     narration = _read(directory / narration_file, NarrationResponse)
     report_validator.revalidate(report)
-    return DevSample(report=report, narration=narration)
+    audio = [_saved_clip(name, line.text) for line in narration.lines]
+    return DevSample(report=report, narration=narration, audio=audio)
+
+
+@router.get("/{name}/audio/{filename}")
+def get_sample_audio(name: str, filename: str) -> FileResponse:
+    if not _NAME_RE.match(name) or not _CLIP_RE.match(filename):
+        raise HTTPException(status_code=400, detail="Invalid sample or clip name.")
+    path = Path(settings.dev_samples_dir or "") / f"{name}.audio" / filename
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail=f"Audio clip not found: {filename}")
+    return FileResponse(path, media_type="audio/wav")

@@ -10,6 +10,9 @@ interface NarrationPlayerProps {
   currentSources?: string[]
   isPlaying: boolean
   durationMs: number
+  // The script has audio, but not for the current line - say so, so a silent stretch
+  // doesn't look like broken playback.
+  captionsOnly?: boolean
   // No script to play yet (e.g. narration still generating) - controls are inert and
   // `placeholder` takes the caption's place.
   disabled?: boolean
@@ -24,9 +27,9 @@ interface NarrationPlayerProps {
   onPrev: () => void
 }
 
-// Fixed bottom bar. There's no narration audio yet, so the caption text below the
-// controls stands in for it - it's also the visible proof that scroll/highlight sync
-// is actually following the script, not just decoration.
+// Fixed bottom bar. The caption shows the line being spoken; for lines without audio
+// it stands in for the voice. Either way it's the visible proof that scroll/highlight
+// sync is actually following the script, not just decoration.
 export function NarrationPlayer({
   currentIndex,
   total,
@@ -34,6 +37,7 @@ export function NarrationPlayer({
   currentSources = [],
   isPlaying,
   durationMs,
+  captionsOnly = false,
   disabled = false,
   placeholder,
   notice,
@@ -104,6 +108,11 @@ export function NarrationPlayer({
           </button>
 
           <span className="narration-player__counter">{inert ? '– / –' : `${currentIndex + 1} / ${total}`}</span>
+          {captionsOnly && !inert && (
+            <span className="narration-player__tag" title="No audio was generated for this line">
+              Captions only
+            </span>
+          )}
         </div>
 
         {inert && placeholder ? (

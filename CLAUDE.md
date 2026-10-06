@@ -51,6 +51,14 @@ Set `DEV_SAMPLES_DIR=../temp` in `backend/.env` and restart the backend, then op
 request is made. The endpoint (`app/routers/dev_samples.py`) isn't registered at all
 unless `DEV_SAMPLES_DIR` is set.
 
+Saved speech is part of the same preview. `python scripts/synthesize_sample.py
+../temp/NVIDIAAn.narration.json` (real API, costs money; `--dry-run` shows the estimate
+first) writes one WAV per line into `temp/NVIDIAAn.audio/`, named after the line's text,
+for roughly the first `--minutes` of the script (default 4.5). The sample endpoint
+returns the clip for each line whose exact text has one, so every saved narration
+version picks up whichever of its lines are voiced, and already-saved lines are never
+paid for twice.
+
 ## Architecture
 
 This is an AI tool that turns an uploaded financial report PDF into a spoken,
@@ -161,6 +169,22 @@ search content itself already shows up in the response's input token usage).
 
 The agent loop is tested with a fake client (`tests/test_narration_agent.py`);
 `scripts/narrate_sample.py parsed.json` runs it against the real API (costs money).
+
+### Speech (`app/services/tts_client.py`)
+
+`tts_client.synthesize(text)` turns one narration line into a WAV clip with its
+duration. It is the only module that knows the provider (`gpt-4o-mini-tts`, which OpenAI
+shuts down on 2027-01-06 - the replacement goes in this file). Audio is requested as raw
+PCM so duration is exact and silence is detectable without an audio library; a clip that
+is silent or far too short for its text is retried once and otherwise returned with a
+warning. Cost is estimated from audio length (`pricing.calculate_tts_cost`), since the
+speech endpoint reports no usage. So far speech only exists for saved samples (see
+"Previewing saved runs"); a freshly uploaded report is still narrated with timed
+captions only.
+
+On the frontend, `useNarrationPlayer` takes the script plus an optional list of clips
+parallel to its lines. A line with a clip lasts exactly as long as its audio; a line
+without one is timed from its word count, so a partly voiced script still plays through.
 
 On the frontend, `useGeneratedNarration` requests the script once per report (cached at
 module level so StrictMode's double effect doesn't pay twice) and falls back to

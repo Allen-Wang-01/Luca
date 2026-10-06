@@ -35,7 +35,7 @@ function App() {
         if (cancelled) return
         // Seeded before the report renders, so the saved narration is used as-is and
         // no generation request (and no API cost) ever happens.
-        seedNarration(sample.report, sample.narration)
+        seedNarration(sample.report, sample.narration, sample.audio)
         setReport(sample.report)
         setIsSample(true)
         setStatus('success')
