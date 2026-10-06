@@ -1,5 +1,5 @@
 import { sourceLabel } from '../../narration/sourceLabel'
-import type { AgentTurn, NarrationTrace, ToolCallTrace, WebSearchTrace } from '../../narration/types'
+import type { AgentTurn, NarrationTrace, RemovedSource, ToolCallTrace, WebSearchTrace } from '../../narration/types'
 import './AdvisorNotes.css'
 
 interface AdvisorNotesProps {
@@ -109,6 +109,12 @@ function WebSearchView({ search }: { search: WebSearchTrace }) {
   )
 }
 
+// Removed URLs are shown as plain text, not links: an unverified one may not exist.
+const REMOVED_REASON_LABELS: Record<RemovedSource['reason'], string> = {
+  unverified: 'Not among the pages its searches returned - may be invented',
+  blocked: 'Forum, social or video site - not shown as a source',
+}
+
 function pluralize(count: number, word: string): string {
   return `${count} ${word}${count === 1 ? '' : 's'}`
 }
@@ -153,6 +159,7 @@ function TurnView({ turn, isFinal, lineCount }: { turn: AgentTurn; isFinal: bool
 // tools it ran and their results, and what each call cost. Mirrors the backend trace.
 export function AdvisorNotes({ trace, lineCount, onClose }: AdvisorNotesProps) {
   const calculationCount = trace.turns.reduce((sum, turn) => sum + turn.tool_calls.length, 0)
+  const removedSources = trace.removed_sources ?? []
 
   return (
     <aside className="advisor-notes" aria-label="Advisor's notes">
@@ -165,8 +172,8 @@ export function AdvisorNotes({ trace, lineCount, onClose }: AdvisorNotesProps) {
             {formatTokens(trace.total_input_tokens + trace.total_output_tokens)} tokens · $
             {trace.total_cost_usd.toFixed(4)} · {formatSeconds(trace.total_duration_ms)}
             {trace.repaired_target_ids > 0 && ` · ${trace.repaired_target_ids} highlight targets repaired`}
-            {trace.dropped_source_urls > 0 && ` · ${trace.dropped_source_urls} unverified sources removed`}
-            {trace.blocked_source_urls > 0 && ` · ${trace.blocked_source_urls} forum/social sources removed`}
+            {trace.dropped_source_urls > 0 && ` · ${trace.dropped_source_urls} unverified citations rejected`}
+            {trace.blocked_source_urls > 0 && ` · ${trace.blocked_source_urls} forum/social citations rejected`}
           </p>
         </div>
         <button type="button" className="advisor-notes__close" onClick={onClose} aria-label="Close advisor's notes">
@@ -177,6 +184,28 @@ export function AdvisorNotes({ trace, lineCount, onClose }: AdvisorNotesProps) {
         {trace.turns.map((turn, i) => (
           <TurnView key={turn.turn} turn={turn} isFinal={i === trace.turns.length - 1} lineCount={lineCount} />
         ))}
+        {removedSources.length > 0 && (
+          <li className="advisor-notes__turn">
+            <div className="advisor-notes__turn-header">
+              <span className="advisor-notes__turn-title">Citations rejected by the validator</span>
+            </div>
+            <p className="advisor-notes__turn-summary">
+              The advisor cited these links, but they failed our checks and were not shown. The lines themselves
+              are still in the script.
+            </p>
+            <ul className="advisor-notes__calls">
+              {removedSources.map((source, i) => (
+                <li key={i} className="advisor-notes__call">
+                  <span className="advisor-notes__tool advisor-notes__tool--removed">Line {source.line}</span>
+                  <div className="advisor-notes__call-body">
+                    <span className="advisor-notes__inputs">{REMOVED_REASON_LABELS[source.reason]}</span>
+                    <span className="advisor-notes__search-sources">{source.url}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </li>
+        )}
       </ol>
     </aside>
   )

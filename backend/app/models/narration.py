@@ -2,7 +2,7 @@
 # `target_id` must be a block, row, or cell id that exists in the report the script was
 # generated from (see docs/schema.md for the id rules) - the frontend sync engine
 # scrolls to / highlights whatever it points at.
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -60,6 +60,15 @@ class AgentTurn(BaseModel):
     duration_ms: int
 
 
+class RemovedSource(BaseModel):
+    # A URL the model cited that didn't make it to the listener.
+    line: int  # 1-based position of the line in the final script
+    url: str
+    # "unverified": not returned by any web search in this run.
+    # "blocked": on a blocked site (narration_validator.BLOCKED_SOURCE_DOMAINS).
+    reason: Literal["unverified", "blocked"]
+
+
 class NarrationTrace(BaseModel):
     turns: list[AgentTurn]
     total_input_tokens: int
@@ -75,6 +84,9 @@ class NarrationTrace(BaseModel):
     # How many cited URLs were dropped for being on a blocked site (forums, social media,
     # video - see narration_validator.BLOCKED_SOURCE_DOMAINS).
     blocked_source_urls: int = 0
+    # The URLs behind the two counts above, so a line that names a publication but shows
+    # no link can be traced back to what the model tried to cite.
+    removed_sources: list[RemovedSource] = Field(default_factory=list)
 
 
 class NarrationRequest(BaseModel):

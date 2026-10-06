@@ -8,7 +8,7 @@
 import re
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
-from app.models.narration import NarrationLine
+from app.models.narration import NarrationLine, RemovedSource
 
 # Sites whose pages are user posts or videos rather than reporting - a real search
 # result, but not something to put in front of a listener as a source. Matched as the
@@ -86,8 +86,10 @@ def _is_blocked(url: str) -> bool:
     return any(host == domain or host.endswith(f".{domain}") for domain in BLOCKED_SOURCE_DOMAINS)
 
 
-def filter_sources(lines: list[NarrationLine], seen_urls: set[str]) -> tuple[list[NarrationLine], int, int]:
-    """Returns (filtered lines, URLs dropped as unverified, URLs dropped as blocked).
+def filter_sources(
+    lines: list[NarrationLine], seen_urls: set[str]
+) -> tuple[list[NarrationLine], list[RemovedSource]]:
+    """Returns (filtered lines, the URLs that were removed and why).
 
     A URL is kept only if it came back from this run's searches and isn't on a blocked
     site. Kept URLs are replaced by the search result's own spelling of them, and
@@ -95,19 +97,19 @@ def filter_sources(lines: list[NarrationLine], seen_urls: set[str]) -> tuple[lis
     """
     seen = {_normalize_url(url): url for url in seen_urls}
     filtered: list[NarrationLine] = []
-    unverified = blocked = 0
-    for line in lines:
+    removed: list[RemovedSource] = []
+    for number, line in enumerate(lines, start=1):
         kept: list[str] = []
         for url in line.sources:
             match = seen.get(_normalize_url(url))
             if match is None:
-                unverified += 1
+                removed.append(RemovedSource(line=number, url=url, reason="unverified"))
             elif _is_blocked(match):
-                blocked += 1
+                removed.append(RemovedSource(line=number, url=match, reason="blocked"))
             elif match not in kept:
                 kept.append(match)
         filtered.append(NarrationLine(text=line.text, target_id=line.target_id, sources=kept))
-    return filtered, unverified, blocked
+    return filtered, removed
 
 
 def check_quality(lines: list[NarrationLine], repair_count: int, max_repair_ratio: float = 0.5) -> None:

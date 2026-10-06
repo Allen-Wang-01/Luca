@@ -314,12 +314,16 @@ def generate_narration(
         )
 
     cited = [NarrationLine(text=l.text, target_id=l.target_id, sources=l.source_urls) for l in parsed.lines]
-    sourced, dropped_urls, blocked_urls = narration_validator.filter_sources(cited, seen_urls)
     fallback_id = report.blocks[0].id if report.blocks else ""
-    lines, repair_count = narration_validator.repair_target_ids(
-        sourced, narration_context.collect_target_ids(report), fallback_id
+    targeted, repair_count = narration_validator.repair_target_ids(
+        cited, narration_context.collect_target_ids(report), fallback_id
     )
+    # After the repair pass, which drops blank lines, so the line numbers recorded for
+    # removed sources match the script the listener gets.
+    lines, removed_sources = narration_validator.filter_sources(targeted, seen_urls)
     narration_validator.check_quality(lines, repair_count)
+    dropped_urls = sum(1 for source in removed_sources if source.reason == "unverified")
+    blocked_urls = len(removed_sources) - dropped_urls
 
     trace = NarrationTrace(
         turns=turns,
@@ -331,7 +335,10 @@ def generate_narration(
         repaired_target_ids=repair_count,
         dropped_source_urls=dropped_urls,
         blocked_source_urls=blocked_urls,
+        removed_sources=removed_sources,
     )
+    for source in removed_sources:
+        logger.info("narration_source_removed line=%d reason=%s url=%s", source.line, source.reason, source.url)
     logger.info(
         "narration_done turns=%d lines=%d web_searches=%d sourced_lines=%d dropped_source_urls=%d blocked_source_urls=%d repaired_target_ids=%d total_cost_usd=%.6f total_duration_ms=%d",
         len(turns),

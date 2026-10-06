@@ -46,6 +46,8 @@ def main() -> None:
         print(f"{index:>2}. [{line.target_id}] {line.text}")
         for url in line.sources:
             print(f"      source: {url}")
+    for removed in trace.removed_sources:
+        print(f"removed source ({removed.reason}), line {removed.line}: {removed.url}")
     print(
         f"\n{len(lines)} lines, {len(trace.turns)} turns, "
         f"{sum(len(t.tool_calls) for t in trace.turns)} calculations, "

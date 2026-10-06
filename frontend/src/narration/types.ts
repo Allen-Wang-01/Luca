@@ -36,6 +36,14 @@ export interface AgentTurn {
   duration_ms: number
 }
 
+// A URL the model cited that was removed before reaching the listener: 'unverified' if
+// no web search in the run returned it, 'blocked' if it's on a forum/social/video site.
+export interface RemovedSource {
+  line: number // 1-based position in the script
+  url: string
+  reason: 'unverified' | 'blocked'
+}
+
 export interface NarrationTrace {
   turns: AgentTurn[]
   total_input_tokens: number
@@ -47,6 +55,8 @@ export interface NarrationTrace {
   repaired_target_ids: number
   dropped_source_urls: number
   blocked_source_urls: number
+  // The URLs behind the two counts above. Absent on runs saved before it was recorded.
+  removed_sources?: RemovedSource[]
 }
 
 export interface NarrationResponse {

@@ -212,6 +212,9 @@ def test_only_urls_returned_by_searches_survive_as_sources(report):
     assert lines[0].sources == ["https://news.example/acme"]
     assert lines[1].sources == []
     assert trace.dropped_source_urls == 1
+    assert [(r.line, r.url, r.reason) for r in trace.removed_sources] == [
+        (2, "https://made-up.example/story", "unverified")
+    ]
 
 
 def test_blocked_site_sources_are_counted_in_the_trace(report):
