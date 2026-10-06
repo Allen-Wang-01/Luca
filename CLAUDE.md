@@ -173,10 +173,13 @@ The project is built in phases; each phase has its own acceptance criteria befor
 moving to the next. Current state: **Phase 0, 1 and 3 done; Phase 2 done** as a
 tool-calling agent with calculation tools (see "Narration generation" above), verified
 against the real NVIDIA report. **Phase 6's web search is implemented** in the same loop
-but not yet run against the real API — neither is the latest prompt change (no prompt
-internals like FLAG markers in the spoken text), so the next real run verifies both,
-and also confirms the API endpoint supports `web_search`. Phases 4–5 (TTS, avatar) are
-next after that. Phase 1 has been
+and verified against the real API: searches run, cited links are checked, and lines now
+target single cells where one figure carries the line. Two things from that run are
+still open: a line can name a publication while its link is rejected by the validator
+(the rejected links are now recorded in the trace, so the next real run shows whether
+they were invented or just spelled differently from the search result), and the rule
+about flagging information from a later period hasn't been exercised yet. Phases 4–5
+(TTS, avatar) are next. Phase 1 has been
 run end-to-end against a real NVIDIA quarterly report: table figures were verified
 accurate, id generation and arithmetic validation worked correctly on real data. Two
 issues found during that real run were fixed: an `oneOf` in the LLM-facing schema that
