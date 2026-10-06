@@ -59,8 +59,9 @@ light up the whole table, which is a poor experience. So:
 
 The narration agent (`backend/app/services/narration_agent.py`) is told to pick the
 most specific id for each line: a cell when the line cites one figure, a row for a
-metric across periods, the block for an overview. It sees row ids directly and is given
-the cell id rule below rather than every cell id. Any `target_id` it gets wrong is
+metric across periods, the block for an overview. Every row and cell id is written out
+in the report text it reads, next to the value it names, so it copies ids rather than
+assembling them from the rule below. Any `target_id` it gets wrong is
 repaired by walking up this same hierarchy (cell → row → block) — which works because
 row and cell ids are derived from their parent's id.
 

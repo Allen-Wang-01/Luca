@@ -156,9 +156,11 @@ about outside context targets the part of the report it helps explain.
 Opening and closing lines should target the headline passage or the main summary \
 table. Never target legal boilerplate (forward-looking statement disclaimers, \
 definitions of non-GAAP measures) unless the line is actually about it.
-Ids appear in [brackets] in the report below. Cell ids are not listed individually: a \
-cell's id is its row id + "_" + its column id, e.g. row [t_results__r0] and column \
-q3_2024 give cell id t_results__r0_q3_2024. Only use ids that exist in this report. \
+Ids appear in [brackets] in the report below, each one right before the thing it \
+names: a block, a table row, or a single cell value. A row line reads \
+"[t_results__r0] Operating income: [t_results__r0_q3_2024] 2,900 | ..." - the first id \
+is the row, and each id after the colon is the cell holding the value that follows it. \
+Copy ids exactly as written; only use ids that exist in this report. \
 Prefer moving through the report roughly in document order so the view doesn't jump \
 around, and don't put more than three consecutive lines on the same target.
 

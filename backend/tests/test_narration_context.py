@@ -8,10 +8,10 @@ def test_collects_block_row_and_cell_ids(report):
     assert "sec_results" not in ids  # sections are navigation, not narration targets
 
 
-def test_render_lists_rows_with_ids_and_raw_values(report):
+def test_render_lists_rows_and_cells_with_ids_and_raw_values(report):
     text = render_report_for_prompt(report)
 
-    assert "[t_income__r0] Revenue: q2=200 | q2_ly=100" in text
+    assert "[t_income__r0] Revenue: [t_income__r0_q2] 200 | [t_income__r0_q2_ly] 100" in text
     assert 'q2="Q2 FY26"' in text
 
 

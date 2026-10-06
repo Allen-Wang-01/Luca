@@ -1,8 +1,8 @@
 # Renders a FinancialReport into the compact, id-annotated text the narration model
-# reads. Raw JSON would work too, but it spends most of its tokens on repeated keys and
-# per-cell ids; this format lists each row once with its id and states the cell id rule
-# instead, which keeps the prompt small while still letting the model point at a single
-# cell. Pure function, no I/O.
+# reads. Raw JSON would work too, but it spends most of its tokens on repeated keys;
+# this format keeps one line per row. Every cell's id is written out next to its value:
+# when only row ids were listed and cell ids had to be assembled from a rule, the model
+# almost never targeted a single cell. Pure function, no I/O.
 from app.models.report import ChartBlock, FinancialReport, ParagraphBlock, Row, TableBlock
 
 
@@ -70,7 +70,7 @@ def _render_table(table: TableBlock) -> list[str]:
 
 
 def _render_row(row: Row) -> str:
-    values = " | ".join(f"{cell.col_id}={cell.raw_text or '-'}" for cell in row.cells)
+    values = " | ".join(f"[{cell.id}] {cell.raw_text or '-'}" for cell in row.cells)
     text = f"[{row.id}] {row.label}: {values}" if values else f"[{row.id}] {row.label}"
     for flag in row.flags:
         text += f"  ! FLAG: {flag.message}"

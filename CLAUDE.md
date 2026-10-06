@@ -134,8 +134,8 @@ and `MAX_TOOL_CALLS` caps total calculations. Each turn is logged and recorded i
 The supporting pieces are pure functions with their own tests, same as the parsing
 pipeline:
 - `narration_context.py` renders the report into compact, id-annotated prompt text
-  (rows listed with their ids; cell ids stated as a rule rather than enumerated) and
-  collects the set of valid target ids.
+  (one line per row, with the row id and every cell id written out next to its value)
+  and collects the set of valid target ids.
 - `narration_tools.py` — `percent_change` / `ratio` / `difference`. Operands are
   **references, not numbers**: `{id: <cell id>, quote: null}` for a table figure, or
   `{id: <paragraph id>, quote: "$3.2 billion"}` for a figure that only appears in

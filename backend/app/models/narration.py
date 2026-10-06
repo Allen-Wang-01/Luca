@@ -21,7 +21,14 @@ class LLMNarrationLine(BaseModel):
     # No defaults here: structured output requires every field, and the model must
     # explicitly give an empty list when a line uses no outside source.
     text: str
-    target_id: str
+    target_id: str = Field(
+        description=(
+            "Id of the part of the report this line is about, copied exactly from the [brackets] "
+            "in the report. Use the most specific one that fits: the cell id when one table "
+            "value carries the line, the row id when the line compares a metric across "
+            "columns, otherwise the block id."
+        )
+    )
     source_urls: list[str]
 
 
