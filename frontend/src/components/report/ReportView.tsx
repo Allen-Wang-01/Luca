@@ -1,11 +1,13 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { FinancialReport } from '../../types/report'
+import { buildTargetIndex } from '../../narration/targetIndex'
 import { useGeneratedNarration, type GeneratedNarration } from '../../narration/useGeneratedNarration'
 import { useNarrationPlayer, type NarrationPlayer as NarrationPlayerState } from '../../narration/useNarrationPlayer'
 import { NarrationSyncProvider, useNarrationSync } from './NarrationSyncContext'
 import { NarrationPlayer } from './NarrationPlayer'
 import { AdvisorNotes } from './AdvisorNotes'
 import { BlockList } from './BlockList'
+import { FocusCard } from './FocusCard'
 import './sync.css'
 import './ReportView.css'
 
@@ -43,9 +45,10 @@ export function ReportView({ report }: ReportViewProps) {
   }, [markStarted, player])
 
   const activeId = hasStarted ? (player.currentLine?.target_id ?? null) : null
+  const targets = useMemo(() => buildTargetIndex(report), [report])
 
   return (
-    <NarrationSyncProvider activeId={activeId}>
+    <NarrationSyncProvider activeId={activeId} targets={targets}>
       <ReportViewInner
         report={report}
         narration={narration}
@@ -68,7 +71,7 @@ interface ReportViewInnerProps {
 }
 
 function ReportViewInner({ report, narration, player, onPlay, onNext, onPrev }: ReportViewInnerProps) {
-  const { activeId, getElement } = useNarrationSync()
+  const { activeId, activeTarget, getElement } = useNarrationSync()
   const [notesOpen, setNotesOpen] = useState(false)
   const { trace } = narration
 
@@ -81,6 +84,10 @@ function ReportViewInner({ report, narration, player, onPlay, onNext, onPrev }: 
   return (
     <div className="report-view">
       <BlockList blocks={report.blocks} />
+      {activeId && activeTarget && activeTarget.kind !== 'block' && (
+        // Keyed by target so each new line's card pops in afresh.
+        <FocusCard key={activeId} anchorId={activeId} target={activeTarget} />
+      )}
       {notesOpen && trace && (
         <AdvisorNotes trace={trace} lineCount={narration.script.length} onClose={() => setNotesOpen(false)} />
       )}

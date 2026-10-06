@@ -4,7 +4,13 @@
      sit in a vertical stack with room to grow, so the "current" one can scale up.
    - `.sync--dense` - table rows/cells packed edge-to-edge in a grid, where a scale
      transform would overlap neighboring cells; these get a background/ring highlight
-     instead. */
+     instead, and FocusCard repeats the figure at a readable size. */
+
+:root {
+  /* --color-accent-soft is a barely-there tint meant for badges; the row/cell being
+     narrated needs to be visible on a projector. */
+  --sync-highlight: color-mix(in srgb, var(--color-accent) 24%, transparent);
+}
 
 .sync {
   transition:
@@ -28,9 +34,16 @@
   opacity: 1;
 }
 
+/* A paragraph has no card or background of its own, so it gets a tint on top of the
+   shared ring to stand out from the text around it. */
+.paragraph-block.sync[data-sync='active'] {
+  transform: scale(1.03);
+  background-color: var(--sync-highlight);
+}
+
 .sync[data-sync='dimmed'] {
   transform: scale(0.98);
-  opacity: 0.5;
+  opacity: 0.35;
 }
 
 .sync[data-sync='neutral'] {
@@ -39,21 +52,40 @@
 }
 
 .sync--dense {
-  /* box-shadow on <tr> doesn't paint reliably across browsers (table-row isn't a real
-     paint box for shadows the way table-cell is) - background-color does, and stays
-     consistent whether this lands on a <tr> or a <td>, so that's the only channel used
-     here. */
   transition:
     background-color 0.4s ease,
+    box-shadow 0.4s ease,
     opacity 0.4s ease;
 }
 
-.sync--dense[data-sync='active'] {
-  background-color: var(--color-accent-soft);
+/* box-shadow on <tr> doesn't paint reliably across browsers (table-row isn't a real
+   paint box for shadows the way table-cell is), so a row is marked with a background
+   plus an accent bar drawn on its label cell. A targeted cell's row gets the same
+   treatment, lighter, so the eye still lands on the row first. */
+tr.sync--dense[data-sync='active'],
+tr.sync--dense[data-sync='focus'] {
+  background-color: var(--sync-highlight);
 }
 
-.sync--dense[data-sync='dimmed'] {
-  opacity: 0.55;
+tr.sync--dense[data-sync='active']>th,
+tr.sync--dense[data-sync='focus']>th {
+  box-shadow: inset 4px 0 0 var(--color-accent);
+}
+
+td.sync--dense[data-sync='active'] {
+  background-color: var(--sync-highlight);
+  box-shadow: inset 0 0 0 2px var(--color-accent);
+}
+
+/* Dimming is scoped to the table that holds the target. Everything else is already
+   dimmed as a whole block, and opacity multiplies down the tree - dimming a block, its
+   rows and their cells all at once left other tables nearly invisible. */
+.sync[data-sync='focus'] tr.sync--dense[data-sync='dimmed'] {
+  opacity: 0.45;
+}
+
+tr.sync--dense[data-sync='focus']>td.sync--dense[data-sync='dimmed'] {
+  opacity: 0.6;
 }
 
 @media (prefers-reduced-motion: reduce) {

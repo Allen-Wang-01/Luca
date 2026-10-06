@@ -1,0 +1,135 @@
+/* The outer element only carries the position (set per frame from FocusCard.tsx); the
+   pop-in animation lives on the body so the two transforms never fight. */
+.focus-card {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 8; /* above the report, below the narration bar and the notes panel */
+  max-width: min(46rem, calc(100vw - 1.5rem));
+  pointer-events: none;
+}
+
+@keyframes focus-card-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.focus-card__body {
+  position: relative;
+  padding: 0.875rem 1.25rem 1rem;
+  background: var(--color-surface);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 18px 48px rgba(15, 23, 42, 0.28),
+    0 2px 6px rgba(15, 23, 42, 0.12);
+  /* Grows out of the row/cell it describes, towards which the arrow points. */
+  transform-origin: var(--focus-card-arrow-x, 50%) 100%;
+  animation: focus-card-pop 0.35s cubic-bezier(0.22, 1.2, 0.36, 1) both;
+}
+
+.focus-card[data-placement='below'] .focus-card__body {
+  transform-origin: var(--focus-card-arrow-x, 50%) 0%;
+}
+
+.focus-card__body::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--focus-card-arrow-x, 50%) - 7px);
+  bottom: -9px;
+  width: 14px;
+  height: 14px;
+  background: var(--color-surface);
+  border: solid var(--color-accent);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.focus-card[data-placement='below'] .focus-card__body::after {
+  top: -9px;
+  bottom: auto;
+  border-width: 2px 0 0 2px;
+}
+
+.focus-card__eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.focus-card__metric {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.625rem;
+  margin-top: 0.125rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text);
+}
+
+.focus-card__period {
+  padding: 0.0625rem 0.5rem;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.focus-card__value {
+  margin-top: 0.25rem;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.focus-card__series {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem 1.5rem;
+  margin: 0.625rem 0 0;
+}
+
+.focus-card__series-item dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.focus-card__series-item dd {
+  margin: 0;
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.focus-card__unit {
+  margin-top: 0.375rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .focus-card__body {
+    animation: none;
+  }
+}

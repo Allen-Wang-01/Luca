@@ -1,5 +1,6 @@
 import type { Cell, Column, ColumnGroup, Flag, Row, TableBlock } from '../../types/report'
 import { useSyncTarget } from './NarrationSyncContext'
+import { formatCellValue } from './formatCellValue'
 import './TableBlockView.css'
 
 interface TableBlockViewProps {
@@ -35,11 +36,6 @@ function buildGroupHeaderCells(columns: Column[], groups: ColumnGroup[]): GroupH
     }
   }
   return cells
-}
-
-function formatCellValue(cell: Cell): string {
-  if (cell.raw_text) return cell.raw_text
-  return cell.value === null ? '—' : String(cell.value)
 }
 
 function FlagBadge({ flags }: { flags: Flag[] }) {
