@@ -8,6 +8,7 @@ import { NarrationPlayer } from './NarrationPlayer'
 import { AdvisorNotes } from './AdvisorNotes'
 import { BlockList } from './BlockList'
 import { FocusCard } from './FocusCard'
+import { VisualCard } from './VisualCard'
 import './sync.css'
 import './ReportView.css'
 
@@ -74,6 +75,7 @@ function ReportViewInner({ report, narration, player, onPlay, onNext, onPrev }: 
   const { activeId, activeTarget, getElement } = useNarrationSync()
   const [notesOpen, setNotesOpen] = useState(false)
   const { trace } = narration
+  const visual = player.currentLine?.visual
 
   useEffect(() => {
     if (!activeId) return
@@ -84,9 +86,17 @@ function ReportViewInner({ report, narration, player, onPlay, onNext, onPrev }: 
   return (
     <div className="report-view">
       <BlockList blocks={report.blocks} />
-      {activeId && activeTarget && activeTarget.kind !== 'block' && (
-        // Keyed by target so each new line's card pops in afresh.
-        <FocusCard key={activeId} anchorId={activeId} target={activeTarget} />
+      {activeId && visual ? (
+        // Keyed by chart, not by target: while consecutive lines stay on one chart the
+        // card stays up and only moves its emphasis.
+        <VisualCard key={visual.chart.id} anchorId={activeId} visual={visual} />
+      ) : (
+        activeId &&
+        activeTarget &&
+        activeTarget.kind !== 'block' && (
+          // Keyed by target so each new line's card pops in afresh.
+          <FocusCard key={activeId} anchorId={activeId} target={activeTarget} />
+        )
       )}
       {notesOpen && trace && (
         <AdvisorNotes trace={trace} lineCount={narration.script.length} onClose={() => setNotesOpen(false)} />

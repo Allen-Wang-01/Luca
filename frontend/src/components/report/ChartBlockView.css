@@ -1,7 +1,8 @@
 /* Categorical series palette - dataviz skill's validated default (references/palette.md),
-   fixed hue order, re-validated against this app's own surfaces. Scoped here since
-   ChartBlockView is the root every chart type renders inside. */
-.chart-block {
+   fixed hue order, re-validated against this app's own surfaces. Scoped to the two
+   roots a chart renders inside: a chart block in the report, and a narration card. */
+.chart-block,
+.visual-card {
   --series-1: #2a78d6; /* blue */
   --series-2: #eb6834; /* orange */
   --series-3: #1baf7a; /* aqua */
@@ -13,7 +14,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .chart-block {
+  .chart-block,
+  .visual-card {
     --series-1: #3987e5;
     --series-2: #d95926;
     --series-3: #199e70;

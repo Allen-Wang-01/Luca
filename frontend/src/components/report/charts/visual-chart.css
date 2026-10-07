@@ -1,0 +1,211 @@
+/* Charts shown in a narration card (VisualChart.tsx). Sized in SVG user units that map
+   1:1 to CSS pixels at full width, so text stays readable from across a room. */
+
+.visual-chart__svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.visual-chart__baseline {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.visual-chart__connector {
+  stroke: var(--color-text-muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+/* One hue for every bar: they are the same measure, told apart by their labels. A
+   waterfall's steps take the direction colors, always next to a signed value. */
+.visual-chart__bar[data-tone='neutral'] {
+  fill: var(--series-1);
+}
+
+.visual-chart__bar[data-tone='up'] {
+  fill: var(--color-positive);
+}
+
+.visual-chart__bar[data-tone='down'] {
+  fill: var(--color-negative);
+}
+
+.visual-chart__value {
+  fill: var(--color-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.visual-chart__label {
+  fill: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* The item being narrated keeps its full color; everything else steps back. */
+.visual-chart__mark,
+.visual-chart__segment,
+.visual-chart__part {
+  transition: opacity 0.4s ease;
+}
+
+.visual-chart__mark[data-dimmed='true'],
+.visual-chart__part[data-dimmed='true'] {
+  opacity: 0.3;
+}
+
+.visual-chart__segment[data-dimmed='true'] {
+  opacity: 0.25;
+}
+
+/* Build-up: marks arrive one after another once the card has popped in. */
+@keyframes visual-chart-grow-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes visual-chart-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes visual-chart-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.visual-chart__mark {
+  --visual-delay: calc(0.25s + var(--visual-order, 0) * 0.22s);
+}
+
+.visual-chart__bar {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: visual-chart-grow-y 0.45s cubic-bezier(0.22, 1, 0.36, 1) var(--visual-delay) both;
+}
+
+.visual-chart__bar[data-grows='down'] {
+  transform-origin: 50% 0%;
+}
+
+.visual-chart__value,
+.visual-chart__connector {
+  animation: visual-chart-fade 0.3s ease calc(var(--visual-delay) + 0.3s) both;
+}
+
+.visual-chart__share {
+  width: 26rem;
+  max-width: 100%;
+}
+
+.visual-chart__share-bar {
+  display: flex;
+  gap: 2px;
+  height: 2rem;
+}
+
+.visual-chart__segment {
+  flex-basis: 0;
+  min-width: 2px;
+  transform-origin: 0 50%;
+  animation: visual-chart-grow-x 0.45s cubic-bezier(0.22, 1, 0.36, 1) calc(0.25s + var(--visual-order, 0) * 0.22s)
+    both;
+}
+
+.visual-chart__segment:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.visual-chart__segment:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.visual-chart__segment:only-child {
+  border-radius: 4px;
+}
+
+/* What the parts don't cover: part of the whole, but not a category of its own. */
+.visual-chart__segment--rest {
+  background: var(--color-border);
+}
+
+.visual-chart__parts {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 0.375rem 0.75rem;
+  align-items: baseline;
+  margin: 0.875rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.visual-chart__part {
+  display: contents;
+}
+
+/* `display: contents` leaves the row without a box of its own, so the fade is applied
+   to its cells. */
+.visual-chart__part > * {
+  transition: opacity 0.4s ease;
+}
+
+.visual-chart__part[data-dimmed='true'] > * {
+  opacity: 0.3;
+}
+
+.visual-chart__swatch {
+  align-self: center;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 3px;
+}
+
+.visual-chart__part-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.visual-chart__part-share {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-text);
+  text-align: right;
+}
+
+.visual-chart__part-value {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.visual-chart__total {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visual-chart__bar,
+  .visual-chart__value,
+  .visual-chart__connector,
+  .visual-chart__segment {
+    animation: none;
+  }
+}
