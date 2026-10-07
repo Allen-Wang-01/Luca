@@ -1,7 +1,13 @@
 import pytest
 
-from app.models.narration import NarrationLine
-from app.services.narration_validator import NarrationQualityError, check_quality, filter_sources, repair_target_ids
+from app.models.narration import LineVisual, LLMNarrationLine, NarrationLine, Visual, VisualItem
+from app.services.narration_validator import (
+    NarrationQualityError,
+    attach_visuals,
+    check_quality,
+    filter_sources,
+    repair_target_ids,
+)
 
 VALID_IDS = {"p_overview", "t_income", "t_income__r0", "t_income__r0_q2"}
 
@@ -114,6 +120,68 @@ def test_blocklist_matches_whole_domains_only():
 
     assert lines[0].sources == ["https://www.fedex.com/news"]
     assert [r.url for r in removed] == ["https://mobile.x.com/post/1"]
+
+
+CHART = Visual(
+    id="chart_1",
+    type="bar",
+    title="Revenue",
+    unit="millions",
+    items=[
+        VisualItem(key="i1", label="Last year", value=100, role="item", raw_text="100", source_id="t_income__r0_q2_ly"),
+        VisualItem(key="i2", label="This year", value=200, role="item", raw_text="200", source_id="t_income__r0_q2"),
+    ],
+)
+
+
+def _llm_line(text="Some narration.", chart_id=None, chart_emphasis=None) -> LLMNarrationLine:
+    return LLMNarrationLine(
+        text=text, target_id="t_income__r0", source_urls=[], chart_id=chart_id, chart_emphasis=chart_emphasis
+    )
+
+
+def test_lines_carry_the_chart_they_reference():
+    lines, removed = attach_visuals(
+        [_llm_line(), _llm_line(chart_id="chart_1"), _llm_line(chart_id="chart_1", chart_emphasis="i2")],
+        {"chart_1": CHART},
+    )
+
+    assert lines[0].visual is None
+    assert lines[1].visual == LineVisual(chart=CHART, emphasis=None)
+    assert lines[2].visual == LineVisual(chart=CHART, emphasis="i2")
+    assert removed == []
+
+
+def test_a_chart_that_was_never_built_is_dropped_but_the_line_stays():
+    lines, removed = attach_visuals([_llm_line(), _llm_line(chart_id="chart_9", chart_emphasis="i1")], {"chart_1": CHART})
+
+    assert [l.text for l in lines] == ["Some narration.", "Some narration."]
+    assert lines[1].visual is None
+    assert [(r.line, r.chart_id, r.reason) for r in removed] == [(2, "chart_9", "unknown_chart")]
+
+
+def test_an_unknown_emphasis_is_dropped_but_the_chart_stays():
+    lines, removed = attach_visuals([_llm_line(chart_id="chart_1", chart_emphasis="i7")], {"chart_1": CHART})
+
+    assert lines[0].visual == LineVisual(chart=CHART, emphasis=None)
+    assert [(r.line, r.reason) for r in removed] == [(1, "unknown_emphasis")]
+
+
+def test_removed_visuals_are_numbered_without_blank_lines():
+    lines, removed = attach_visuals([_llm_line(text="  "), _llm_line(chart_id="chart_9")], {})
+
+    assert len(lines) == 1
+    assert removed[0].line == 1
+
+
+def test_repair_and_source_filtering_keep_the_chart():
+    visual = LineVisual(chart=CHART, emphasis="i1")
+    line = NarrationLine(text="Some narration.", target_id="t_income__r0_typo", sources=["https://a.com/x"], visual=visual)
+
+    repaired, _ = repair_target_ids([line], VALID_IDS, "p_overview")
+    filtered, _ = filter_sources(repaired, set())
+
+    assert filtered[0].visual == visual
 
 
 def test_quality_check_rejects_empty_and_mostly_invented_scripts():

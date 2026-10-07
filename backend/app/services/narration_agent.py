@@ -1,7 +1,8 @@
 # Turns a parsed FinancialReport into an advisor-style narration script. This is a
 # hand-rolled tool-calling loop on the Responses API rather than an SDK agent runner, so
-# every turn is visible: each one calls the model, runs any calculation tools it asked
-# for (app/services/narration_tools.py), and feeds the results back, until the model
+# every turn is visible: each one calls the model, runs any calculation tools
+# (app/services/narration_tools.py) and chart tools (app/services/narration_visuals.py)
+# it asked for, and feeds the results back, until the model
 # returns the final script or MAX_TURNS is reached. Every turn is logged and recorded
 # in a NarrationTrace that the endpoint returns alongside the script.
 #
@@ -25,7 +26,13 @@ from app.models.narration import (
     WebSearchTrace,
 )
 from app.models.report import FinancialReport
-from app.services import llm_client, narration_context, narration_tools, narration_validator
+from app.services import (
+    llm_client,
+    narration_context,
+    narration_tools,
+    narration_validator,
+    narration_visuals,
+)
 
 logger = get_logger(__name__)
 
@@ -164,6 +171,38 @@ Copy ids exactly as written; only use ids that exist in this report. \
 Prefer moving through the report roughly in document order so the view doesn't jump \
 around, and don't put more than three consecutive lines on the same target.
 
+# Charts - a picture for the lines that need one
+A line can bring up a small chart next to what it highlights. Use one where a picture \
+makes the point faster than the sentence: how a metric moved across periods, how much \
+of a whole one part makes up, or how one figure turns into another (revenue down to \
+operating income, a reported profit to an adjusted one). Aim for three to six charts \
+in the whole script; a line that makes its point with a single number needs none.
+- Build a chart with the chart tools before writing the script. Like the calculation \
+tools, they take references, never numbers, and look the values up themselves. Each \
+returns a `chart_id` and a `key` for every item in it.
+- A chart is checked before it is accepted: a waterfall's steps must lead exactly from \
+its start to its end, and a share bar's parts can't exceed its total. If a tool \
+returns an error, fix the chart and call it again, or do without it. Only a chart that \
+returned a `chart_id` can be shown.
+- To show a chart, put its `chart_id` on the line that discusses it. If the line is \
+about one item in it, also set `chart_emphasis` to that item's `key`: that item is \
+drawn in full and the rest fades. Leave `chart_emphasis` null when the line is about \
+the chart as a whole.
+- Only emphasize an item the line actually names. If the figure the line is about is \
+not one of the chart's items - a subtotal partway through a waterfall, say, when the \
+chart only has the steps around it - leave `chart_emphasis` null rather than pointing \
+at the nearest item.
+- When a line compares two items, emphasize the one the line is about, not the one \
+it is measured against: "sales rose 12% from last quarter's $4.1 billion" is about \
+this quarter, so emphasize this quarter's bar, not last quarter's.
+- One chart can stay up for two or three lines in a row, each emphasizing a different \
+item ("the biggest piece is...", "but the fastest-growing one is...") - that reads \
+better than a new chart per line. Those lines must be next to each other: a line \
+without the chart in between makes the card disappear and pop up again. Once you move \
+on from a chart, don't bring it back.
+- The chart only shows figures from the report. The spoken line still has to make \
+sense on its own, without the chart.
+
 # Output
 Produce 25 to 40 lines. Each line is 1-3 sentences. Write every line in English.
 """
@@ -215,6 +254,7 @@ def generate_narration(
 ) -> tuple[list[NarrationLine], NarrationTrace]:
     client = client or llm_client.client
     index = narration_tools.FigureIndex(report)
+    chart_builder = narration_visuals.ChartBuilder(index)
     input_items: list[Any] = [
         {
             "role": "user",
@@ -232,7 +272,7 @@ def generate_narration(
     for turn_number in range(1, MAX_TURNS + 1):
         is_last_turn = turn_number == MAX_TURNS
         searches_left = MAX_WEB_SEARCHES - web_searches_used
-        tools = list(narration_tools.TOOL_DEFINITIONS)
+        tools = [*narration_tools.TOOL_DEFINITIONS, *narration_visuals.TOOL_DEFINITIONS]
         search_kwargs: dict[str, Any] = {}
         if searches_left > 0 and not is_last_turn:
             tools.append(WEB_SEARCH_TOOL)
@@ -267,6 +307,9 @@ def generate_narration(
                 if tool_calls_used >= MAX_TOOL_CALLS:
                     arguments = {}
                     output = {"error": "Calculation budget exhausted. Write the final script now."}
+                elif call.name in narration_visuals.TOOL_NAMES:
+                    arguments, output = narration_visuals.execute_tool(chart_builder, call.name, call.arguments)
+                    tool_calls_used += 1
                 else:
                     arguments, output = narration_tools.execute_tool(index, call.name, call.arguments)
                     tool_calls_used += 1
@@ -313,7 +356,7 @@ def generate_narration(
             f"Model did not produce a narration script within {MAX_TURNS} turns."
         )
 
-    cited = [NarrationLine(text=l.text, target_id=l.target_id, sources=l.source_urls) for l in parsed.lines]
+    cited, removed_visuals = narration_validator.attach_visuals(parsed.lines, chart_builder.charts)
     fallback_id = report.blocks[0].id if report.blocks else ""
     targeted, repair_count = narration_validator.repair_target_ids(
         cited, narration_context.collect_target_ids(report), fallback_id
@@ -336,13 +379,24 @@ def generate_narration(
         dropped_source_urls=dropped_urls,
         blocked_source_urls=blocked_urls,
         removed_sources=removed_sources,
+        removed_visuals=removed_visuals,
     )
     for source in removed_sources:
         logger.info("narration_source_removed line=%d reason=%s url=%s", source.line, source.reason, source.url)
+    for visual in removed_visuals:
+        logger.info(
+            "narration_visual_removed line=%d reason=%s chart_id=%s detail=%s",
+            visual.line,
+            visual.reason,
+            visual.chart_id,
+            visual.detail,
+        )
     logger.info(
-        "narration_done turns=%d lines=%d web_searches=%d sourced_lines=%d dropped_source_urls=%d blocked_source_urls=%d repaired_target_ids=%d total_cost_usd=%.6f total_duration_ms=%d",
+        "narration_done turns=%d lines=%d charts=%d illustrated_lines=%d web_searches=%d sourced_lines=%d dropped_source_urls=%d blocked_source_urls=%d repaired_target_ids=%d total_cost_usd=%.6f total_duration_ms=%d",
         len(turns),
         len(lines),
+        len(chart_builder.charts),
+        sum(1 for line in lines if line.visual),
         web_searches_used,
         sum(1 for line in lines if line.sources),
         dropped_urls,

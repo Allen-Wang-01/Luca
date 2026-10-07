@@ -62,8 +62,14 @@ class _FakeClient:
         return self._responses.pop(0)
 
 
-def _line(text, target_id, source_urls=()):
-    return LLMNarrationLine(text=text, target_id=target_id, source_urls=list(source_urls))
+def _line(text, target_id, source_urls=(), chart_id=None, chart_emphasis=None):
+    return LLMNarrationLine(
+        text=text,
+        target_id=target_id,
+        source_urls=list(source_urls),
+        chart_id=chart_id,
+        chart_emphasis=chart_emphasis,
+    )
 
 
 REVENUE_THIS_YEAR = {"id": "t_income__r0_q2", "quote": None}
@@ -158,6 +164,67 @@ def test_invented_target_ids_are_repaired(report):
 
     assert lines[-1].target_id == "t_income__r1"
     assert trace.repaired_target_ids == 1
+
+
+REVENUE_BARS = (
+    "bar_chart",
+    {
+        "title": "Revenue",
+        "items": [
+            {"label": "Last year", "figure": REVENUE_LAST_YEAR},
+            {"label": "This year", "figure": REVENUE_THIS_YEAR},
+        ],
+    },
+)
+
+
+def test_a_line_shows_the_chart_built_for_it(report):
+    client = _FakeClient(
+        [
+            _tool_call_response(REVENUE_BARS),
+            _final_response(
+                [
+                    _line("Revenue doubled.", "t_income__r0", chart_id="chart_1", chart_emphasis="i2"),
+                    _line("That's the headline.", "t_income"),
+                ]
+            ),
+        ]
+    )
+
+    lines, trace = narration_agent.generate_narration(report, client=client)
+
+    assert trace.turns[0].tool_calls[0].output["chart_id"] == "chart_1"
+    assert lines[0].visual.emphasis == "i2"
+    assert [item.value for item in lines[0].visual.chart.items] == [100, 200]
+    assert lines[1].visual is None
+    assert trace.removed_visuals == []
+
+
+def test_a_chart_that_failed_its_checks_is_not_shown(report):
+    # Two bars is the minimum, so this call is rejected and no chart_1 exists.
+    one_bar = ("bar_chart", {"title": "Revenue", "items": [{"label": "This year", "figure": REVENUE_THIS_YEAR}]})
+    client = _FakeClient(
+        [
+            _tool_call_response(one_bar),
+            _final_response([_line("Revenue doubled.", "t_income__r0", chart_id="chart_1")]),
+        ]
+    )
+
+    lines, trace = narration_agent.generate_narration(report, client=client)
+
+    assert "error" in trace.turns[0].tool_calls[0].output
+    assert lines[0].text == "Revenue doubled."
+    assert lines[0].visual is None
+    assert [(r.line, r.chart_id, r.reason) for r in trace.removed_visuals] == [(1, "chart_1", "unknown_chart")]
+
+
+def test_chart_tools_are_offered_alongside_the_calculation_tools(report):
+    client = _FakeClient([_final_response(GOOD_LINES)])
+
+    narration_agent.generate_narration(report, client=client)
+
+    names = {tool.get("name") for tool in client.calls[0]["tools"]}
+    assert {"percent_change", "bar_chart", "share_bar", "waterfall"} <= names
 
 
 def test_report_is_rendered_into_the_first_turn(report):

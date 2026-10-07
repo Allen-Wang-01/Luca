@@ -1,14 +1,22 @@
 # Checks the model's narration against what it can actually point to: every line's
 # target_id must exist in the report, so the frontend sync engine always has something
 # real to scroll to and highlight, and every cited URL must have come back from a web
-# search in this run, so a source shown to the listener can't be one the model made up.
+# search in this run, so a source shown to the listener can't be one the model made up,
+# and a chart shown with a line must be one the chart tools actually built.
 # The model is given the valid ids, but nothing forces it to use them exactly - a
 # slightly wrong cell id (e.g. a misspelled col_id) is common and mostly recoverable.
 # Pure functions, no I/O.
 import re
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
-from app.models.narration import NarrationLine, RemovedSource
+from app.models.narration import (
+    LineVisual,
+    LLMNarrationLine,
+    NarrationLine,
+    RemovedSource,
+    RemovedVisual,
+    Visual,
+)
 
 # Sites whose pages are user posts or videos rather than reporting - a real search
 # result, but not something to put in front of a listener as a source. Matched as the
@@ -69,8 +77,55 @@ def repair_target_ids(
                 (candidate for candidate in _ancestors(target) if candidate in valid_ids),
                 repaired[-1].target_id if repaired else fallback_id,
             )
-        repaired.append(NarrationLine(text=text, target_id=target, sources=line.sources))
+        repaired.append(line.model_copy(update={"text": text, "target_id": target}))
     return repaired, repair_count
+
+
+def attach_visuals(
+    lines: list[LLMNarrationLine], charts: dict[str, Visual]
+) -> tuple[list[NarrationLine], list[RemovedVisual]]:
+    """Turns the model's lines into script lines, each carrying the chart it asked for.
+
+    Returns (lines, the chart references that didn't hold up and why). A chart id that
+    no chart tool produced is dropped - that includes charts that failed their checks,
+    which never got an id. An emphasis key the chart doesn't have is dropped on its own;
+    the chart is still shown. Lines with empty text are left out here, so line numbers
+    match the final script.
+    """
+    attached: list[NarrationLine] = []
+    removed: list[RemovedVisual] = []
+    for line in lines:
+        if not line.text.strip():
+            continue
+        number = len(attached) + 1
+        visual: LineVisual | None = None
+        chart = charts.get(line.chart_id) if line.chart_id else None
+        if line.chart_id and chart is None:
+            removed.append(
+                RemovedVisual(
+                    line=number,
+                    chart_id=line.chart_id,
+                    reason="unknown_chart",
+                    detail="No chart with this id was built.",
+                )
+            )
+        elif chart is not None:
+            emphasis = line.chart_emphasis or None
+            if emphasis and all(item.key != emphasis for item in chart.items):
+                removed.append(
+                    RemovedVisual(
+                        line=number,
+                        chart_id=chart.id,
+                        reason="unknown_emphasis",
+                        detail=f"The chart has no item '{emphasis}'.",
+                    )
+                )
+                emphasis = None
+            visual = LineVisual(chart=chart, emphasis=emphasis)
+        attached.append(
+            NarrationLine(text=line.text, target_id=line.target_id, sources=line.source_urls, visual=visual)
+        )
+    return attached, removed
 
 
 def _normalize_url(url: str) -> str:
@@ -108,7 +163,7 @@ def filter_sources(
                 removed.append(RemovedSource(line=number, url=match, reason="blocked"))
             elif match not in kept:
                 kept.append(match)
-        filtered.append(NarrationLine(text=line.text, target_id=line.target_id, sources=kept))
+        filtered.append(line.model_copy(update={"sources": kept}))
     return filtered, removed
 
 

@@ -31,10 +31,21 @@ class _Operand:
     absolute: float  # in actual units, so table and prose figures can be combined
     is_percent: bool
     from_text: bool
+    # One unit of the last printed digit, in actual units ("$3.2 billion" -> 0.1
+    # billion). How far a sum of printed figures may be off through rounding alone.
+    precision: float
 
 
 def _normalize_text(text: str) -> str:
     return " ".join(text.split()).lower()
+
+
+def _precision(raw_text: str, value: float, absolute: float) -> float:
+    match = _NUMBER_RE.search(raw_text)
+    if match is None or value == 0:
+        return 0.0
+    decimals = len(match.group().partition(".")[2])
+    return 10**-decimals * abs(absolute / value)
 
 
 def _parse_quote(quote: str) -> tuple[float, float, bool] | str:
@@ -75,14 +86,16 @@ class FigureIndex:
                     # Per-share figures (EPS, dividends) are printed as-is even in a
                     # "$ in millions" table, so the report's unit scale doesn't apply.
                     unscaled = is_percent or "per share" in row.label.lower()
+                    absolute = cell.value * (1 if unscaled else scale)
                     self._cells[cell.id] = _Operand(
                         id=cell.id,
                         label=label,
                         raw_text=cell.raw_text,
                         value=cell.value,
-                        absolute=cell.value * (1 if unscaled else scale),
+                        absolute=absolute,
                         is_percent=is_percent,
                         from_text=False,
+                        precision=_precision(cell.raw_text, cell.value, absolute),
                     )
 
     def resolve(self, operand: Any) -> tuple[_Operand | None, str | None]:
@@ -128,6 +141,7 @@ class FigureIndex:
                 absolute=absolute,
                 is_percent=is_percent,
                 from_text=True,
+                precision=_precision(quote, value, absolute),
             ),
             None,
         )
@@ -227,7 +241,7 @@ _OPERAND_SCHEMA_DESCRIPTION = (
 )
 
 
-def _operand_schema(description: str) -> dict[str, Any]:
+def operand_schema(description: str) -> dict[str, Any]:
     return {
         "type": "object",
         "description": f"{description} {_OPERAND_SCHEMA_DESCRIPTION}",
@@ -248,7 +262,7 @@ def _function_tool(name: str, description: str, operands: dict[str, str]) -> dic
         "strict": True,
         "parameters": {
             "type": "object",
-            "properties": {key: _operand_schema(desc) for key, desc in operands.items()},
+            "properties": {key: operand_schema(desc) for key, desc in operands.items()},
             "required": list(operands),
             "additionalProperties": False,
         },
@@ -279,8 +293,11 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
 ]
 
 
-def execute_tool(index: FigureIndex, name: str, arguments_json: str) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Runs one tool call. Returns (parsed arguments, output) - both go into the trace."""
+def call_tool(
+    tools: dict[str, Callable[..., dict[str, Any]]], subject: Any, name: str, arguments_json: str
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Runs `tools[name](subject, **arguments)`. Returns (parsed arguments, output) -
+    both go into the trace."""
     try:
         arguments = json.loads(arguments_json)
     except json.JSONDecodeError:
@@ -288,10 +305,15 @@ def execute_tool(index: FigureIndex, name: str, arguments_json: str) -> tuple[di
     if not isinstance(arguments, dict):
         return {}, {"error": "Arguments must be a JSON object."}
 
-    tool = _TOOLS.get(name)
+    tool = tools.get(name)
     if tool is None:
         return arguments, {"error": f"Unknown tool '{name}'."}
     try:
-        return arguments, tool(index, **arguments)
+        return arguments, tool(subject, **arguments)
     except TypeError as exc:  # wrong/missing argument names
         return arguments, {"error": f"Bad arguments for {name}: {exc}"}
+
+
+def execute_tool(index: FigureIndex, name: str, arguments_json: str) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Runs one calculation tool call."""
+    return call_tool(_TOOLS, index, name, arguments_json)

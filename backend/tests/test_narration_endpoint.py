@@ -24,7 +24,9 @@ def test_returns_lines_and_trace(report, monkeypatch):
     response = client.post("/api/reports/narration", json={"report": report.model_dump(mode="json")})
 
     assert response.status_code == 200
-    assert response.json()["lines"] == [{"text": "Hello.", "target_id": "p_overview", "sources": []}]
+    assert response.json()["lines"] == [
+        {"text": "Hello.", "target_id": "p_overview", "sources": [], "visual": None}
+    ]
     assert "turns" in response.json()["trace"]
     assert received["company"] == "Acme Corp"
 
