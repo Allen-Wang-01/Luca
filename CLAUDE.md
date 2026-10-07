@@ -59,12 +59,20 @@ returns the clip for each line whose exact text has one, so every saved narratio
 version picks up whichever of its lines are voiced, and already-saved lines are never
 paid for twice.
 
+Charts can be previewed the same way, on top of a narration that already has speech:
+`python scripts/illustrate_sample.py ../temp/NVIDIAAn.json ../temp/NVIDIAAn.charts.json`
+(no API calls) runs hand-written chart tool calls through the real chart tools and
+validator and writes `temp/NVIDIAAn.narration.charts.json`, served at
+`?sample=NVIDIAAn&version=charts`. Line text is untouched, so saved clips still match.
+
 ## Architecture
 
 This is an AI tool that turns an uploaded financial report PDF into a spoken,
 advisor-style walkthrough synced to on-screen content (auto-scroll, highlight, and a
-karaoke-style zoom on whatever the narration is currently discussing), with a small
-floating Live2D avatar for lip-sync.
+karaoke-style zoom on whatever the narration is currently discussing, and cards that
+pop up next to it with the figure or a chart). The AI is an analyst reporting to you;
+that sync between what is said and what the page does is the point of the product, and
+no change should weaken it.
 
 Backend and frontend are two independent, separately-run services (no monorepo tooling,
 no shared build step). The connection between them is:
@@ -152,7 +160,17 @@ pipeline:
   put on a common scale when mixed, so figures never pass through the model's own
   transcription or mental arithmetic. Errors come back as tool output so the model can
   correct itself.
-- `narration_validator.py` repairs `target_id`s that don't exist (nearest valid
+- `narration_visuals.py` — `bar_chart` / `share_bar` / `waterfall`, the charts a line
+  can bring up in a card. Same reference operands as the calculation tools (it reuses
+  `FigureIndex.resolve`), so the model picks the chart type, labels and figures but
+  never writes a value. A chart is checked against itself before it gets an id (a
+  waterfall's start plus its steps must equal its end, a share bar's parts can't exceed
+  its total - both within the rounding of the printed figures); a failed chart is a tool
+  error the model can correct. A `ChartBuilder` holds the charts built in one run.
+- `narration_validator.py` attaches each line's chart (`attach_visuals`: a `chart_id`
+  no tool produced is dropped and the line kept; an unknown `chart_emphasis` is dropped
+  and the chart kept - both recorded in the trace's `removed_visuals`), repairs
+  `target_id`s that don't exist (nearest valid
   ancestor cell → row → block, then the previous line's target), drops cited source
   URLs that didn't come back from a web search in this run or are on a blocked site
   (forums, social media, video — `BLOCKED_SOURCE_DOMAINS`), and rejects scripts that
@@ -186,6 +204,13 @@ On the frontend, `useNarrationPlayer` takes the script plus an optional list of 
 parallel to its lines. A line with a clip lasts exactly as long as its audio; a line
 without one is timed from its word count, so a partly voiced script still plays through.
 
+While a line plays, a card floats next to its target (`AnchoredCard`, which handles
+placement): `VisualCard` with the line's chart if it has one (`charts/VisualChart.tsx`;
+the item named by `emphasis` stays in full color and the rest fades, and the card stays
+up across consecutive lines that share a chart), otherwise `FocusCard` repeating the
+table figure for row and cell targets. Only charts in cards have item-level emphasis;
+the report's own `ChartBlock`s still have no data-point ids.
+
 On the frontend, `useGeneratedNarration` requests the script once per report (cached at
 module level so StrictMode's double effect doesn't pay twice) and falls back to
 `buildStubScript` with a retry prompt if generation fails. Narration is English-only for
@@ -202,8 +227,11 @@ target single cells where one figure carries the line. Two things from that run 
 still open: a line can name a publication while its link is rejected by the validator
 (the rejected links are now recorded in the trace, so the next real run shows whether
 they were invented or just spelled differently from the search result), and the rule
-about flagging information from a later period hasn't been exercised yet. Phases 4–5
-(TTS, avatar) are next. Phase 1 has been
+about flagging information from a later period hasn't been exercised yet. Speech
+exists for saved samples; the Live2D avatar has been dropped. Charts chosen by the
+narration agent are implemented and checked against the real NVIDIA report with
+hand-written chart calls, but whether the model picks charts well on its own has not
+been verified against the real API yet. Phase 1 has been
 run end-to-end against a real NVIDIA quarterly report: table figures were verified
 accurate, id generation and arithmetic validation worked correctly on real data. Two
 issues found during that real run were fixed: an `oneOf` in the LLM-facing schema that
@@ -233,9 +261,7 @@ this repo's chat history covered, not yet acted on).
 - **Phase 4** — TTS: narration text to streaming audio, synced to the Phase 3 visual
   triggers. TTS provider not yet chosen (ElevenLabs or OpenAI TTS are the candidates);
   word-level timestamp precision is not required for v1.
-- **Phase 5** — Live2D avatar (via `pixi-live2d-display` + PixiJS): volume-driven lip
-  sync only, no complex motion, shown as a draggable/resizable floating widget over the
-  full-screen content.
+- **Phase 5** — Live2D avatar: dropped, not going to be built.
 - **Phase 6** — Agent capability: the model decides when a data point warrants a web
   search (e.g. an abnormal YoY change), with a hand-rolled multi-turn loop (not just SDK
   agent defaults) with a max-turn guard, basic observability (per-turn logging, token

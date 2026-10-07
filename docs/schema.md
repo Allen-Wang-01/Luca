@@ -68,6 +68,33 @@ row and cell ids are derived from their parent's id.
 Chart data points have no ids, so narration about a chart always targets the whole
 chart block.
 
+## Charts the narration brings up
+
+Separately from the report's own chart blocks, a narration line can carry a small chart
+of its own (`NarrationLine.visual` in `backend/app/models/narration.py`, mirrored in
+`frontend/src/narration/types.ts`), shown in a card next to the line's target:
+
+```
+LineVisual
+├── chart      Visual: id, type (bar | share | waterfall), title, unit, items
+└── emphasis   key of the one item this line is about, or null
+```
+
+Each `VisualItem` has a `key` (unique within its chart), a `label`, a `value` in the
+chart's `unit`, a `role`, and where it came from (`source_id`, `raw_text`). `role` says
+how the item is drawn: `item` for a bar, a part of a whole or a waterfall step (whose
+value is signed), `total` for the whole a share bar's parts belong to, `start`/`end`
+for a waterfall's opening and closing bars.
+
+The same rule as for ids applies to these values: the model doesn't write them. It
+calls a chart tool (`backend/app/services/narration_visuals.py`) with references - a
+cell id, or a paragraph id plus the figure as written there - and the backend looks the
+values up, puts them on one scale, and checks the chart against itself (a waterfall's
+steps must lead from its start to its end; a share bar's parts can't exceed its total)
+before giving it an id. Lines then refer to that id. Consecutive lines can share one
+chart and move the `emphasis`, so the chart is embedded in every line that shows it
+rather than stored once on the side.
+
 ## Id generation rules (implemented in the Phase 1 parser, not by the LLM)
 
 A multimodal model asked to invent globally-unique ids across a long document is
