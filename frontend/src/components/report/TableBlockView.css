@@ -113,7 +113,12 @@
   font-weight: 500;
   color: var(--color-text);
   border-bottom: 1px solid var(--color-border);
-  white-space: nowrap;
+  /* A label can run to a full sentence (a share class with its par value and share
+     counts). It wraps inside its own cell, which grows taller, instead of pushing the
+     figure columns off to the right; the figures themselves never wrap. */
+  min-width: 12rem;
+  max-width: 28rem;
+  overflow-wrap: break-word;
 }
 
 .table-block__cell {
