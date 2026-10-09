@@ -38,6 +38,13 @@ it does not need to be globally unique, just descriptive.
 - For tables, extract every row and every numeric column exactly as printed. Put the \
 row's original numeric text in `raw_text` and the parsed numeric value (no commas, no \
 currency symbols, negative for parentheses) in `value`.
+- Every table must carry its complete header: all of its columns and, where columns \
+sit under shared headers (e.g. two period headers, each over a current and a \
+prior-year column), every one of those in `column_groups`. This also holds when the \
+source prints the header only once for several tables - a statement followed by \
+breakdowns set under the same column headings, or a table continued on the next \
+page: repeat the full header, groups included, on each of them. Without the groups, \
+columns that share a label cannot be told apart.
 - For every table row with figures, set `quantity` and `scale` from what the row \
 measures and the table's unit note, and set `group` to the sub-heading the row is \
 listed under, if any. A statement often mixes kinds and scales (amounts in millions \

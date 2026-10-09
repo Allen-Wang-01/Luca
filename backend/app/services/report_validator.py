@@ -8,6 +8,8 @@
 #   narration says so to the listener.
 # - "unconfirmed_sum": a total doesn't add up in a table with a single column to check.
 #   Shown on the page only.
+# - "ambiguous_columns" (on the table): two columns have the same heading. About how
+#   the table was parsed, not about any figure. Shown on the page only.
 import re
 
 from app.core.logging import get_logger
@@ -93,7 +95,35 @@ def _find_rule_rows(table: TableBlock, rule_labels: tuple[str, ...]) -> list[Row
     return found
 
 
+def _check_columns(table: TableBlock) -> None:
+    # Two columns that read the same once their group header is counted in can't be
+    # told apart by a reader, or by the narration model picking a figure from one of
+    # them. It usually means a header shared by several tables was kept on the first
+    # one only.
+    labels = report_labels.column_labels(table)
+    used = {cell.col_id for row in table.rows for cell in row.cells}
+    seen: dict[str, str] = {}
+    for column in table.columns:
+        if column.id not in used:
+            continue
+        label = labels[column.id]
+        if label in seen:
+            table.flags.append(
+                Flag(
+                    severity="warning",
+                    code="ambiguous_columns",
+                    message=(
+                        f"Columns '{seen[label]}' and '{column.id}' are both headed '{label}', "
+                        "with no group header to tell them apart."
+                    ),
+                )
+            )
+            return
+        seen[label] = column.id
+
+
 def _check_table(table: TableBlock) -> None:
+    _check_columns(table)
     if any(row.sum_of for row in table.rows):
         _check_declared_sums(table)
     else:

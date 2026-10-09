@@ -202,6 +202,19 @@ def test_declared_sums_allow_for_rounding_and_read_a_dash_as_zero():
     assert report.blocks[0].rows[2].flags == []
 
 
+def test_columns_with_the_same_heading_are_flagged_on_the_table(statement):
+    table = statement.blocks[0]
+    validate(statement)
+    assert table.flags == []  # same dates, but under different group headers
+
+    table.column_groups = []
+    validate(statement)
+
+    assert [flag.code for flag in table.flags] == ["ambiguous_columns"]
+    assert "'q' and 'ytd' are both headed 'June 30, 2031'" in table.flags[0].message
+    assert all(row.flags == [] for row in table.rows)
+
+
 def test_label_rules_are_not_used_once_a_table_declares_its_sums():
     # The label rules would compare "Revenue" with "Cost of revenue" here and flag
     # "Gross profit"; the table says how its rows add up, so they stay out of it.
