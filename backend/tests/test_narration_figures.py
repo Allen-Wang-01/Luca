@@ -171,10 +171,14 @@ def test_comparisons_along_a_row_or_down_a_column_are_not_questioned(statement):
 
 def test_a_highlighted_cell_the_line_does_not_cite_is_questioned(statement):
     index = FigureIndex(statement)
-    line = _line("Profit was $50 million.", PROFIT, target_id=SALES)
+    # Highlights last year's sales while talking about this year's profit.
+    line = _line("Profit was $50 million.", PROFIT, target_id=SALES_LAST_YEAR)
 
     assert _checks(line, index)[0] == [("target_not_cited", False)]
     assert _checks(_line("Profit was $50 million.", PROFIT, target_id=PROFIT), index)[0] == []
+    # A highlight in the same period as what the line cites is a choice, not a slip: a
+    # line about profit may well point at the sales it came from.
+    assert _checks(_line("Profit was $50 million.", PROFIT, target_id=SALES), index)[0] == []
     # A row or block target takes in every cell under it.
     assert _checks(_line("Profit was $50 million.", PROFIT, target_id="t_ops__r1"), index)[0] == []
 

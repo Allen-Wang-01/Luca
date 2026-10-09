@@ -180,7 +180,8 @@ figures come from (`figures`, the same references the tools take):
   to match the result. It
   also raises two patterns as advice: a cited cell sharing neither row nor column with
   the others cited from its table (this year's figure for one thing against last year's
-  for another), and a highlighted cell the line doesn't cite.
+  for another), and a highlighted cell that is off the row and column of everything the
+  line cites.
 - `narration_reviewer.py` is one separate model call that reads each line next to the
   full labels of the figures it cites and reports any presented as the wrong period or
   item. It sees only the script and the labels, not the report or the agent's

@@ -229,7 +229,8 @@ class ReviewFinding(BaseModel):
     # "unknown_reference": the line cites something that doesn't exist.
     # "isolated_cell": a cited cell shares neither a row nor a column with the others
     # cited from its table - the pattern of a figure taken from the wrong period.
-    # "target_not_cited": the line highlights one cell but cites others from that table.
+    # "target_not_cited": the line highlights a cell that shares neither a row nor a
+    # column with the cells it cites from that table.
     # "reviewer": the second model reading each line against the labels of what it cites.
     # "calculation_error": a calculation the line carries couldn't be done.
     check: Literal[

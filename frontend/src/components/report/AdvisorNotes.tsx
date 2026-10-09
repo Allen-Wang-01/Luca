@@ -164,7 +164,7 @@ const CHECK_LABELS: Record<ReviewFinding['check'], string> = {
   unknown_reference: 'Cites something that is not in the report',
   calculation_error: 'A calculation written with the line could not be done',
   isolated_cell: 'Figures from different rows and different periods',
-  target_not_cited: 'Highlights a figure the line does not cite',
+  target_not_cited: 'Highlights a figure from a different row and period than the line cites',
   reviewer: 'Second reader',
 }
 

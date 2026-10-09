@@ -10,8 +10,9 @@
 #   its chance to correct it is cut (`must_fix`).
 # - two patterns that usually mean the right number from the wrong place: a cited cell
 #   that shares neither a row nor a column with the others cited from its table, and a
-#   highlighted cell the line doesn't cite. These can be wrong about a deliberate
-#   comparison, so the model is asked to look again and the line stays either way.
+#   highlighted cell that is just as far from everything the line cites. These can be
+#   wrong about a deliberate comparison, so the model is asked to look again and the
+#   line stays either way.
 #
 # A line can also carry a calculation of its own (`calculations`): the figures and the
 # operation, for a number that came to the model while writing. It is worked out here
@@ -189,14 +190,21 @@ def check_line(
         )
         findings.append(_finding(number, line, "isolated_cell", detail, must_fix=False))
 
+    # The highlight is questioned by the same test as a cited cell: off the row and the
+    # column of everything the line cites from that table. A highlight in line with
+    # them is a choice, not a slip - the total above the two parts a line talks about,
+    # or this year's cell on a line that only quotes its growth rate.
     target = index.cell_positions.get(line.target_id)
-    cited_ids = {operand.id for operand in operands}
-    same_table = [o for o in operands if o.id in index.cell_positions and index.cell_positions[o.id][0] == target[0]] if target else []
-    if same_table and line.target_id not in cited_ids:
+    same_table = [
+        (operand, index.cell_positions[operand.id])
+        for operand in operands
+        if target and operand.id in index.cell_positions and index.cell_positions[operand.id][0] == target[0]
+    ]
+    if same_table and not any(row == target[1] or column == target[2] for _, (_, row, column) in same_table):
         detail = (
-            f"The line highlights the cell '{line.target_id}' but cites other cells of that table "
-            f"({', '.join(operand.label for operand in same_table)}). Highlight the figure the line is about, "
-            "or cite the highlighted one if the line states it."
+            f"The line highlights the cell '{line.target_id}', which shares neither a row nor a period with the "
+            f"figures it cites from that table ({', '.join(operand.label for operand, _ in same_table)}). "
+            "Highlight the figure the line is about."
         )
         findings.append(_finding(number, line, "target_not_cited", detail, must_fix=False))
     return findings, confirmed, resolved.formulas
