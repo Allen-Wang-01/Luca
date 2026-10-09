@@ -35,6 +35,7 @@ from app.services import (
     llm_client,
     narration_context,
     narration_figures,
+    narration_notes,
     narration_reviewer,
     narration_tools,
     narration_validator,
@@ -58,6 +59,13 @@ MAX_WEB_SEARCHES = 5
 MAX_CORRECTIONS = 2
 
 WEB_SEARCH_TOOL: dict[str, Any] = {"type": "web_search"}
+
+# The tools this loop runs itself: calculations, charts, and notes on search results.
+FUNCTION_TOOLS: list[dict[str, Any]] = [
+    *narration_tools.TOOL_DEFINITIONS,
+    *narration_visuals.TOOL_DEFINITIONS,
+    narration_notes.TOOL_DEFINITION,
+]
 
 INSTRUCTIONS = """You are a sharp, friendly financial advisor walking a non-expert \
 audience through a company's financial report. Your narration will be read aloud line \
@@ -179,6 +187,14 @@ the report and your calculations.
 - Put the company name and fiscal period in your queries. If you use information about \
 a later period than the report's, say so explicitly ("in the following quarter...") so \
 the listener never mistakes it for part of this report.
+- Take notes, in the same turn as the search. The pages a search returns are only \
+visible to you in the turn you searched in; in every later turn - including the one \
+where you write the script - they are gone, and all you have is what you noted. So \
+right after a search, call `note_finding` once for each fact you intend to use: the \
+fact as the page states it, with its figures, and the page's URL exactly as the search \
+returned it. Then, when you write, a line that uses a noted fact puts that note's URL \
+in `source_urls`. Never state an outside fact, figure or event you have no note for, \
+and never write a URL from memory.
 - Cite reliable sources: the company's own filings and releases, and established news \
 organizations. Never cite forums, social media, or video sites (e.g. Reddit, X, \
 YouTube) - such URLs are removed from the script, which would leave your claim \
@@ -405,7 +421,7 @@ def _review_and_correct(
             model=llm_client.MODEL,
             instructions=INSTRUCTIONS,
             input=input_items,
-            tools=[*narration_tools.TOOL_DEFINITIONS, *narration_visuals.TOOL_DEFINITIONS],
+            tools=FUNCTION_TOOLS,
             tool_choice="none",
             text_format=LLMScriptEdits,
         )
@@ -468,12 +484,13 @@ def generate_narration(
     tool_calls_used = 0
     web_searches_used = 0
     seen_urls: set[str] = set()
+    notebook = narration_notes.Notebook(seen_urls)
     parsed: LLMNarrationScript | None = None
 
     for turn_number in range(1, MAX_TURNS + 1):
         is_last_turn = turn_number == MAX_TURNS
         searches_left = MAX_WEB_SEARCHES - web_searches_used
-        tools = [*narration_tools.TOOL_DEFINITIONS, *narration_visuals.TOOL_DEFINITIONS]
+        tools = list(FUNCTION_TOOLS)
         search_kwargs: dict[str, Any] = {}
         if searches_left > 0 and not is_last_turn:
             tools.append(WEB_SEARCH_TOOL)
@@ -510,6 +527,11 @@ def generate_narration(
                     output = {"error": "Calculation budget exhausted. Write the final script now."}
                 elif call.name in narration_visuals.TOOL_NAMES:
                     arguments, output = narration_visuals.execute_tool(chart_builder, call.name, call.arguments)
+                    tool_calls_used += 1
+                elif call.name == narration_notes.TOOL_NAME:
+                    # `seen_urls` already has this response's search results (above),
+                    # so a note can cite a page from the search it was taken in.
+                    arguments, output = narration_notes.execute_tool(notebook, call.arguments)
                     tool_calls_used += 1
                 else:
                     arguments, output = narration_tools.execute_tool(index, call.name, call.arguments)
@@ -612,7 +634,7 @@ def generate_narration(
             visual.detail,
         )
     logger.info(
-        "narration_done turns=%d lines=%d figures_confirmed=%d review_rounds=%d removed_lines=%d charts=%d illustrated_lines=%d web_searches=%d sourced_lines=%d dropped_source_urls=%d blocked_source_urls=%d repaired_target_ids=%d total_cost_usd=%.6f total_duration_ms=%d",
+        "narration_done turns=%d lines=%d figures_confirmed=%d review_rounds=%d removed_lines=%d charts=%d illustrated_lines=%d web_searches=%d notes=%d sourced_lines=%d dropped_source_urls=%d blocked_source_urls=%d repaired_target_ids=%d total_cost_usd=%.6f total_duration_ms=%d",
         len(turns),
         len(lines),
         review.rounds[-1].figures_confirmed,
@@ -621,6 +643,7 @@ def generate_narration(
         len(chart_builder.charts),
         sum(1 for line in lines if line.visual),
         web_searches_used,
+        len(notebook.notes),
         sum(1 for line in lines if line.sources),
         dropped_urls,
         blocked_urls,

@@ -337,6 +337,33 @@ def test_search_sources_are_not_fed_back_as_input(report):
     assert search_item["action"] == {"type": "search", "query": "acme", "queries": None}
 
 
+def test_notes_on_a_search_are_checked_and_carried_into_later_turns(report):
+    page = "https://news.example/a1b2c3"
+    fact = "Analysts expected revenue of $180 million."
+    noted = ("note_finding", {"fact": fact, "url": page})
+    made_up = ("note_finding", {"fact": fact, "url": "https://news.example/analysts-expected-less"})
+    sourced = _line("Analysts had expected $180 million.", "t_income__r0_q2", source_urls=[page])
+    client = _FakeClient(
+        [
+            _tool_call_response(noted, made_up, searches=[("acme", [page])]),
+            _final_response([sourced, CLOSING]),
+        ]
+    )
+
+    lines, trace = narration_agent.generate_narration(report, client=client)
+
+    kept, refused = (call.output for call in trace.turns[0].tool_calls)
+    assert kept == {"note_id": "note_1", "fact": fact, "url": page}
+    assert "not among the pages" in refused["error"]
+    # The note is in the conversation the script is written from; the page itself is not.
+    outputs = [json.loads(i["output"]) for i in client.calls[1]["input"] if i.get("type") == "function_call_output"]
+    assert kept in outputs
+    assert any(tool.get("name") == "note_finding" for tool in client.calls[0]["tools"])
+    # A figure from a noted page stands, with the page as its source.
+    assert lines[0].sources == [page]
+    assert trace.review.rounds[0].findings == []
+
+
 def _review_response(*issues):
     return SimpleNamespace(
         output=[],

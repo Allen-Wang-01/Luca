@@ -33,6 +33,38 @@ function isChartCall(call: ToolCallTrace): boolean {
   return CHART_TOOLS.has(call.name)
 }
 
+// A note the advisor took on a search result, to still have it when writing the script.
+function isNoteCall(call: ToolCallTrace): boolean {
+  return call.name === 'note_finding'
+}
+
+function NoteView({ call }: { call: ToolCallTrace }) {
+  const error = readString(call.output, 'error')
+  // A refused note has no checked URL; show what the advisor tried to cite, unlinked.
+  const fact = readString(call.output, 'fact') ?? readString(call.arguments, 'fact')
+  const url = readString(call.output, 'url')
+  const attempted = readString(call.arguments, 'url')
+
+  return (
+    <li className={`advisor-notes__call${error ? ' advisor-notes__call--error' : ''}`}>
+      <span className="advisor-notes__tool advisor-notes__tool--search">Note</span>
+      <div className="advisor-notes__call-body">
+        {fact && <span className="advisor-notes__inputs">{fact}</span>}
+        {url ? (
+          <span className="advisor-notes__search-sources">
+            <a href={url} target="_blank" rel="noopener noreferrer" title={url}>
+              {sourceLabel(url)}
+            </a>
+          </span>
+        ) : (
+          attempted && <span className="advisor-notes__search-sources">{attempted}</span>
+        )}
+        {error && <span className="advisor-notes__error">Not kept: {error}</span>}
+      </div>
+    </li>
+  )
+}
+
 interface ToolInput {
   label: string
   raw_text: string
@@ -306,9 +338,11 @@ function TurnView({ turn, wroteScript, lineCount }: TurnViewProps) {
   const searches = turn.web_searches ?? []
   const didWork = turn.tool_calls.length > 0 || searches.length > 0
   const chartCount = turn.tool_calls.filter(isChartCall).length
-  const calculationCount = turn.tool_calls.length - chartCount
+  const noteCount = turn.tool_calls.filter(isNoteCall).length
+  const calculationCount = turn.tool_calls.length - chartCount - noteCount
   const summary = [
     searches.length > 0 && `searched the web ${searches.length === 1 ? 'once' : `${searches.length} times`}`,
+    noteCount > 0 && `noted ${pluralize(noteCount, 'finding')}`,
     calculationCount > 0 && `ran ${pluralize(calculationCount, 'calculation')}`,
     chartCount > 0 && `drew ${pluralize(chartCount, 'chart')}`,
   ]
@@ -333,9 +367,13 @@ function TurnView({ turn, wroteScript, lineCount }: TurnViewProps) {
             {searches.map((search, i) => (
               <WebSearchView key={`search-${i}`} search={search} />
             ))}
-            {turn.tool_calls.map((call, i) => (
-              <ToolCallView key={`call-${i}`} call={call} />
-            ))}
+            {turn.tool_calls.map((call, i) =>
+              isNoteCall(call) ? (
+                <NoteView key={`call-${i}`} call={call} />
+              ) : (
+                <ToolCallView key={`call-${i}`} call={call} />
+              ),
+            )}
           </ul>
         </>
       )}
@@ -360,7 +398,7 @@ function TurnView({ turn, wroteScript, lineCount }: TurnViewProps) {
 export function AdvisorNotes({ trace, lineCount, onClose }: AdvisorNotesProps) {
   const toolCalls = trace.turns.flatMap((turn) => turn.tool_calls)
   const chartCalls = toolCalls.filter(isChartCall)
-  const calculationCount = toolCalls.length - chartCalls.length
+  const calculationCount = toolCalls.length - chartCalls.length - toolCalls.filter(isNoteCall).length
   const rejectedCharts = chartCalls.filter((call) => readString(call.output, 'error') !== null).length
   const removedSources = trace.removed_sources ?? []
   const removedVisuals = trace.removed_visuals ?? []

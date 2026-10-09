@@ -245,7 +245,17 @@ the report doesn't explain. Those searches run on OpenAI's side inside a single 
 call, so the loop doesn't execute them: it records each search's query and returned
 URLs (`include=["web_search_call.action.sources"]`) in the trace, caps the total with
 `MAX_WEB_SEARCHES` (passed as `max_tool_calls`, and the tool is withdrawn once used up),
-and uses the returned URLs to verify each line's `sources`. Search calls are billed per
+and uses the returned URLs to verify each line's `sources`.
+
+What comes back from a search is the query and the URLs, not the pages: their content
+is only visible to the model inside the call that searched, and nothing of it reaches
+the next turn. A report with many calculations is written several turns after its
+search, and by then the model had nothing left to cite (the first report it worked on
+happened to be written in the turn it searched in, which hid this). So the model takes
+notes - `narration_notes.py`, a `note_finding(fact, url)` tool it calls in the same
+turn as the search. Tool calls stay in the conversation, so the notes are there when
+the script is written, and the URL is checked against the search results on the spot,
+while the model can still correct it. Search calls are billed per
 call ($10 / 1k) on top of tokens; `pricing.py` adds that fee to each turn's cost (the
 search content itself already shows up in the response's input token usage).
 

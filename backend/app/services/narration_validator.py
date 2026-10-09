@@ -213,11 +213,21 @@ def _is_blocked(url: str) -> bool:
     return any(host == domain or host.endswith(f".{domain}") for domain in BLOCKED_SOURCE_DOMAINS)
 
 
+def resolve_source(url: str, seen_urls: set[str]) -> tuple[str | None, str | None]:
+    """(the search result's own spelling of the URL, None) if it can be shown as a
+    source, otherwise (None, "unverified" | "blocked")."""
+    seen = {_normalize_url(candidate): candidate for candidate in seen_urls}
+    match = seen.get(_normalize_url(url))
+    if match is None:
+        return None, "unverified"
+    if _is_blocked(match):
+        return None, "blocked"
+    return match, None
+
+
 def has_usable_source(urls: list[str], seen_urls: set[str]) -> bool:
     """Whether any of the URLs a line cites would survive `filter_sources`."""
-    seen = {_normalize_url(url): url for url in seen_urls}
-    matches = (seen.get(_normalize_url(url)) for url in urls)
-    return any(match is not None and not _is_blocked(match) for match in matches)
+    return any(resolve_source(url, seen_urls)[0] is not None for url in urls)
 
 
 def filter_sources(
