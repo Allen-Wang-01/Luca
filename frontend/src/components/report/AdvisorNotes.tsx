@@ -341,7 +341,7 @@ function TurnView({ turn, wroteScript, lineCount }: TurnViewProps) {
       )}
       {turn.purpose === 'correction' ? (
         <p className="advisor-notes__turn-summary">
-          Rewrote the script to fix what the figure check found
+          Edited the lines the figure check flagged
           {lineCount !== null && ` (${lineCount} lines in the end)`}
         </p>
       ) : (

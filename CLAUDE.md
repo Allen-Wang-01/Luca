@@ -185,9 +185,14 @@ figures come from (`figures`, the same references the tools take):
   full labels of the figures it cites and reports any presented as the wrong period or
   item. It sees only the script and the labels, not the report or the agent's
   conversation. Its findings are advice, and a failed call is logged and skipped.
-- Findings go back to the agent, which rewrites the script in its own conversation
+- Findings go back to the agent, which fixes the script in its own conversation
   without tools - up to `MAX_CORRECTIONS` turns, the second only if a figure is still
-  wrong. A figure it worked out itself can stay if it adds the calculation to the line.
+  wrong. It returns only the lines it changes (`LLMScriptEdits`: replace or remove, by
+  line number; `narration_validator.apply_edits` applies them), so a correction costs
+  a few lines of output rather than the whole script again, and no other line can come
+  back different. Figures on a line that cites a web page are only excused from the
+  check if that page really came back from a search - a made-up link would otherwise
+  be removed later and leave its figures with no source. A figure it worked out itself can stay if it adds the calculation to the line.
   It is told to remove what it can't fix and reword the neighbouring lines so the
   script still flows. Only a line with a `must_fix` finding left after that is cut by
   the code, and a script that loses more than half its lines is rejected (→ 502).

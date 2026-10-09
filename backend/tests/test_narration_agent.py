@@ -7,6 +7,8 @@ from app.models.narration import (
     CalculationTerm,
     FigureRef,
     LineCalculation,
+    LLMLineEdit,
+    LLMScriptEdits,
     LLMNarrationLine,
     LLMNarrationScript,
     LLMReview,
@@ -343,6 +345,21 @@ def _review_response(*issues):
     )
 
 
+def _edits_response(*edits):
+    """A correction turn's answer: (line number, the line it becomes) to replace a
+    line, (line number, None) to remove it."""
+    return SimpleNamespace(
+        output=[_FakeItem(type="message", content=[])],
+        output_parsed=LLMScriptEdits(
+            edits=[
+                LLMLineEdit(line=number, action="replace" if line else "remove", replacement=line)
+                for number, line in edits
+            ]
+        ),
+        usage=SimpleNamespace(input_tokens=1300, output_tokens=60),
+    )
+
+
 def _revenue_line(text):
     return _line(text, "t_income__r0_q2", figures=[REVENUE_THIS_YEAR])
 
@@ -375,7 +392,7 @@ def test_a_script_whose_figures_check_out_is_reviewed_once_and_left_alone(report
 
 
 def test_a_figure_that_does_not_match_is_sent_back_and_fixed(report):
-    client = _FakeClient([_final_response([WRONG, CLOSING]), _review_response(), _final_response([RIGHT, CLOSING])])
+    client = _FakeClient([_final_response([WRONG, CLOSING]), _review_response(), _edits_response((1, RIGHT))])
 
     lines, trace = narration_agent.generate_narration(report, client=client)
 
@@ -388,6 +405,9 @@ def test_a_figure_that_does_not_match_is_sent_back_and_fixed(report):
     assert "[MUST FIX] '$150 million' matches none of the figures the line cites" in request
     # The draft itself is in the conversation the correction continues.
     assert any(item.get("type") == "message" for item in correction["input"])
+    # It answers with the lines it changes, against the script numbered in the request.
+    assert correction["text_format"] is LLMScriptEdits
+    assert "1. Revenue was $150 million.\n2. That's the headline." in request
     review = trace.review
     assert [[f.check for f in r.findings] for r in review.rounds] == [["figure_mismatch"], []]
     assert review.removed_lines == []
@@ -410,16 +430,47 @@ def test_a_figure_worked_out_while_writing_passes_with_its_calculation(report):
 
 
 def test_the_correction_request_offers_a_calculation_for_an_uncalculated_figure(report):
-    client = _FakeClient([_final_response([WRONG, CLOSING]), _review_response(), _final_response([RIGHT, CLOSING])])
+    client = _FakeClient([_final_response([WRONG, CLOSING]), _review_response(), _edits_response((1, RIGHT))])
 
     narration_agent.generate_narration(report, client=client)
 
     assert "`calculations`" in client.calls[2]["input"][-1]["content"]
 
 
+def test_a_correction_can_remove_a_line_and_reword_its_neighbour(report):
+    reworded = _line("That's it.", "t_income")
+    client = _FakeClient(
+        [_final_response([RIGHT, WRONG, CLOSING]), _review_response(), _edits_response((2, None), (3, reworded))]
+    )
+
+    lines, trace = narration_agent.generate_narration(report, client=client)
+
+    assert [line.text for line in lines] == ["Revenue was $200 million.", "That's it."]
+    assert trace.review.removed_lines == []  # the agent took it out; nothing was cut
+    assert [r.lines for r in trace.review.rounds] == [3, 2]
+
+
+def test_the_second_correction_sees_the_script_as_the_first_left_it(report):
+    still_wrong = _revenue_line("Revenue was $160 million.")
+    client = _FakeClient(
+        [
+            _final_response([CLOSING, WRONG, RIGHT]),
+            _review_response(),
+            _edits_response((1, None), (2, still_wrong)),
+            _edits_response((1, RIGHT)),
+        ]
+    )
+
+    lines, _ = narration_agent.generate_narration(report, client=client)
+
+    # After the first round the wrong line is line 1, not line 2.
+    assert "1. Revenue was $160 million.\n2. Revenue was $200 million." in client.calls[3]["input"][-1]["content"]
+    assert [line.text for line in lines] == ["Revenue was $200 million.", "Revenue was $200 million."]
+
+
 def test_a_figure_still_wrong_after_every_correction_is_cut(report):
     draft = [RIGHT, WRONG, CLOSING]
-    client = _FakeClient([_final_response(draft), _review_response(), _final_response(draft), _final_response(draft)])
+    client = _FakeClient([_final_response(draft), _review_response(), _edits_response(), _edits_response()])
 
     lines, trace = narration_agent.generate_narration(report, client=client)
 
@@ -437,7 +488,7 @@ def test_the_reviewers_advice_gets_one_correction_turn_and_never_cuts_a_line(rep
         [
             _final_response(script),
             _review_response((1, "The sentence presents last year's revenue as this year's."), (9, "No such line.")),
-            _final_response(script),  # the agent looked again and kept its line
+            _edits_response(),  # the agent looked again and kept its line
         ]
     )
 
@@ -467,7 +518,7 @@ def test_a_failed_review_call_does_not_cost_the_script(report):
 
 def test_a_script_that_loses_most_of_its_lines_is_rejected(report):
     draft = [WRONG, _revenue_line("Up from $90 million."), CLOSING]
-    client = _FakeClient([_final_response(draft), _review_response(), _final_response(draft), _final_response(draft)])
+    client = _FakeClient([_final_response(draft), _review_response(), _edits_response(), _edits_response()])
 
     with pytest.raises(NarrationQualityError, match="2 of 3"):
         narration_agent.generate_narration(report, client=client)

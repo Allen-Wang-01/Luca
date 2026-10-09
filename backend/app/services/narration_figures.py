@@ -25,6 +25,7 @@ import re
 from dataclasses import dataclass
 
 from app.models.narration import LineCalculationResult, LLMNarrationLine, ReviewFinding, ReviewRound
+from app.services import narration_validator
 from app.services.narration_tools import FigureIndex, _Operand, evaluate
 
 _SCALE_WORD_FACTORS = {"thousand": 1e3, "million": 1e6, "billion": 1e9, "trillion": 1e12}
@@ -145,24 +146,38 @@ def _isolated_cells(operands: list[_Operand], index: FigureIndex) -> list[_Opera
     return isolated
 
 
-def check_line(number: int, line: LLMNarrationLine, index: FigureIndex) -> tuple[list[ReviewFinding], int, list[str]]:
+def check_line(
+    number: int, line: LLMNarrationLine, index: FigureIndex, seen_urls: set[str] | None = None
+) -> tuple[list[ReviewFinding], int, list[str]]:
     """Returns (findings, how many of the line's stated figures matched a reference,
-    the formulas of the calculations the line carries)."""
+    the formulas of the calculations the line carries).
+
+    `seen_urls` are the pages this run's web searches returned; None takes the line's
+    `source_urls` at their word."""
     findings: list[ReviewFinding] = []
     resolved = resolve_figures(line, index)
     operands = resolved.operands
     for check, detail in resolved.errors:
         findings.append(_finding(number, line, check, detail, must_fix=True))
 
+    # A line that cites a web page may be quoting a figure from it, which nothing here
+    # can check - but only a page a search really returned. A link the model made up is
+    # removed from the script later, and would leave its figures with no source at all.
+    sourced = bool(line.source_urls) and (
+        seen_urls is None or narration_validator.has_usable_source(line.source_urls, seen_urls)
+    )
     confirmed = 0
     for spoken in spoken_figures(line.text):
         if any(_matches(spoken, operand) for operand in operands):
             confirmed += 1
-        elif not line.source_urls:
-            # A line that cites a web page may be quoting a figure from it, which
-            # nothing here can check.
+        elif not sourced:
             cited = ", ".join(f"{operand.label} ({operand.raw_text})" for operand in operands) or "nothing"
             detail = f"'{spoken.text}' matches none of the figures the line cites: {cited}."
+            if line.source_urls:
+                detail += (
+                    f" The page the line gives as its source ({', '.join(line.source_urls)}) is not one a web search"
+                    " returned, or is on a blocked site, so it can't back the figure either."
+                )
             findings.append(_finding(number, line, "figure_mismatch", detail, must_fix=True))
 
     isolated = _isolated_cells(operands, index)
@@ -187,11 +202,11 @@ def check_line(number: int, line: LLMNarrationLine, index: FigureIndex) -> tuple
     return findings, confirmed, resolved.formulas
 
 
-def check_script(lines: list[LLMNarrationLine], index: FigureIndex) -> ReviewRound:
+def check_script(lines: list[LLMNarrationLine], index: FigureIndex, seen_urls: set[str] | None = None) -> ReviewRound:
     """Checks every line; lines are numbered from 1."""
     review_round = ReviewRound(lines=len(lines), figures_confirmed=0, findings=[])
     for number, line in enumerate(lines, start=1):
-        findings, confirmed, formulas = check_line(number, line, index)
+        findings, confirmed, formulas = check_line(number, line, index, seen_urls)
         review_round.findings.extend(findings)
         review_round.figures_confirmed += confirmed
         review_round.calculations.extend(LineCalculationResult(line=number, formula=formula) for formula in formulas)

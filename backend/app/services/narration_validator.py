@@ -11,6 +11,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from app.models.narration import (
     LineVisual,
+    LLMLineEdit,
     LLMNarrationLine,
     NarrationLine,
     RemovedSource,
@@ -79,6 +80,26 @@ def repair_target_ids(
             )
         repaired.append(line.model_copy(update={"text": text, "target_id": target}))
     return repaired, repair_count
+
+
+def apply_edits(lines: list[LLMNarrationLine], edits: list[LLMLineEdit]) -> tuple[list[LLMNarrationLine], int]:
+    """Applies a correction turn's edits to the script. Returns (the script, how many
+    edits were applied).
+
+    Line numbers are 1-based positions in `lines` as given, whatever the edits remove.
+    An edit that can't be applied is skipped, leaving its line as it was: a number that
+    is no line, a second edit to the same line, a replacement with no line or no text.
+    """
+    changes: dict[int, LLMNarrationLine | None] = {}
+    for edit in edits:
+        if not 1 <= edit.line <= len(lines) or edit.line in changes:
+            continue
+        if edit.action == "remove":
+            changes[edit.line] = None
+        elif edit.replacement is not None and edit.replacement.text.strip():
+            changes[edit.line] = edit.replacement
+    edited = [changes.get(number, line) for number, line in enumerate(lines, start=1)]
+    return [line for line in edited if line is not None], len(changes)
 
 
 def _settle_emphasis(line: LLMNarrationLine, chart: Visual) -> tuple[str | None, tuple[str, str] | None]:
@@ -190,6 +211,13 @@ def _normalize_url(url: str) -> str:
 def _is_blocked(url: str) -> bool:
     host = urlsplit(url.strip()).hostname or ""
     return any(host == domain or host.endswith(f".{domain}") for domain in BLOCKED_SOURCE_DOMAINS)
+
+
+def has_usable_source(urls: list[str], seen_urls: set[str]) -> bool:
+    """Whether any of the URLs a line cites would survive `filter_sources`."""
+    seen = {_normalize_url(url): url for url in seen_urls}
+    matches = (seen.get(_normalize_url(url)) for url in urls)
+    return any(match is not None and not _is_blocked(match) for match in matches)
 
 
 def filter_sources(

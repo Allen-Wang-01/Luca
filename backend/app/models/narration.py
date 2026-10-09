@@ -139,6 +139,21 @@ class LLMNarrationLine(BaseModel):
     )
 
 
+class LLMLineEdit(BaseModel):
+    line: int = Field(description="The number of the line to change, as numbered in the request.")
+    action: Literal["replace", "remove"]
+    replacement: LLMNarrationLine | None = Field(
+        description="For 'replace': the whole line as it should now be, every field. null for 'remove'."
+    )
+
+
+class LLMScriptEdits(BaseModel):
+    # What a correction turn returns: only the lines that change. Rewriting the whole
+    # script to fix one line took as long as writing it, and gave every other line a
+    # chance to come back different.
+    edits: list[LLMLineEdit]
+
+
 class LLMReviewIssue(BaseModel):
     line: int = Field(description="The number of the line, as given.")
     problem: str = Field(description="One sentence: what the line says, and what the figure it cites actually is.")

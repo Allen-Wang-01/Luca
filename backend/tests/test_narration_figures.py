@@ -127,6 +127,23 @@ def test_figures_on_a_line_with_web_sources_are_not_held_to_the_report(statement
     assert _checks(line, FigureIndex(statement)) == ([], 0)
 
 
+def test_a_made_up_source_does_not_excuse_a_figure(statement):
+    # The link is removed from the script later for not coming from any search; the
+    # figure it was meant to back must not be left standing without it.
+    index = FigureIndex(statement)
+    line = _line("Analysts had expected $310 million.", source_urls=["https://news.example/made-up"])
+    searched = {"https://news.example/a?utm_source=x", "https://www.reddit.com/r/stocks/1"}
+
+    findings, _, _ = check_line(1, line, index, seen_urls=searched)
+
+    assert [(f.check, f.must_fix) for f in findings] == [("figure_mismatch", True)]
+    assert "https://news.example/made-up" in findings[0].detail
+    real = _line("Analysts had expected $310 million.", source_urls=["https://news.example/a"])
+    assert check_line(1, real, index, seen_urls=searched)[0] == []
+    forum = _line("Analysts had expected $310 million.", source_urls=["https://www.reddit.com/r/stocks/1"])
+    assert [f.check for f in check_line(1, forum, index, seen_urls=searched)[0]] == ["figure_mismatch"]
+
+
 def test_a_cell_off_the_row_and_column_of_the_others_is_questioned(statement):
     # This quarter's sales against last year's profit: both numbers match what is
     # cited, so only the shape of the citation gives it away.

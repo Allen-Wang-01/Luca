@@ -21,6 +21,7 @@ from app.models.narration import (
     AgentTurn,
     LLMNarrationLine,
     LLMNarrationScript,
+    LLMScriptEdits,
     NarrationLine,
     NarrationReview,
     NarrationTrace,
@@ -298,7 +299,10 @@ def _cited_urls(output: list[Any]) -> set[str]:
     return urls
 
 
-def _correction_request(findings: list[ReviewFinding], last_chance: bool) -> str:
+def _correction_request(lines: list[LLMNarrationLine], findings: list[ReviewFinding], last_chance: bool) -> str:
+    # The whole script goes along, numbered: edits refer to lines by number, and after
+    # an earlier round of edits the numbers are no longer those of the model's draft.
+    script = "\n".join(f"{number}. {line.text}" for number, line in enumerate(lines, start=1))
     by_line: dict[int, list[ReviewFinding]] = {}
     for finding in findings:
         by_line.setdefault(finding.line, []).append(finding)
@@ -315,24 +319,38 @@ def _correction_request(findings: list[ReviewFinding], last_chance: bool) -> str
         if last_chance
         else "A line that still has a MUST FIX problem afterwards will be cut."
     )
-    return f"""Your script was checked against the report, line by line. These lines have problems:
+    return f"""Your script was checked against the report, line by line. This is the script as it stands, \
+numbered:
+
+{script}
+
+These lines have problems:
 
 {problems}
 
-Return the complete script again: every line, in order, changed only where a fix needs it.
+Return `edits`: only the lines you change, each by its number above. Every line you don't list stays exactly \
+as it is, so don't repeat lines that need no change.
+- 'replace' gives the whole line as it should now be - text, target, figures and all, not just the part that \
+changed.
+- 'remove' takes the line out.
+- An empty list means every line stays as it is.
+How to fix what was found:
 - MUST FIX, a figure that matches none of the line's `figures`: either the sentence states the wrong number \
 (say the one the report has), or the number is right and its reference is missing from `figures` (add the \
 cell id, the paragraph quote, or the calc_id it came from).
 - A figure you worked out yourself, with no tool call behind it: keep it by putting the calculation in the \
 line's `calculations` - the figures it uses and the operation. It is then done for you and compared with what \
 the line says, so if the result differs from your number, the line has to say the result.
+- A figure taken from a web page is only accepted on a line whose `source_urls` has that page's URL exactly \
+as a search returned it. If the problem says the page is not one a search returned, copy the right URL from \
+your search results, character for character; if the figure isn't in any of them, take the claim out.
 - MUST FIX, a reference that doesn't exist or a calculation that failed: replace the id with the one you \
 meant, copied from the report, or correct the calculation's terms.
 - CHECK: look at the line and the figures again. If the sentence presents a figure as the wrong period or the \
 wrong item, correct the sentence or cite the right figure. If the line is right as it is, leave it.
 - You can't call tools or search now. A number that neither a reference nor a one-step calculation in \
 `calculations` can back has to go: reword the line without it.
-- If a line can't be fixed, remove it, and reword its neighbours where needed so the script still flows: no \
+- If a line can't be fixed, remove it, and replace its neighbours where needed so the script still flows: no \
 line may refer back to something that is no longer said, and the thread from one line to the next has to hold \
 without it.
 {closing}"""
@@ -342,6 +360,7 @@ def _review_and_correct(
     client: Any,
     report: FinancialReport,
     index: narration_tools.FigureIndex,
+    seen_urls: set[str],
     input_items: list[Any],
     response: Any,
     lines: list[LLMNarrationLine],
@@ -351,14 +370,16 @@ def _review_and_correct(
     read it (narration_reviewer.py), and gives the agent up to MAX_CORRECTIONS turns
     to fix what was found. Returns (the lines that hold up, what was found).
 
-    Corrections are the agent's own turns, in its own conversation, so it rewrites with
-    everything it knew when drafting - but without tools: a correction is one call, not
-    a new loop. Lines the agent removes itself come with their neighbours reworded;
-    cutting one here is the last resort for a figure that is still wrong."""
+    Corrections are the agent's own turns, in its own conversation, so it fixes a line
+    with everything it knew when drafting - but without tools: a correction is one
+    call, not a new loop. It returns only the lines it changes (LLMScriptEdits); the
+    rest of the script is not written out again and cannot come back different. Lines
+    the agent removes itself come with their neighbours reworded; cutting one here is
+    the last resort for a figure that is still wrong."""
     unit_note = f"Report figures are in {report.meta.currency} {report.meta.unit_scale} unless a label says otherwise."
     review = NarrationReview(rounds=[])
     for attempt in range(MAX_CORRECTIONS + 1):
-        review_round = narration_figures.check_script(lines, index)
+        review_round = narration_figures.check_script(lines, index, seen_urls)
         findings = review_round.findings
         if attempt == 0:
             reviewer_findings, reviewer_usage = narration_reviewer.review(lines, index, unit_note, client)
@@ -377,9 +398,8 @@ def _review_and_correct(
             break
 
         input_items.extend(_as_input_item(item) for item in response.output)
-        input_items.append(
-            {"role": "user", "content": _correction_request(findings, last_chance=attempt == MAX_CORRECTIONS - 1)}
-        )
+        last_chance = attempt == MAX_CORRECTIONS - 1
+        input_items.append({"role": "user", "content": _correction_request(lines, findings, last_chance)})
         start = time.monotonic()
         response = client.responses.parse(
             model=llm_client.MODEL,
@@ -387,9 +407,11 @@ def _review_and_correct(
             input=input_items,
             tools=[*narration_tools.TOOL_DEFINITIONS, *narration_visuals.TOOL_DEFINITIONS],
             tool_choice="none",
-            text_format=LLMNarrationScript,
+            text_format=LLMScriptEdits,
         )
         duration_ms = int((time.monotonic() - start) * 1000)
+        edits = response.output_parsed.edits if response.output_parsed else []
+        lines, applied = narration_validator.apply_edits(lines, edits)
         usage = response.usage
         cost = calculate_cost(llm_client.MODEL, usage.input_tokens, usage.output_tokens)
         turns.append(
@@ -404,20 +426,17 @@ def _review_and_correct(
             )
         )
         logger.info(
-            "narration_correction turn=%d findings=%d must_fix=%d input_tokens=%d output_tokens=%d cost_usd=%.6f duration_ms=%d",
+            "narration_correction turn=%d findings=%d must_fix=%d edits=%d applied=%d input_tokens=%d output_tokens=%d cost_usd=%.6f duration_ms=%d",
             len(turns),
             len(findings),
             sum(1 for f in findings if f.must_fix),
+            len(edits),
+            applied,
             usage.input_tokens,
             usage.output_tokens,
             cost,
             duration_ms,
         )
-        corrected = [line for line in response.output_parsed.lines if line.text.strip()] if response.output_parsed else []
-        if not corrected:
-            # Nothing usable came back; the script as it stood is cut below instead.
-            break
-        lines = corrected
 
     # `rounds[-1]` is always a check of `lines` as they now stand.
     failed: dict[int, str] = {}
@@ -539,7 +558,9 @@ def generate_narration(
         )
 
     draft_lines = [line for line in parsed.lines if line.text.strip()]
-    checked_lines, review = _review_and_correct(client, report, index, input_items, response, draft_lines, turns)
+    checked_lines, review = _review_and_correct(
+        client, report, index, seen_urls, input_items, response, draft_lines, turns
+    )
     narration_validator.check_removed_lines(len(review.removed_lines), review.rounds[-1].lines)
 
     cited, removed_visuals = narration_validator.attach_visuals(checked_lines, chart_builder.charts)

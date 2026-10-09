@@ -1,8 +1,17 @@
 import pytest
 
-from app.models.narration import FigureRef, LineVisual, LLMNarrationLine, NarrationLine, Visual, VisualItem
+from app.models.narration import (
+    FigureRef,
+    LineVisual,
+    LLMLineEdit,
+    LLMNarrationLine,
+    NarrationLine,
+    Visual,
+    VisualItem,
+)
 from app.services.narration_validator import (
     NarrationQualityError,
+    apply_edits,
     attach_visuals,
     check_quality,
     filter_sources,
@@ -246,6 +255,37 @@ def test_repair_and_source_filtering_keep_the_chart():
     filtered, _ = filter_sources(repaired, set())
 
     assert filtered[0].visual == visual
+
+
+def test_edits_change_only_the_lines_they_name():
+    script = [_llm_line(text=text) for text in ("One.", "Two.", "Three.", "Four.")]
+    edits = [
+        LLMLineEdit(line=2, action="remove", replacement=None),
+        LLMLineEdit(line=4, action="replace", replacement=_llm_line(text="Four, reworded.")),
+    ]
+
+    edited, applied = apply_edits(script, edits)
+
+    # Numbers are positions in the script as it was given, whatever else is removed.
+    assert [line.text for line in edited] == ["One.", "Three.", "Four, reworded."]
+    assert edited[0] is script[0] and edited[1] is script[2]
+    assert applied == 2
+
+
+def test_edits_that_cannot_be_applied_leave_their_line_alone():
+    script = [_llm_line(text="One."), _llm_line(text="Two.")]
+    edits = [
+        LLMLineEdit(line=9, action="remove", replacement=None),  # no such line
+        LLMLineEdit(line=1, action="replace", replacement=None),  # nothing to replace it with
+        LLMLineEdit(line=2, action="replace", replacement=_llm_line(text="  ")),  # blank
+        LLMLineEdit(line=2, action="remove", replacement=None),
+        LLMLineEdit(line=2, action="replace", replacement=_llm_line(text="Second edit to line 2.")),
+    ]
+
+    edited, applied = apply_edits(script, edits)
+
+    assert [line.text for line in edited] == ["One."]
+    assert applied == 1
 
 
 def test_quality_check_rejects_empty_and_mostly_invented_scripts():
