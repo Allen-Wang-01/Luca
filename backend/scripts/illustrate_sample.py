@@ -8,9 +8,13 @@
 # charts.json holds the same tool calls the narration model would make, plus which
 # lines show which chart:
 #   {
+#     "calculations": [{"tool": "ratio", "arguments": {"numerator": ..., "denominator": ...}}],
 #     "charts": [{"tool": "bar_chart", "arguments": {"title": ..., "items": [...]}}],
 #     "lines": {"2": {"chart_id": "chart_1", "emphasis": "i2"}}
 #   }
+# "calculations" is optional and runs first, through the real calculation tools; its
+# results get their ids in order (calc_1, calc_2, ...) and a chart can use one as a
+# figure: {"id": "calc_1", "quote": null}.
 # The calls go through the real chart tools (app/services/narration_visuals.py) and the
 # line references through the real validator, so a chart that doesn't hold up against
 # the report is rejected here exactly as it would be in a real run. Charts get their ids
@@ -29,7 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.models.narration import LLMNarrationLine, NarrationResponse, ToolCallTrace
 from app.models.report import FinancialReport
-from app.services import narration_validator, narration_visuals
+from app.services import narration_tools, narration_validator, narration_visuals
 from app.services.narration_tools import FigureIndex
 
 
@@ -48,6 +52,13 @@ def main() -> None:
 
     builder = narration_visuals.ChartBuilder(FigureIndex(report))
     calls: list[ToolCallTrace] = []
+    for call in spec.get("calculations", []):
+        arguments, output = narration_tools.execute_tool(builder.index, call["tool"], json.dumps(call["arguments"]))
+        calls.append(ToolCallTrace(name=call["tool"], arguments=arguments, output=output))
+        if "error" in output:
+            print(f"FAILED {call['tool']}: {output['error']}")
+        else:
+            print(f"{output['calc_id']} {call['tool']}: {output['formula']}")
     for call in spec["charts"]:
         arguments, output = narration_visuals.execute_tool(builder, call["tool"], json.dumps(call["arguments"]))
         calls.append(ToolCallTrace(name=call["tool"], arguments=arguments, output=output))

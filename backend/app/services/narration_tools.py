@@ -185,7 +185,7 @@ class FigureIndex:
         self._results[calc_id] = _Operand(
             id=calc_id,
             label=formula,
-            raw_text=f"{value:g}%" if is_percent else _fmt(value),
+            raw_text=f"{value:.1f}%" if is_percent else _fmt(value),
             value=value,
             absolute=absolute,
             is_percent=is_percent,

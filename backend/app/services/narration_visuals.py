@@ -1,7 +1,8 @@
 # Chart tools the narration model can call to illustrate a line. Like the calculation
-# tools (narration_tools.py), every figure is a reference into the report - a cell id,
-# or a paragraph id plus the figure as written there - so the model chooses the chart
-# type, the labels and which figures go in, but never writes a value. Each chart is
+# tools (narration_tools.py), every figure is a reference - a cell id, a paragraph id
+# plus the figure as written there, or the id of an earlier calculation's result (a
+# margin the report doesn't print, say) - so the model chooses the chart type, the
+# labels and which figures go in, but never writes a value. Each chart is
 # also checked against itself before it gets an id: a waterfall's steps must lead from
 # its start to its end, a share bar's parts can't add up to more than the whole. A chart
 # that fails is returned as an {"error": ...} tool output, which the model can read and
@@ -57,9 +58,6 @@ def _resolve(builder: ChartBuilder, title: Any, entries: list[Any]) -> tuple[lis
         operand, error = builder.index.resolve(entry.get("figure"))
         if error:
             return [], f"Item '{entry['label']}': {error}"
-        if operand.computed:
-            # A card shows where each figure sits in the report; a result has no such place.
-            return [], f"Item '{entry['label']}': a chart only takes figures from the report, not calculation results."
         resolved.append((entry["label"].strip(), operand))
 
     if len({operand.is_percent for _, operand in resolved}) > 1:
@@ -90,7 +88,14 @@ def _item(key: str, label: str, operand: _Operand, role: str, divisor: float, si
         role=role,
         raw_text=operand.raw_text,
         source_id=operand.id,
+        computed=operand.computed,
     )
+
+
+def _tolerance(operands: list[_Operand]) -> float:
+    """How far a chart's figures may be from adding up through rounding alone: what the
+    printed figures were rounded by, plus what floating point adds to a calculated one."""
+    return sum(operand.precision for operand in operands) + 1e-9 * max(abs(operand.absolute) for operand in operands)
 
 
 def bar_chart(builder: ChartBuilder, title: Any, items: Any) -> dict[str, Any]:
@@ -127,7 +132,7 @@ def share_bar(builder: ChartBuilder, title: Any, total: Any, parts: Any) -> dict
         return {"error": f"Part '{negative}' is negative, so it can't be drawn as a share of the total."}
 
     parts_sum = sum(operand.absolute for _, operand in part_operands)
-    tolerance = sum(operand.precision for _, operand in resolved)
+    tolerance = _tolerance([operand for _, operand in resolved])
     if parts_sum > whole.absolute + tolerance:
         return {
             "error": (
@@ -163,7 +168,7 @@ def waterfall(builder: ChartBuilder, title: Any, start: Any, steps: Any, end: An
     divisor, unit = _scale([operand for _, operand in resolved])
 
     reached = first.absolute + sum(sign * operand.absolute for sign, (_, operand) in zip(signs, step_operands))
-    tolerance = sum(operand.precision for _, operand in resolved)
+    tolerance = _tolerance([operand for _, operand in resolved])
     if abs(reached - last.absolute) > tolerance:
         return {
             "error": (

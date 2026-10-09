@@ -27,6 +27,13 @@ function formatValue(value: number, unit: VisualUnit, signed = false): string {
   return `${sign}${text}${unit ? UNIT_SUFFIX[unit] : ''}`
 }
 
+// A figure the report doesn't print carries this mark; the card explains it underneath.
+export const COMPUTED_MARK = '*'
+
+function formatItem(item: VisualItem, unit: VisualUnit, signed = false): string {
+  return formatValue(item.value, unit, signed) + (item.computed ? COMPUTED_MARK : '')
+}
+
 const LABEL_FONT_PX = 13
 const LABEL_LINE_PX = 15
 const MAX_LABEL_LINES = 3
@@ -81,7 +88,7 @@ function buildColumns(chart: Visual): Column[] {
       from: 0,
       to: item.value,
       tone: 'neutral',
-      text: formatValue(item.value, chart.unit),
+      text: formatItem(item, chart.unit),
     }))
   }
 
@@ -89,7 +96,7 @@ function buildColumns(chart: Visual): Column[] {
   return chart.items.map((item) => {
     if (item.role !== 'item') {
       running = item.value
-      return { item, from: 0, to: item.value, tone: 'neutral', text: formatValue(item.value, chart.unit) }
+      return { item, from: 0, to: item.value, tone: 'neutral', text: formatItem(item, chart.unit) }
     }
     const from = running
     running += item.value
@@ -98,7 +105,7 @@ function buildColumns(chart: Visual): Column[] {
       from,
       to: running,
       tone: item.value < 0 ? 'down' : 'up',
-      text: formatValue(item.value, chart.unit, true),
+      text: formatItem(item, chart.unit, true),
     }
   })
 }
@@ -219,12 +226,12 @@ function ShareChart({ chart, emphasis }: VisualChartProps) {
             <span className="visual-chart__swatch" style={{ background: seriesColorVar(i) }} />
             <span className="visual-chart__part-label">{part.label}</span>
             <span className="visual-chart__part-share">{formatShare(part.value, total.value)}</span>
-            <span className="visual-chart__part-value">{formatValue(part.value, chart.unit)}</span>
+            <span className="visual-chart__part-value">{formatItem(part, chart.unit)}</span>
           </li>
         ))}
       </ul>
       <div className="visual-chart__total">
-        of {total.label} · {formatValue(total.value, chart.unit)}
+        of {total.label} · {formatItem(total, chart.unit)}
       </div>
     </div>
   )

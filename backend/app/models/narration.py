@@ -18,8 +18,10 @@ class VisualItem(BaseModel):
     # "item": a bar, a part of the whole, or a waterfall step. "total": the whole a
     # share bar's parts belong to. "start"/"end": a waterfall's opening and closing bars.
     role: Literal["item", "total", "start", "end"]
-    raw_text: str  # the figure as printed in the report
-    source_id: str  # the cell or paragraph it was read from
+    raw_text: str  # the figure as printed in the report, or a calculated one written out
+    source_id: str  # the cell or paragraph it was read from, or the calculation's id
+    # Calculated from the report's figures rather than printed in it; the card says so.
+    computed: bool = False
 
 
 class Visual(BaseModel):

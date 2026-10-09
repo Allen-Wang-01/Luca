@@ -209,8 +209,12 @@ item ("the biggest piece is...", "but the fastest-growing one is...") - that rea
 better than a new chart per line. Those lines must be next to each other: a line \
 without the chart in between makes the card disappear and pop up again. Once you move \
 on from a chart, don't bring it back.
-- The chart only shows figures from the report. The spoken line still has to make \
-sense on its own, without the chart.
+- A chart's figures can also be results of your calculations: pass a `calc_id` where a \
+figure goes. That is how to draw what the report doesn't print, such as a margin in \
+each of several periods or each division's growth rate side by side. Calculate \
+first; the chart goes in the next turn, once the `calc_id`s are back. Such items are \
+marked as calculated on the card.
+- The spoken line still has to make sense on its own, without the chart.
 
 # Output
 Produce 25 to 40 lines. Each line is 1-3 sentences. Write every line in English.

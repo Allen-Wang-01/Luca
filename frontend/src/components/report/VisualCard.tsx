@@ -1,6 +1,6 @@
 import type { LineVisual } from '../../narration/types'
 import { AnchoredCard } from './AnchoredCard'
-import { VisualChart } from './charts/VisualChart'
+import { COMPUTED_MARK, VisualChart } from './charts/VisualChart'
 import './VisualCard.css'
 
 interface VisualCardProps {
@@ -16,6 +16,9 @@ export function VisualCard({ anchorId, visual }: VisualCardProps) {
     <AnchoredCard anchorId={anchorId} className="visual-card">
       <div className="visual-card__title">{visual.chart.title}</div>
       <VisualChart chart={visual.chart} emphasis={visual.emphasis} />
+      {visual.chart.items.some((item) => item.computed) && (
+        <div className="visual-card__note">{COMPUTED_MARK} Calculated from the report's figures</div>
+      )}
     </AnchoredCard>
   )
 }

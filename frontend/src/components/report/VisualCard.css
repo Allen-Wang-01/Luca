@@ -5,3 +5,10 @@
   line-height: 1.3;
   color: var(--color-text);
 }
+
+/* Explains the mark on figures the report doesn't print itself. */
+.visual-card__note {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}

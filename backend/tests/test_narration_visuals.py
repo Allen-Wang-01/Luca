@@ -1,6 +1,7 @@
 import json
 
 from app.services.narration_tools import FigureIndex
+from app.services.narration_tools import execute_tool as calculate
 from app.services.narration_visuals import MAX_CHARTS, TOOL_DEFINITIONS, ChartBuilder, execute_tool
 
 REVENUE = {"id": "t_income__r0_q2", "quote": None}  # 200 (millions)
@@ -42,16 +43,51 @@ def test_bar_chart_looks_up_values_and_keys_its_items(report):
     assert chart.items[1].raw_text == "200"
 
 
-def test_a_chart_does_not_take_calculation_results(report):
+def _calculate(builder, name, **arguments):
+    _, output = calculate(builder.index, name, json.dumps(arguments))
+    return {"id": output["calc_id"], "quote": None}
+
+
+def test_a_chart_can_show_calculated_figures(report):
     builder = _builder(report)
-    result = builder.index.record("200 - 100 = 100", 100, 100e6, [], None)
+    margin = _calculate(builder, "ratio", numerator=GROSS_PROFIT, denominator=REVENUE)  # 75%
+    half = _calculate(builder, "ratio", numerator=REVENUE_LAST_YEAR, denominator=REVENUE)  # 50%
+
+    output = _run(builder, "bar_chart", title="Margin", items=[entry("Half", half), entry("Margin", margin)])
+
+    assert output["unit"] == "percent"
+    assert [item["value"] for item in output["items"]] == [50, 75]
+    items = builder.charts[output["chart_id"]].items
+    assert [(item.computed, item.source_id, item.raw_text) for item in items] == [
+        (True, "calc_2", "50.0%"),
+        (True, "calc_1", "75.0%"),
+    ]
+
+
+def test_a_waterfall_can_end_on_a_calculated_figure(report):
+    builder = _builder(report)
+    cost = _calculate(builder, "difference", minuend=REVENUE, subtrahend=GROSS_PROFIT)  # 50
 
     output = _run(
-        builder, "bar_chart", title="Revenue", items=[entry("Added", {"id": result, "quote": None}), entry("This year", REVENUE)]
+        builder,
+        "waterfall",
+        title="Revenue to gross profit",
+        start=entry("Revenue", REVENUE),
+        steps=[entry("Cost", cost, "subtract")],
+        end=entry("Gross profit", GROSS_PROFIT),
     )
 
-    assert "calculation results" in output["error"]
-    assert builder.charts == {}
+    items = builder.charts[output["chart_id"]].items
+    assert [(item.value, item.computed) for item in items] == [(200, False), (-50, True), (150, False)]
+
+
+def test_calculated_and_printed_figures_must_still_be_the_same_kind(report):
+    builder = _builder(report)
+    margin = _calculate(builder, "ratio", numerator=GROSS_PROFIT, denominator=REVENUE)
+
+    output = _run(builder, "bar_chart", title="Mixed", items=[entry("Margin", margin), entry("Revenue", REVENUE)])
+
+    assert "percentages and amounts" in output["error"]
 
 
 def test_a_chart_does_not_mix_kinds_of_figures(statement):
