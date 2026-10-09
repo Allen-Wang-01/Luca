@@ -300,15 +300,14 @@ moving to the next. Current state: **Phase 0, 1 and 3 done; Phase 2 done** as a
 tool-calling agent with calculation tools (see "Narration generation" above), verified
 against the real NVIDIA report. **Phase 6's web search is implemented** in the same loop
 and verified against the real API: searches run, cited links are checked, and lines now
-target single cells where one figure carries the line. Two things from that run are
-still open: a line can name a publication while its link is rejected by the validator
-(the rejected links are now recorded in the trace, so the next real run shows whether
-they were invented or just spelled differently from the search result), and the rule
-about flagging information from a later period hasn't been exercised yet. Speech
-exists for saved samples; the Live2D avatar has been dropped. Charts chosen by the
-narration agent are implemented and checked against the real NVIDIA report with
-hand-written chart calls, but whether the model picks charts well on its own has not
-been verified against the real API yet. Phase 1 has been
+target single cells where one figure carries the line. A line that named a
+publication while its link was rejected turned out to be the model inventing the link:
+it writes a plausible, title-like address where the search returned an opaque one
+(settled on the Apple runs below, and now caught when the note is taken). The rule
+about flagging information from a later period still hasn't been exercised. Speech
+exists for saved samples only, and only for older NVIDIA scripts; the Live2D avatar
+has been dropped. The narration agent picks its own charts, four or five a script on
+the Apple runs, including charts of calculated figures. Phase 1 has been
 run end-to-end against a real NVIDIA quarterly report: table figures were verified
 accurate, id generation and arithmetic validation worked correctly on real data. Two
 issues found during that real run were fixed: an `oneOf` in the LLM-facing schema that
@@ -328,13 +327,40 @@ arithmetic rules that matched none of its row labels, no way to add more than tw
 figures or calculate in two steps, and charts brought back at the end of the script.
 Those changes (row `quantity`/`scale`/`group`/`sum_of`, `combine` and reusable
 calculation results, charts of calculated figures, the figure check with its reviewer
-and correction turns) are covered by unit tests and replayed against both saved
-reports, but **none of the model-facing parts has been run against the real API yet**:
-whether the parser fills in the new row fields and repeats column groups correctly,
-whether the narration model lists its figures and uses the new tools, and how good the
-reviewer's findings and the corrections are. The first real parse and narration after
-this is the test. A third report (Meta) is being held back, unparsed, to check that
-none of this was fitted to the first two.
+and correction turns, notes on search results) are covered by unit tests and **have
+been run against the real API on Apple**:
+- Re-parsed with the new prompt, the same 238 cells came back, every row's quantity
+  and scale was right, and all 22 totals the parser declared held in every column.
+  The parser folded the two sales breakdowns into the income statement this time
+  (three tables instead of five, with their column groups) and produced no paragraph
+  blocks; titles and unit notes are on the tables. Accepted as is.
+- Narrated five times while the checks were being tuned. In the last run 55 stated
+  figures all matched what their lines cite, one line was missing a reference and was
+  fixed by a single edited line, no line was cut, and eight lines carry a real source.
+  The check earned its place early: three figures the model had worked out in its
+  head, one line highlighting a region while emphasizing the next one's bar, and a
+  made-up news link behind two analyst estimates were all caught.
+- The search problem was only found here: Apple's script was never written in the turn
+  that searched, so no run used a single search result until the model took notes.
+
+Still open after those runs:
+- **NVIDIA has not been narrated with this code.** Its saved parse has none of the new
+  row fields, so it is the test of the fallbacks; so far that rests on unit tests and
+  on replaying its saved tool calls.
+- Nothing checks the prose. The last Apple script opens with a garbled clause and
+  calls term debt "total debt"; both passed, since the figures are right.
+- The reviewer sees a calculation as its formula, without the labels of the figures in
+  it, so it can't tell when a result is described as something it isn't.
+- A figure taken from a web page is held to a real link, not to what the note says.
+- A line about nothing in particular (a remark, a takeaway) still highlights a whole
+  table. Left for when the page gets a closing screen or a key-points panel.
+- A run now costs about $0.09 and two minutes, three times the first Apple run: web
+  searches are $0.01 each plus their content in the input, and a report with many
+  calculations takes seven or eight turns (`MAX_TURNS` is 8).
+- A line's own `calculations` are rarely used; the model mostly calculates ahead.
+
+A third report (Meta) is being held back, unparsed, to check that none of this was
+fitted to the first two.
 
 Supported input is English-language earnings releases and financial statements of
 listed companies; banks, insurers and funds are out of scope.
