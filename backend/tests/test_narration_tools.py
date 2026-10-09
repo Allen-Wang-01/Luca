@@ -112,6 +112,98 @@ def test_division_by_zero_is_an_error(report):
     )["error"]
 
 
+def term(figure, sign="add"):
+    return {"figure": figure, "sign": sign}
+
+
+def test_combine_adds_and_subtracts_several_figures(report):
+    output = _run(
+        report,
+        "combine",
+        terms=[
+            term(cell("t_income__r0_q2")),
+            term(cell("t_income__r0_q2_ly")),
+            term(cell("t_income__r1_q2"), "subtract"),
+        ],
+    )
+
+    assert output["result"] == 150
+    assert output["formula"] == "200 + 100 - 150 = 150"
+    assert len(output["inputs"]) == 3
+
+
+def test_combine_puts_table_and_prose_figures_on_one_scale(report):
+    output = _run(
+        report, "combine", terms=[term(quoted("p_outlook", "$0.3 billion")), term(cell("t_income__r0_q2"), "subtract")]
+    )
+
+    assert output["result"] == 100_000_000
+    assert output["formula"] == "300.00 million - 200.00 million = 100.00 million"
+
+
+def test_combine_rejects_bad_terms(report):
+    revenue = term(cell("t_income__r0_q2"))
+
+    assert "2 to" in _run(report, "combine", terms=[revenue])["error"]
+    assert "sign" in _run(report, "combine", terms=[revenue, {"figure": cell("t_income__r0_q2_ly"), "sign": "plus"}])["error"]
+    assert "Unknown id" in _run(report, "combine", terms=[revenue, term(cell("nope"))])["error"]
+    assert "percentage" in _run(report, "combine", terms=[revenue, term(quoted("p_outlook", "2%"))])["error"]
+
+
+def test_a_result_can_be_used_in_a_later_calculation(report):
+    index = FigureIndex(report)
+    arguments = {"minuend": cell("t_income__r0_q2"), "subtrahend": cell("t_income__r1_q2")}
+    _, cost = execute_tool(index, "difference", json.dumps(arguments))
+
+    _, share = execute_tool(
+        index, "ratio", json.dumps({"numerator": cell(cost["calc_id"]), "denominator": cell("t_income__r0_q2")})
+    )
+
+    assert cost["calc_id"] == "calc_1"
+    assert share["result_percent"] == 25.0
+    assert share["inputs"][0]["id"] == "calc_1"
+
+
+def test_a_result_keeps_its_scale_when_mixed_with_a_prose_figure(report):
+    index = FigureIndex(report)
+    arguments = {"minuend": cell("t_income__r0_q2"), "subtrahend": cell("t_income__r0_q2_ly")}
+    _, added = execute_tool(index, "difference", json.dumps(arguments))  # 100 (millions)
+
+    _, output = execute_tool(
+        index,
+        "ratio",
+        json.dumps({"numerator": cell(added["calc_id"]), "denominator": quoted("p_outlook", "$0.3 billion")}),
+    )
+
+    assert output["result_percent"] == 33.33
+
+
+def test_two_ratios_give_a_change_in_percentage_points(report):
+    index = FigureIndex(report)
+    margin = {"numerator": cell("t_income__r1_q2"), "denominator": cell("t_income__r0_q2")}  # 75%
+    half = {"numerator": cell("t_income__r0_q2_ly"), "denominator": cell("t_income__r0_q2")}  # 50%
+    _, first = execute_tool(index, "ratio", json.dumps(margin))
+    _, second = execute_tool(index, "ratio", json.dumps(half))
+
+    _, change = execute_tool(
+        index, "difference", json.dumps({"minuend": cell(first["calc_id"]), "subtrahend": cell(second["calc_id"])})
+    )
+    _, mixed = execute_tool(
+        index, "difference", json.dumps({"minuend": cell(first["calc_id"]), "subtrahend": cell("t_income__r0_q2")})
+    )
+
+    assert change["result"] == 25
+    assert "percentage" in mixed["error"]
+
+
+def test_a_failed_calculation_gets_no_id(report):
+    index = FigureIndex(report)
+    execute_tool(index, "difference", json.dumps({"minuend": cell("nope"), "subtrahend": cell("t_income__r0_q2")}))
+
+    arguments = {"minuend": cell("t_income__r0_q2"), "subtrahend": cell("t_income__r0_q2_ly")}
+    assert execute_tool(index, "difference", json.dumps(arguments))[1]["calc_id"] == "calc_1"
+
+
 def test_malformed_calls_are_errors(report):
     index = FigureIndex(report)
 

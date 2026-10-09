@@ -4,7 +4,10 @@
 # that only appears in prose (e.g. "$3.2 billion" in a headline bullet) is referenced
 # by paragraph id plus the figure exactly as written, and is only used after checking
 # that it really appears verbatim in that paragraph. Results name their sources, so the
-# model can target the same cell in its narration. Pure functions, no I/O.
+# model can target the same cell in its narration. Every result also gets an id of its
+# own (`calc_1`, ...) that a later call can pass as an operand, so a figure that takes
+# two steps (a margin on a subtotal the report doesn't print) never needs the model's
+# own arithmetic for the first one. No I/O.
 #
 # Errors are returned as {"error": ...} tool output rather than raised - the model
 # reads them and can correct itself (e.g. a row id passed where a cell id belongs).
@@ -17,6 +20,9 @@ from app.models.report import FinancialReport, ParagraphBlock, TableBlock
 
 _UNIT_SCALE_FACTORS = {"actual": 1, "thousands": 1e3, "millions": 1e6, "billions": 1e9}
 _SCALE_WORD_FACTORS = {"thousand": 1e3, "million": 1e6, "billion": 1e9, "trillion": 1e12}
+
+# How many figures `combine` adds up in one call.
+MAX_TERMS = 8
 
 _NUMBER_RE = re.compile(r"\d[\d,]*(?:\.\d+)?")
 _SCALE_WORD_RE = re.compile(r"\b(thousand|million|billion|trillion)s?\b", re.IGNORECASE)
@@ -34,6 +40,8 @@ class _Operand:
     # One unit of the last printed digit, in actual units ("$3.2 billion" -> 0.1
     # billion). How far a sum of printed figures may be off through rounding alone.
     precision: float
+    # The result of an earlier calculation rather than a figure printed in the report.
+    computed: bool = False
 
 
 def _normalize_text(text: str) -> str:
@@ -69,6 +77,8 @@ class FigureIndex:
         self._empty_cells: dict[str, str] = {}
         self._row_ids: set[str] = set()
         self._paragraphs: dict[str, str] = {}
+        # Results of the calculations made so far in this run, by calc id.
+        self._results: dict[str, _Operand] = {}
         for block in report.blocks:
             if isinstance(block, ParagraphBlock):
                 self._paragraphs[block.id] = block.text
@@ -108,6 +118,8 @@ class FigureIndex:
 
         if ref_id in self._cells:
             return self._cells[ref_id], None
+        if ref_id in self._results:
+            return self._results[ref_id], None
         if ref_id in self._empty_cells:
             return None, f"Cell '{ref_id}' ({self._empty_cells[ref_id]}) has no numeric value."
         if ref_id in self._row_ids:
@@ -118,6 +130,26 @@ class FigureIndex:
                 "in its text, e.g. '$3.2 billion'."
             )
         return None, f"Unknown id '{ref_id}'."
+
+    def record(self, formula: str, value: float, absolute: float, operands: list[_Operand], is_percent: bool) -> str:
+        """Keeps a calculation's result so a later call can use it as an operand.
+
+        `value` is on the scale the calculation ran on (see `_resolve_all`) and
+        `absolute` is the same result in actual units; for a percentage they are equal.
+        """
+        calc_id = f"calc_{len(self._results) + 1}"
+        self._results[calc_id] = _Operand(
+            id=calc_id,
+            label=formula,
+            raw_text=f"{value:g}%" if is_percent else _fmt(value),
+            value=value,
+            absolute=absolute,
+            is_percent=is_percent,
+            from_text=not is_percent and _in_actual_units(operands),
+            precision=0.0 if is_percent else sum(operand.precision for operand in operands),
+            computed=True,
+        )
+        return calc_id
 
     def _resolve_quote(self, paragraph_id: str, quote: str) -> tuple[_Operand | None, str | None]:
         text = self._paragraphs.get(paragraph_id)
@@ -151,25 +183,31 @@ def _input(operand: _Operand) -> dict[str, Any]:
     return {"id": operand.id, "label": operand.label, "value": operand.value, "raw_text": operand.raw_text}
 
 
-def _resolve_pair(index: FigureIndex, a: Any, b: Any) -> tuple[tuple[float, float] | None, list[_Operand], str | None]:
-    """Resolves both operands to values on a common scale.
+def _resolve_all(index: FigureIndex, references: list[Any]) -> tuple[list[_Operand], str | None]:
+    operands: list[_Operand] = []
+    for reference in references:
+        operand, error = index.resolve(reference)
+        if error:
+            return [], error
+        operands.append(operand)
+    if len({operand.is_percent for operand in operands}) > 1:
+        return [], "Can't combine a percentage with an amount."
+    return operands, None
 
-    Two table cells are compared as printed (both in the report's unit), which keeps
-    formulas readable. As soon as a prose figure is involved, both sides switch to
-    actual units, since "$3.2 billion" and a cell reading 12,387 (millions) are only
-    comparable once scaled.
-    """
-    first, error = index.resolve(a)
-    if error:
-        return None, [], error
-    second, error = index.resolve(b)
-    if error:
-        return None, [], error
-    if first.is_percent != second.is_percent:
-        return None, [], "Can't combine a percentage with an amount."
-    if first.from_text or second.from_text:
-        return (first.absolute, second.absolute), [first, second], None
-    return (first.value, second.value), [first, second], None
+
+def _in_actual_units(operands: list[_Operand]) -> bool:
+    # Table cells are calculated with as printed (all in the report's unit), which
+    # keeps formulas readable. As soon as a prose figure is involved, every operand
+    # switches to actual units, since "$3.2 billion" and a cell reading 12,387
+    # (millions) are only comparable once scaled.
+    return any(operand.from_text for operand in operands)
+
+
+def _values(operands: list[_Operand]) -> list[float]:
+    """The operands' values on a common scale."""
+    if _in_actual_units(operands):
+        return [operand.absolute for operand in operands]
+    return [operand.value for operand in operands]
 
 
 def _fmt(value: float) -> str:
@@ -182,48 +220,86 @@ def _fmt(value: float) -> str:
 
 
 def percent_change(index: FigureIndex, base: Any, current: Any) -> dict[str, Any]:
-    values, operands, error = _resolve_pair(index, base, current)
+    operands, error = _resolve_all(index, [base, current])
     if error:
         return {"error": error}
-    start, end = values
+    start, end = _values(operands)
     if start == 0:
         return {"error": f"Cannot compute percent change from zero ({operands[0].label})."}
 
     change = (end - start) / abs(start) * 100
+    formula = f"({_fmt(end)} - {_fmt(start)}) / |{_fmt(start)}| = {change:+.1f}%"
     return {
+        "calc_id": index.record(formula, change, change, operands, is_percent=True),
         "result_percent": round(change, 2),
-        "formula": f"({_fmt(end)} - {_fmt(start)}) / |{_fmt(start)}| = {change:+.1f}%",
+        "formula": formula,
         "inputs": [_input(o) for o in operands],
     }
 
 
 def ratio(index: FigureIndex, numerator: Any, denominator: Any) -> dict[str, Any]:
-    values, operands, error = _resolve_pair(index, numerator, denominator)
+    operands, error = _resolve_all(index, [numerator, denominator])
     if error:
         return {"error": error}
-    top, bottom = values
+    top, bottom = _values(operands)
     if bottom == 0:
         return {"error": f"Cannot divide by zero ({operands[1].label})."}
 
     value = top / bottom
+    formula = f"{_fmt(top)} / {_fmt(bottom)} = {value * 100:.1f}%"
     return {
+        # Kept as a percentage, so two ratios can go into `difference` for the change
+        # in percentage points.
+        "calc_id": index.record(formula, value * 100, value * 100, operands, is_percent=True),
         "result": round(value, 4),
         "result_percent": round(value * 100, 2),
-        "formula": f"{_fmt(top)} / {_fmt(bottom)} = {value * 100:.1f}%",
+        "formula": formula,
         "inputs": [_input(o) for o in operands],
     }
 
 
 def difference(index: FigureIndex, minuend: Any, subtrahend: Any) -> dict[str, Any]:
-    values, operands, error = _resolve_pair(index, minuend, subtrahend)
+    operands, error = _resolve_all(index, [minuend, subtrahend])
     if error:
         return {"error": error}
-    a, b = values
+    a, b = _values(operands)
 
     value = a - b
+    formula = f"{_fmt(a)} - {_fmt(b)} = {_fmt(value)}"
+    absolute = operands[0].absolute - operands[1].absolute
     return {
+        "calc_id": index.record(formula, value, absolute, operands, is_percent=operands[0].is_percent),
         "result": round(value, 4),
-        "formula": f"{_fmt(a)} - {_fmt(b)} = {_fmt(value)}",
+        "formula": formula,
+        "inputs": [_input(o) for o in operands],
+    }
+
+
+def combine(index: FigureIndex, terms: Any) -> dict[str, Any]:
+    if not isinstance(terms, list) or not 2 <= len(terms) <= MAX_TERMS:
+        return {"error": f"`terms` must be a list of 2 to {MAX_TERMS} figures."}
+    for term in terms:
+        if not isinstance(term, dict) or term.get("sign") not in ("add", "subtract"):
+            return {"error": f"Each term must be an object with a `figure` and a `sign` of 'add' or 'subtract', got {term!r}."}
+    operands, error = _resolve_all(index, [term["figure"] for term in terms])
+    if error:
+        return {"error": error}
+
+    signs = [1 if term["sign"] == "add" else -1 for term in terms]
+    values = _values(operands)
+    value = sum(sign * v for sign, v in zip(signs, values))
+    absolute = sum(sign * operand.absolute for sign, operand in zip(signs, operands))
+    # A figure the report prints as negative keeps its brackets, so the formula shows
+    # that adding it lowers the total.
+    shown = [f"({_fmt(v)})" if v < 0 else _fmt(v) for v in values]
+    formula = shown[0] if signs[0] == 1 else f"-{shown[0]}"
+    for sign, text in zip(signs[1:], shown[1:]):
+        formula += f" {'+' if sign == 1 else '-'} {text}"
+    formula += f" = {_fmt(value)}"
+    return {
+        "calc_id": index.record(formula, value, absolute, operands, is_percent=operands[0].is_percent),
+        "result": round(value, 4),
+        "formula": formula,
         "inputs": [_input(o) for o in operands],
     }
 
@@ -232,12 +308,14 @@ _TOOLS: dict[str, Callable[..., dict[str, Any]]] = {
     "percent_change": percent_change,
     "ratio": ratio,
     "difference": difference,
+    "combine": combine,
 }
 
 _OPERAND_SCHEMA_DESCRIPTION = (
     "A figure from the report. Table figure: {id: <cell id>, quote: null}. Figure that "
     "only appears in paragraph text: {id: <paragraph id>, quote: <the figure exactly as "
-    "written there, e.g. '$3.2 billion' or '12%'>}."
+    "written there, e.g. '$3.2 billion' or '12%'>}. The result of an earlier "
+    "calculation: {id: <its calc_id>, quote: null}."
 )
 
 
@@ -290,6 +368,37 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
         "change in a margin in percentage points.",
         {"minuend": "The figure to subtract from.", "subtrahend": "The figure to subtract."},
     ),
+    {
+        "type": "function",
+        "name": "combine",
+        "description": (
+            "Adds and subtracts several figures in one go, for a total the report doesn't "
+            "print, e.g. cash plus short-term investments minus debt. Each figure is used "
+            "with the sign it is printed with: one shown in brackets, like a cash outflow "
+            "of (1,250), is already negative, so 'add' it to take it off the total."
+        ),
+        "strict": True,
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "terms": {
+                    "type": "array",
+                    "description": f"2 to {MAX_TERMS} figures, in the order they should appear in the formula.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "figure": operand_schema("The figure."),
+                            "sign": {"type": "string", "enum": ["add", "subtract"]},
+                        },
+                        "required": ["figure", "sign"],
+                        "additionalProperties": False,
+                    },
+                },
+            },
+            "required": ["terms"],
+            "additionalProperties": False,
+        },
+    },
 ]
 
 

@@ -42,6 +42,18 @@ def test_bar_chart_looks_up_values_and_keys_its_items(report):
     assert chart.items[1].raw_text == "200"
 
 
+def test_a_chart_does_not_take_calculation_results(report):
+    builder = _builder(report)
+    result = builder.index.record("200 - 100 = 100", 100, 100e6, [], is_percent=False)
+
+    output = _run(
+        builder, "bar_chart", title="Revenue", items=[entry("Added", {"id": result, "quote": None}), entry("This year", REVENUE)]
+    )
+
+    assert "calculation results" in output["error"]
+    assert builder.charts == {}
+
+
 def test_table_and_prose_figures_share_one_scale(report):
     output = _run(
         _builder(report), "bar_chart", title="Revenue", items=[entry("This quarter", REVENUE), entry("Guidance", GUIDANCE)]

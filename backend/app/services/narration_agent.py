@@ -37,7 +37,9 @@ from app.services import (
 logger = get_logger(__name__)
 
 # The last turn always forbids tools, so the model has MAX_TURNS - 1 turns to calculate.
-MAX_TURNS = 6
+# A calculation on an earlier result needs that result's id first, so each extra step
+# takes a turn of its own.
+MAX_TURNS = 8
 # Across all turns - a model stuck re-requesting calculations gets told to stop.
 MAX_TOOL_CALLS = 60
 # Across all turns. Each search is billed per call and adds its results to the context,
@@ -104,6 +106,13 @@ operand is a reference, not a number:
 - a figure that only appears in paragraph text: {id: <paragraph id>, quote: <just the \
 figure, exactly as written there, e.g. "$3.2 billion">} - it is checked against the \
 paragraph, so copy it character for character.
+- the result of an earlier calculation: {id: <its calc_id>, quote: null}. Every \
+calculation returns a `calc_id`; use it when a figure takes two steps, e.g. a \
+division's profit (its sales minus its costs) first, then that profit as a share of \
+its sales. The second step has to wait for the first one's `calc_id`, so it goes in \
+the next turn.
+To add up or net several figures at once (cash plus investments minus debt), use \
+`combine` rather than chaining subtractions.
 Table and paragraph figures can be mixed freely; units are reconciled for you. Look \
 for the insightful comparisons (a segment's share of the total, the growth implied by \
 guidance versus the current quarter) and request all the calculations you need in \

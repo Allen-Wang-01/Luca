@@ -57,6 +57,9 @@ def _resolve(builder: ChartBuilder, title: Any, entries: list[Any]) -> tuple[lis
         operand, error = builder.index.resolve(entry.get("figure"))
         if error:
             return [], f"Item '{entry['label']}': {error}"
+        if operand.computed:
+            # A card shows where each figure sits in the report; a result has no such place.
+            return [], f"Item '{entry['label']}': a chart only takes figures from the report, not calculation results."
         resolved.append((entry["label"].strip(), operand))
 
     if len({operand.is_percent for _, operand in resolved}) > 1:
