@@ -29,6 +29,13 @@ def _slugify(text: str) -> str:
     return slug or "block"
 
 
+def _heading(group: str | None) -> str | None:
+    # Shown in front of the row's own label ("Operating expenses · Other"), where the
+    # colon a sub-heading usually ends with would read oddly.
+    text = (group or "").strip().rstrip(":").strip()
+    return text or None
+
+
 class _IdAllocator:
     def __init__(self) -> None:
         self._used: set[str] = set()
@@ -75,7 +82,17 @@ def assign_ids(llm_report: LLMFinancialReport, source_filename: str) -> Financia
                     )
                     for llm_cell in llm_row.cells
                 ]
-                rows.append(Row(id=row_id, label=llm_row.label, cells=cells))
+                rows.append(
+                    Row(
+                        id=row_id,
+                        label=llm_row.label,
+                        cells=cells,
+                        # A row without figures measures nothing, whatever the model put.
+                        quantity=llm_row.quantity if cells else None,
+                        scale=llm_row.scale if cells else None,
+                        group=_heading(llm_row.group),
+                    )
+                )
             blocks.append(
                 TableBlock(
                     id=block_id,

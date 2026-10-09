@@ -16,7 +16,8 @@ import re
 from dataclasses import dataclass
 from typing import Any, Callable
 
-from app.models.report import FinancialReport, ParagraphBlock, TableBlock
+from app.models.report import FinancialReport, ParagraphBlock, Row, TableBlock
+from app.services import report_labels
 
 _UNIT_SCALE_FACTORS = {"actual": 1, "thousands": 1e3, "millions": 1e6, "billions": 1e9}
 _SCALE_WORD_FACTORS = {"thousand": 1e3, "million": 1e6, "billion": 1e9, "trillion": 1e12}
@@ -42,6 +43,11 @@ class _Operand:
     precision: float
     # The result of an earlier calculation rather than a figure printed in the report.
     computed: bool = False
+    # What the figure measures (report.Quantity), or None when the report doesn't say:
+    # a figure quoted from prose, or a row parsed before rows carried a quantity.
+    kind: str | None = None
+    # What one unit of `value` is in actual units. Meaningless when `from_text`.
+    factor: float = 1.0
 
 
 def _normalize_text(text: str) -> str:
@@ -70,6 +76,40 @@ def _parse_quote(quote: str) -> tuple[float, float, bool] | str:
     return value, value * factor, is_percent
 
 
+def _row_factor(row: Row, report_scale: float) -> float:
+    """What one unit of the row's printed figures is in actual units."""
+    if row.scale is not None:
+        return _UNIT_SCALE_FACTORS[row.scale]
+    # Per-share figures (EPS, dividends) are printed as-is even in a "$ in millions"
+    # table, so the report's unit scale doesn't apply. A row parsed before rows carried
+    # a quantity can only be recognized by its label.
+    if row.quantity == "per_share" or (row.quantity is None and "per share" in row.label.lower()):
+        return 1.0
+    return report_scale
+
+
+_KIND_NAMES = {
+    "money": "an amount of money",
+    "per_share": "a per-share amount",
+    "share_count": "a number of shares",
+    "other": "a count or measure of its own",
+}
+
+
+def kind_error(operands: list[_Operand], action: str) -> str | None:
+    """Why these figures can't be `action`-ed together, if they can't."""
+    if len({operand.is_percent for operand in operands}) > 1:
+        return "Can't combine a percentage with an amount."
+    known = [operand for operand in operands if operand.kind in _KIND_NAMES]
+    other = next((operand for operand in known if operand.kind != known[0].kind), None)
+    if other is None:
+        return None
+    return (
+        f"'{known[0].label}' is {_KIND_NAMES[known[0].kind]} and '{other.label}' is "
+        f"{_KIND_NAMES[other.kind]} - figures of different kinds can't be {action}."
+    )
+
+
 class FigureIndex:
     def __init__(self, report: FinancialReport) -> None:
         scale = _UNIT_SCALE_FACTORS.get(report.meta.unit_scale, 1)
@@ -84,19 +124,20 @@ class FigureIndex:
                 self._paragraphs[block.id] = block.text
             if not isinstance(block, TableBlock):
                 continue
-            column_labels = {c.id: c.label for c in block.columns}
+            row_labels = report_labels.row_labels(block)
+            column_labels = report_labels.column_labels(block)
             for row in block.rows:
                 self._row_ids.add(row.id)
                 for cell in row.cells:
-                    label = f"{row.label} · {column_labels.get(cell.col_id, cell.col_id)}"
+                    label = f"{row_labels[row.id]} · {column_labels.get(cell.col_id, cell.col_id)}"
                     if cell.value is None:
                         self._empty_cells[cell.id] = label
                         continue
-                    is_percent = cell.value_type == "percent"
-                    # Per-share figures (EPS, dividends) are printed as-is even in a
-                    # "$ in millions" table, so the report's unit scale doesn't apply.
-                    unscaled = is_percent or "per share" in row.label.lower()
-                    absolute = cell.value * (1 if unscaled else scale)
+                    # A percentage column (e.g. a year-over-year change) can sit in a
+                    # row of amounts, so the cell's own type comes first.
+                    is_percent = cell.value_type == "percent" or row.quantity == "percent"
+                    factor = 1.0 if is_percent else _row_factor(row, scale)
+                    absolute = cell.value * factor
                     self._cells[cell.id] = _Operand(
                         id=cell.id,
                         label=label,
@@ -106,6 +147,8 @@ class FigureIndex:
                         is_percent=is_percent,
                         from_text=False,
                         precision=_precision(cell.raw_text, cell.value, absolute),
+                        kind="percent" if is_percent else row.quantity,
+                        factor=factor,
                     )
 
     def resolve(self, operand: Any) -> tuple[_Operand | None, str | None]:
@@ -131,13 +174,14 @@ class FigureIndex:
             )
         return None, f"Unknown id '{ref_id}'."
 
-    def record(self, formula: str, value: float, absolute: float, operands: list[_Operand], is_percent: bool) -> str:
+    def record(self, formula: str, value: float, absolute: float, operands: list[_Operand], kind: str | None) -> str:
         """Keeps a calculation's result so a later call can use it as an operand.
 
-        `value` is on the scale the calculation ran on (see `_resolve_all`) and
-        `absolute` is the same result in actual units; for a percentage they are equal.
+        `value` is on the scale the calculation ran on (see `_values`) and `absolute`
+        is the same result in actual units; for a percentage they are equal.
         """
         calc_id = f"calc_{len(self._results) + 1}"
+        is_percent = kind == "percent"
         self._results[calc_id] = _Operand(
             id=calc_id,
             label=formula,
@@ -145,9 +189,11 @@ class FigureIndex:
             value=value,
             absolute=absolute,
             is_percent=is_percent,
-            from_text=not is_percent and _in_actual_units(operands),
+            from_text=False,
             precision=0.0 if is_percent else sum(operand.precision for operand in operands),
             computed=True,
+            kind=kind,
+            factor=absolute / value if value else 1.0,
         )
         return calc_id
 
@@ -183,24 +229,37 @@ def _input(operand: _Operand) -> dict[str, Any]:
     return {"id": operand.id, "label": operand.label, "value": operand.value, "raw_text": operand.raw_text}
 
 
-def _resolve_all(index: FigureIndex, references: list[Any]) -> tuple[list[_Operand], str | None]:
+def _resolve_all(index: FigureIndex, references: list[Any], same_kind: bool = True) -> tuple[list[_Operand], str | None]:
+    """Looks up every operand. `same_kind=False` is for division, the one operation
+    that makes sense across kinds (a profit over a number of shares)."""
     operands: list[_Operand] = []
     for reference in references:
         operand, error = index.resolve(reference)
         if error:
             return [], error
         operands.append(operand)
+    error = kind_error(operands if same_kind else [], "added, subtracted or compared")
+    if error:
+        return [], f"{error} Only `ratio` can divide one by the other."
     if len({operand.is_percent for operand in operands}) > 1:
         return [], "Can't combine a percentage with an amount."
     return operands, None
 
 
+def _result_kind(operands: list[_Operand]) -> str | None:
+    """The kind of a sum or difference of these operands, which all share one."""
+    if operands[0].is_percent:
+        return "percent"
+    return next((operand.kind for operand in operands if operand.kind), None)
+
+
 def _in_actual_units(operands: list[_Operand]) -> bool:
     # Table cells are calculated with as printed (all in the report's unit), which
-    # keeps formulas readable. As soon as a prose figure is involved, every operand
-    # switches to actual units, since "$3.2 billion" and a cell reading 12,387
-    # (millions) are only comparable once scaled.
-    return any(operand.from_text for operand in operands)
+    # keeps formulas readable. As soon as a prose figure is involved, or figures
+    # printed in different scales (a profit in millions, a share count in thousands),
+    # every operand switches to actual units, since "$3.2 billion" and a cell reading
+    # 12,387 (millions) are only comparable once scaled.
+    return any(operand.from_text for operand in operands) or len({operand.factor for operand in operands}) > 1
 
 
 def _values(operands: list[_Operand]) -> list[float]:
@@ -230,7 +289,7 @@ def percent_change(index: FigureIndex, base: Any, current: Any) -> dict[str, Any
     change = (end - start) / abs(start) * 100
     formula = f"({_fmt(end)} - {_fmt(start)}) / |{_fmt(start)}| = {change:+.1f}%"
     return {
-        "calc_id": index.record(formula, change, change, operands, is_percent=True),
+        "calc_id": index.record(formula, change, change, operands, "percent"),
         "result_percent": round(change, 2),
         "formula": formula,
         "inputs": [_input(o) for o in operands],
@@ -238,7 +297,7 @@ def percent_change(index: FigureIndex, base: Any, current: Any) -> dict[str, Any
 
 
 def ratio(index: FigureIndex, numerator: Any, denominator: Any) -> dict[str, Any]:
-    operands, error = _resolve_all(index, [numerator, denominator])
+    operands, error = _resolve_all(index, [numerator, denominator], same_kind=False)
     if error:
         return {"error": error}
     top, bottom = _values(operands)
@@ -246,11 +305,24 @@ def ratio(index: FigureIndex, numerator: Any, denominator: Any) -> dict[str, Any
         return {"error": f"Cannot divide by zero ({operands[1].label})."}
 
     value = top / bottom
+    kinds = [operand.kind for operand in operands]
+    if None not in kinds and kinds[0] != kinds[1]:
+        # One kind over another is a quantity of its own, not a share of anything: an
+        # amount of money over a number of shares is a per-share amount.
+        formula = f"{_fmt(top)} / {_fmt(bottom)} = {value:.4g}"
+        kind = "per_share" if kinds == ["money", "share_count"] else "other"
+        return {
+            "calc_id": index.record(formula, value, value, operands, kind),
+            "result": round(value, 4),
+            "formula": formula,
+            "inputs": [_input(o) for o in operands],
+        }
+
     formula = f"{_fmt(top)} / {_fmt(bottom)} = {value * 100:.1f}%"
     return {
         # Kept as a percentage, so two ratios can go into `difference` for the change
         # in percentage points.
-        "calc_id": index.record(formula, value * 100, value * 100, operands, is_percent=True),
+        "calc_id": index.record(formula, value * 100, value * 100, operands, "percent"),
         "result": round(value, 4),
         "result_percent": round(value * 100, 2),
         "formula": formula,
@@ -268,7 +340,7 @@ def difference(index: FigureIndex, minuend: Any, subtrahend: Any) -> dict[str, A
     formula = f"{_fmt(a)} - {_fmt(b)} = {_fmt(value)}"
     absolute = operands[0].absolute - operands[1].absolute
     return {
-        "calc_id": index.record(formula, value, absolute, operands, is_percent=operands[0].is_percent),
+        "calc_id": index.record(formula, value, absolute, operands, _result_kind(operands)),
         "result": round(value, 4),
         "formula": formula,
         "inputs": [_input(o) for o in operands],
@@ -297,7 +369,7 @@ def combine(index: FigureIndex, terms: Any) -> dict[str, Any]:
         formula += f" {'+' if sign == 1 else '-'} {text}"
     formula += f" = {_fmt(value)}"
     return {
-        "calc_id": index.record(formula, value, absolute, operands, is_percent=operands[0].is_percent),
+        "calc_id": index.record(formula, value, absolute, operands, _result_kind(operands)),
         "result": round(value, 4),
         "formula": formula,
         "inputs": [_input(o) for o in operands],

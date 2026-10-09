@@ -204,6 +204,68 @@ def test_a_failed_calculation_gets_no_id(report):
     assert execute_tool(index, "difference", json.dumps(arguments))[1]["calc_id"] == "calc_1"
 
 
+def test_per_share_and_share_count_rows_use_their_own_scale(statement):
+    # 50 (millions) of profit over 20,000 (thousands) shares is 2.50 a share. Neither
+    # row's label says "per share" or "shares"; the row's own marks do.
+    output = _run(statement, "ratio", numerator=cell("t_ops__r4_q"), denominator=cell("t_ops__r8_q"))
+
+    assert output["result"] == 2.5
+    assert "result_percent" not in output
+    assert output["formula"] == "50.00 million / 20.00 million = 2.5"
+
+
+def test_money_over_shares_is_a_per_share_amount(statement):
+    index = FigureIndex(statement)
+    profit_per_share = {"numerator": cell("t_ops__r4_q"), "denominator": cell("t_ops__r8_q")}
+    _, computed = execute_tool(index, "ratio", json.dumps(profit_per_share))
+
+    _, output = execute_tool(
+        index, "difference", json.dumps({"minuend": cell(computed["calc_id"]), "subtrahend": cell("t_ops__r6_q_ly")})
+    )
+
+    assert output["result"] == 0.9
+
+
+def test_figures_of_different_kinds_cannot_be_added_or_compared(statement):
+    profit, per_share, shares = cell("t_ops__r4_q"), cell("t_ops__r6_q"), cell("t_ops__r8_q")
+
+    for output in (
+        _run(statement, "difference", minuend=profit, subtrahend=per_share),
+        _run(statement, "percent_change", base=shares, current=profit),
+        _run(statement, "combine", terms=[term(profit), term(shares)]),
+    ):
+        assert "different kinds" in output["error"]
+        assert "`ratio`" in output["error"]
+
+
+def test_same_kind_rows_still_calculate_as_printed(statement):
+    output = _run(statement, "difference", minuend=cell("t_ops__r1_q"), subtrahend=cell("t_ops__r3_q"))
+
+    assert output["formula"] == "300 - 120 = 180"
+
+
+def test_labels_tell_apart_repeated_rows_and_columns(statement):
+    output = _run(statement, "difference", minuend=cell("t_ops__r1_ytd"), subtrahend=cell("t_ops__r4_q"))
+
+    assert [i["label"] for i in output["inputs"]] == [
+        "Sales · Goods · Six Months Ended · June 30, 2031",
+        "Net income · Three Months Ended · June 30, 2031",
+    ]
+
+
+def test_unmarked_rows_fall_back_to_the_label_and_report_scale(statement):
+    table = statement.blocks[0]
+    for row in table.rows:
+        row.quantity = row.scale = row.group = None
+    table.rows[6].label = "Basic earnings per share"
+
+    per_share = _run(statement, "difference", minuend=cell("t_ops__r6_q"), subtrahend=cell("t_ops__r6_q_ly"))
+    mixed = _run(statement, "ratio", numerator=cell("t_ops__r4_q"), denominator=cell("t_ops__r6_q"))
+
+    assert per_share["result"] == 0.9
+    assert mixed["result"] == 20_000_000  # 50 million over 2.50, not 50 over 2.50
+
+
 def test_malformed_calls_are_errors(report):
     index = FigureIndex(report)
 

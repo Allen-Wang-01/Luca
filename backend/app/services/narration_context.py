@@ -4,6 +4,7 @@
 # when only row ids were listed and cell ids had to be assembled from a rule, the model
 # almost never targeted a single cell. Pure function, no I/O.
 from app.models.report import ChartBlock, FinancialReport, ParagraphBlock, Row, TableBlock
+from app.services import report_labels
 
 
 def collect_target_ids(report: FinancialReport) -> set[str]:
@@ -64,14 +65,28 @@ def _render_table(table: TableBlock) -> list[str]:
     for group in table.column_groups:
         lines.append(f'  column group "{group.label}": {", ".join(group.col_ids)}')
 
+    labels = report_labels.row_labels(table)
     for row in table.rows:
-        lines.append(f"  {_render_row(row)}")
+        lines.append(f"  {_render_row(row, labels[row.id])}")
     return lines
 
 
-def _render_row(row: Row) -> str:
+_QUANTITY_NOTES = {"per_share": "per share", "share_count": "number of shares"}
+
+
+def _row_note(row: Row) -> str:
+    # Only what the table's own unit line doesn't already say: that a row isn't an
+    # amount of money, or that it is printed in a scale of its own.
+    parts = [_QUANTITY_NOTES[row.quantity]] if row.quantity in _QUANTITY_NOTES else []
+    if row.scale and row.quantity in ("share_count", "other"):
+        parts.append("as printed" if row.scale == "actual" else f"in {row.scale}")
+    return f" ({', '.join(parts)})" if parts else ""
+
+
+def _render_row(row: Row, label: str) -> str:
     values = " | ".join(f"[{cell.id}] {cell.raw_text or '-'}" for cell in row.cells)
-    text = f"[{row.id}] {row.label}: {values}" if values else f"[{row.id}] {row.label}"
+    label += _row_note(row)
+    text = f"[{row.id}] {label}: {values}" if values else f"[{row.id}] {label}"
     for flag in row.flags:
         text += f"  ! FLAG: {flag.message}"
     return text

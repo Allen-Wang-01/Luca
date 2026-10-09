@@ -44,7 +44,7 @@ def test_bar_chart_looks_up_values_and_keys_its_items(report):
 
 def test_a_chart_does_not_take_calculation_results(report):
     builder = _builder(report)
-    result = builder.index.record("200 - 100 = 100", 100, 100e6, [], is_percent=False)
+    result = builder.index.record("200 - 100 = 100", 100, 100e6, [], None)
 
     output = _run(
         builder, "bar_chart", title="Revenue", items=[entry("Added", {"id": result, "quote": None}), entry("This year", REVENUE)]
@@ -52,6 +52,31 @@ def test_a_chart_does_not_take_calculation_results(report):
 
     assert "calculation results" in output["error"]
     assert builder.charts == {}
+
+
+def test_a_chart_does_not_mix_kinds_of_figures(statement):
+    builder = _builder(statement)
+
+    output = _run(
+        builder,
+        "bar_chart",
+        title="Profit and shares",
+        items=[entry("Profit", {"id": "t_ops__r4_q", "quote": None}), entry("Shares", {"id": "t_ops__r8_q", "quote": None})],
+    )
+
+    assert "different kinds" in output["error"]
+
+
+def test_a_share_count_is_drawn_in_its_own_scale(statement):
+    output = _run(
+        _builder(statement),
+        "bar_chart",
+        title="Shares",
+        items=[entry("Last year", {"id": "t_ops__r8_q_ly", "quote": None}), entry("This year", {"id": "t_ops__r8_q", "quote": None})],
+    )
+
+    assert output["unit"] == "millions"
+    assert [item["value"] for item in output["items"]] == [25, 20]
 
 
 def test_table_and_prose_figures_share_one_scale(report):

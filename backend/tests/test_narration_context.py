@@ -15,6 +15,16 @@ def test_render_lists_rows_and_cells_with_ids_and_raw_values(report):
     assert 'q2="Q2 FY26"' in text
 
 
+def test_render_tells_apart_repeated_labels_and_marks_rows_that_are_not_amounts(statement):
+    text = render_report_for_prompt(statement)
+
+    assert "[t_ops__r1] Sales · Goods: " in text
+    assert "[t_ops__r3] Cost of sales · Goods: " in text
+    assert "[t_ops__r4] Net income: " in text
+    assert "[t_ops__r6] Earnings per share · Basic (per share): " in text
+    assert "[t_ops__r8] Shares used · Basic (number of shares, in thousands): " in text
+
+
 def test_render_surfaces_flags_and_sections(report):
     text = render_report_for_prompt(report)
 

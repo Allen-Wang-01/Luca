@@ -4,13 +4,16 @@ from typing import Annotated, Literal, Union
 from pydantic import BaseModel, Field
 
 
+UnitScale = Literal["actual", "thousands", "millions", "billions"]
+
+
 class ReportMeta(BaseModel):
     company_name: str
     ticker: str | None = None
     report_type: str
     fiscal_period: str
     currency: str
-    unit_scale: Literal["actual", "thousands", "millions", "billions"]
+    unit_scale: UnitScale
     source_filename: str
     parsed_at: datetime
 
@@ -47,11 +50,25 @@ class Cell(BaseModel):
     value_type: Literal["number", "percent", "currency", "text"]
 
 
+# What a row's figures measure. Figures of different kinds can be divided by one
+# another but not added, subtracted or drawn on one axis.
+Quantity = Literal["money", "per_share", "share_count", "percent", "other"]
+
+
 class Row(BaseModel):
     id: str
     label: str
     cells: list[Cell]
     flags: list[Flag] = Field(default_factory=list)
+    # The three below are filled in by the parser and missing from reports parsed
+    # before they existed; None falls back to guessing from the row label and the
+    # report's unit scale.
+    quantity: Quantity | None = None
+    # The scale this row's figures are printed in, which need not be the report's (a
+    # share count in thousands in a statement in millions).
+    scale: UnitScale | None = None
+    # The sub-heading the row sits under, for telling apart rows that share a label.
+    group: str | None = None
 
 
 class TableBlock(BaseModel):

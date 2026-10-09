@@ -48,11 +48,20 @@ export interface Cell {
   value_type: CellValueType
 }
 
+// What a row's figures measure.
+export type Quantity = 'money' | 'per_share' | 'share_count' | 'percent' | 'other'
+
 export interface Row {
   id: string
   label: string
   cells: Cell[]
   flags: Flag[]
+  // The three below are null on reports parsed before the parser filled them in.
+  quantity: Quantity | null
+  // The scale this row's figures are printed in, which need not be the report's.
+  scale: UnitScale | null
+  // The sub-heading the row sits under, for telling apart rows that share a label.
+  group: string | null
 }
 
 export interface TableBlock {

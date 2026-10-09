@@ -6,7 +6,7 @@ from typing import Literal, Union
 
 from pydantic import BaseModel, Field
 
-from app.models.report import ChartSeries, Column, ColumnGroup
+from app.models.report import ChartSeries, Column, ColumnGroup, Quantity, UnitScale
 
 
 class LLMReportMeta(BaseModel):
@@ -17,7 +17,7 @@ class LLMReportMeta(BaseModel):
     report_type: str
     fiscal_period: str
     currency: str
-    unit_scale: Literal["actual", "thousands", "millions", "billions"]
+    unit_scale: UnitScale
 
 
 class LLMParagraphBlock(BaseModel):
@@ -38,6 +38,34 @@ class LLMCell(BaseModel):
 class LLMRow(BaseModel):
     label: str
     cells: list[LLMCell]
+    quantity: Quantity | None = Field(
+        default=None,
+        description=(
+            "What the row's figures measure: 'money' for an amount of currency, 'per_share' "
+            "for an amount per share, 'share_count' for a number of shares, 'percent' for a "
+            "rate or margin, 'other' for any other count or measure (employees, stores, "
+            "days). null for a row with no figures."
+        ),
+    )
+    scale: UnitScale | None = Field(
+        default=None,
+        description=(
+            "The scale this row's figures are printed in, read from the table's unit note: "
+            "'millions' if 1,250 means 1,250 million. Rows the note excepts have their own: "
+            "under 'in millions, except share data in thousands', a share-count row is "
+            "'thousands' and a per-share row is 'actual'. null for a percent row or a row "
+            "with no figures."
+        ),
+    )
+    group: str | None = Field(
+        default=None,
+        description=(
+            "The label of the sub-heading row this row is listed under, exactly as that "
+            "heading is written (e.g. 'Operating expenses:' for a row indented beneath it). "
+            "null for a row that is not under a sub-heading, including the sub-heading "
+            "rows themselves and totals printed back at the outer level."
+        ),
+    )
 
 
 class LLMTableBlock(BaseModel):

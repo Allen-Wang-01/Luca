@@ -9,7 +9,7 @@
 from typing import Any, Callable
 
 from app.models.narration import Visual, VisualItem
-from app.services.narration_tools import FigureIndex, _Operand, call_tool, operand_schema
+from app.services.narration_tools import FigureIndex, _Operand, call_tool, kind_error, operand_schema
 
 # A card is read in the few seconds its line takes to speak.
 MAX_BARS = 8
@@ -64,7 +64,8 @@ def _resolve(builder: ChartBuilder, title: Any, entries: list[Any]) -> tuple[lis
 
     if len({operand.is_percent for _, operand in resolved}) > 1:
         return [], "Can't put percentages and amounts in the same chart."
-    return resolved, None
+    error = kind_error([operand for _, operand in resolved], "drawn in the same chart")
+    return resolved, error
 
 
 def _scale(operands: list[_Operand]) -> tuple[float, str | None]:

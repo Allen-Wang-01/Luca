@@ -38,6 +38,11 @@ it does not need to be globally unique, just descriptive.
 - For tables, extract every row and every numeric column exactly as printed. Put the \
 row's original numeric text in `raw_text` and the parsed numeric value (no commas, no \
 currency symbols, negative for parentheses) in `value`.
+- For every table row with figures, set `quantity` and `scale` from what the row \
+measures and the table's unit note, and set `group` to the sub-heading the row is \
+listed under, if any. A statement often mixes kinds and scales (amounts in millions \
+next to per-share amounts and share counts), and repeats a label under different \
+sub-headings, so these are what tell such rows apart later.
 - Prefer expressing chart data as structured series (label/value pairs) rather than \
 describing the chart in prose.
 - Set `confidence` to "low" on any table or chart you were not confident reading \

@@ -1,4 +1,4 @@
-import type { NarrationTarget } from '../../narration/targetIndex'
+import { columnLabel, rowLabel, rowUnit, type NarrationTarget } from '../../narration/targetIndex'
 import { AnchoredCard } from './AnchoredCard'
 import { formatCellValue } from './formatCellValue'
 import './FocusCard.css'
@@ -15,6 +15,8 @@ interface FocusCardProps {
 // a room or over a screen share, which a background tint on a 13px cell is not.
 export function FocusCard({ anchorId, target }: FocusCardProps) {
   const { table, row } = target
+  const label = rowLabel(table, row)
+  const unit = rowUnit(table, row)
 
   return (
     <AnchoredCard anchorId={anchorId}>
@@ -22,17 +24,17 @@ export function FocusCard({ anchorId, target }: FocusCardProps) {
       {target.kind === 'cell' ? (
         <>
           <div className="focus-card__metric">
-            {row.label}
-            {target.column && <span className="focus-card__period">{target.column.label}</span>}
+            {label}
+            {target.column && <span className="focus-card__period">{columnLabel(table, target.column)}</span>}
           </div>
           <div className="focus-card__value">{formatCellValue(target.cell)}</div>
-          {table.unit && target.cell.value_type !== 'percent' && target.cell.value_type !== 'text' && (
-            <div className="focus-card__unit">{table.unit}</div>
+          {unit && target.cell.value_type !== 'percent' && target.cell.value_type !== 'text' && (
+            <div className="focus-card__unit">{unit}</div>
           )}
         </>
       ) : (
         <>
-          <div className="focus-card__metric">{row.label}</div>
+          <div className="focus-card__metric">{label}</div>
           {row.cells.length > 0 && (
             <dl className="focus-card__series">
               {table.columns.map((column) => {
@@ -40,7 +42,7 @@ export function FocusCard({ anchorId, target }: FocusCardProps) {
                 return (
                   cell && (
                     <div key={column.id} className="focus-card__series-item">
-                      <dt>{column.label}</dt>
+                      <dt>{columnLabel(table, column)}</dt>
                       <dd>{formatCellValue(cell)}</dd>
                     </div>
                   )
@@ -48,7 +50,7 @@ export function FocusCard({ anchorId, target }: FocusCardProps) {
               })}
             </dl>
           )}
-          {table.unit && <div className="focus-card__unit">{table.unit}</div>}
+          {unit && <div className="focus-card__unit">{unit}</div>}
         </>
       )}
     </AnchoredCard>

@@ -71,6 +71,23 @@ def test_row_and_cell_ids_derive_from_block_id():
     assert row.cells[0].id == "t_income_statement__r0_col1"
 
 
+def test_rows_keep_what_the_parser_says_they_measure():
+    table = _table("income_statement")
+    figures = table.rows[0].cells
+    table.rows = [
+        # A sub-heading has no figures, so it measures nothing whatever it was given.
+        LLMRow(label="Per share:", cells=[], quantity="per_share", scale="actual"),
+        LLMRow(label="Basic", cells=figures, quantity="per_share", scale="actual", group=" Per share: "),
+        LLMRow(label="Revenue", cells=figures),
+    ]
+
+    rows = assign_ids(LLMFinancialReport(meta=META, sections=[], blocks=[table]), "report.pdf").blocks[0].rows
+
+    assert (rows[0].quantity, rows[0].scale, rows[0].group) == (None, None, None)
+    assert (rows[1].quantity, rows[1].scale, rows[1].group) == ("per_share", "actual", "Per share")
+    assert (rows[2].quantity, rows[2].scale, rows[2].group) == (None, None, None)
+
+
 def test_section_block_slugs_resolve_to_final_ids():
     llm_report = LLMFinancialReport(
         meta=META,
