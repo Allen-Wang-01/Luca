@@ -1,4 +1,4 @@
-from app.models.report import Flag
+from app.models.report import Flag, Row, SumTerm
 from app.services.narration_context import collect_target_ids, render_report_for_prompt
 
 
@@ -24,6 +24,23 @@ def test_render_tells_apart_repeated_labels_and_marks_rows_that_are_not_amounts(
     assert "[t_ops__r4] Net income: " in text
     assert "[t_ops__r6] Earnings per share · Basic (per share): " in text
     assert "[t_ops__r8] Shares used · Basic (number of shares, in thousands): " in text
+
+
+def test_totals_with_the_same_label_are_told_apart_by_what_they_add_up(statement):
+    table = statement.blocks[0]
+    figures = table.rows[1].cells
+
+    def total(index, part_index):
+        row_id = f"t_ops__r{index}"
+        cells = [cell.model_copy(update={"id": f"{row_id}_{cell.col_id}"}) for cell in figures]
+        return Row(id=row_id, label="Total", cells=cells, sum_of=[SumTerm(row_id=f"t_ops__r{part_index}", sign="add")])
+
+    table.rows += [total(9, 1), total(10, 3)]
+
+    text = render_report_for_prompt(statement)
+
+    assert "[t_ops__r9] Sales · Total: " in text
+    assert "[t_ops__r10] Cost of sales · Total: " in text
 
 
 def test_render_surfaces_flags_and_sections(report):

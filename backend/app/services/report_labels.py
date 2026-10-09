@@ -9,12 +9,26 @@ from collections import Counter
 from app.models.report import TableBlock
 
 
+def _row_groups(table: TableBlock) -> dict[str, str | None]:
+    """Row id -> the sub-heading the row belongs to. A total is usually printed back at
+    the outer level, under no sub-heading of its own, so it takes the one its parts
+    share: two "Total sales" rows closing two different breakdowns are told apart by
+    what they add up."""
+    own = {row.id: row.group for row in table.rows}
+    groups: dict[str, str | None] = {}
+    for row in table.rows:
+        parts = {own.get(term.row_id) for term in row.sum_of}
+        groups[row.id] = row.group or (parts.pop() if len(parts) == 1 else None)
+    return groups
+
+
 def row_labels(table: TableBlock) -> dict[str, str]:
     """Row id -> label, with the sub-heading in front where the label alone is shared
     by several rows of the table."""
     counts = Counter(row.label for row in table.rows if row.cells)
+    groups = _row_groups(table)
     return {
-        row.id: f"{row.group} · {row.label}" if row.group and counts[row.label] > 1 else row.label
+        row.id: f"{groups[row.id]} · {row.label}" if groups[row.id] and counts[row.label] > 1 else row.label
         for row in table.rows
     }
 

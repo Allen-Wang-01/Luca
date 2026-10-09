@@ -31,10 +31,21 @@ export function buildTargetIndex(report: FinancialReport): TargetIndex {
 // are out of sight, so the label has to carry them. The backend names figures the same
 // way for the narration model (backend/app/services/report_labels.py).
 
+// The sub-heading a row belongs to. A total is usually printed back at the outer level,
+// under no sub-heading of its own, so it takes the one its parts share.
+function rowGroup(table: TableBlock, row: Row): string | null {
+  if (row.group) return row.group
+  const partIds = new Set((row.sum_of ?? []).map((term) => term.row_id))
+  const groups = new Set(table.rows.filter((other) => partIds.has(other.id)).map((other) => other.group))
+  const [only] = groups
+  return groups.size === 1 ? (only ?? null) : null
+}
+
 // The row's label, with its sub-heading in front where several rows share the label.
 export function rowLabel(table: TableBlock, row: Row): string {
   const shared = table.rows.filter((other) => other.cells.length > 0 && other.label === row.label).length > 1
-  return row.group && shared ? `${row.group} · ${row.label}` : row.label
+  const group = rowGroup(table, row)
+  return group && shared ? `${group} · ${row.label}` : row.label
 }
 
 // The column's label, with its group header in front if it has one.
