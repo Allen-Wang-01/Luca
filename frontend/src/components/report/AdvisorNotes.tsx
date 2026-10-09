@@ -147,6 +147,7 @@ const REMOVED_REASON_LABELS: Record<RemovedSource['reason'], string> = {
 const REMOVED_VISUAL_LABELS: Record<RemovedVisual['reason'], string> = {
   unknown_chart: 'No such chart was built (a rejected chart has no id) - line plays without a chart',
   unknown_emphasis: 'Chart has no such item - shown with nothing emphasized',
+  reappeared: 'Chart was already shown earlier - line plays without a chart',
 }
 
 function pluralize(count: number, word: string): string {

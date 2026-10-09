@@ -125,7 +125,9 @@ class RemovedVisual(BaseModel):
     # checks never gets one), so the line is shown without a chart.
     # "unknown_emphasis": the chart exists but has no item with that key, so it is shown
     # with nothing emphasized.
-    reason: Literal["unknown_chart", "unknown_emphasis"]
+    # "reappeared": the chart came back after a line without it; it is only shown for
+    # its first run of lines.
+    reason: Literal["unknown_chart", "unknown_emphasis", "reappeared"]
     detail: str
 
 

@@ -167,6 +167,22 @@ def test_an_unknown_emphasis_is_dropped_but_the_chart_stays():
     assert [(r.line, r.reason) for r in removed] == [(1, "unknown_emphasis")]
 
 
+def test_a_chart_that_comes_back_later_is_only_shown_the_first_time():
+    lines, removed = attach_visuals(
+        [
+            _llm_line(chart_id="chart_1", chart_emphasis="i1"),
+            _llm_line(chart_id="chart_1", chart_emphasis="i2"),
+            _llm_line(),
+            _llm_line(chart_id="chart_1"),
+            _llm_line(chart_id="chart_1", chart_emphasis="i2"),
+        ],
+        {"chart_1": CHART},
+    )
+
+    assert [l.visual is not None for l in lines] == [True, True, False, False, False]
+    assert [(r.line, r.chart_id, r.reason) for r in removed] == [(4, "chart_1", "reappeared"), (5, "chart_1", "reappeared")]
+
+
 def test_removed_visuals_are_numbered_without_blank_lines():
     lines, removed = attach_visuals([_llm_line(text="  "), _llm_line(chart_id="chart_9")], {})
 

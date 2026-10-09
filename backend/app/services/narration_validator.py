@@ -89,17 +89,21 @@ def attach_visuals(
     Returns (lines, the chart references that didn't hold up and why). A chart id that
     no chart tool produced is dropped - that includes charts that failed their checks,
     which never got an id. An emphasis key the chart doesn't have is dropped on its own;
-    the chart is still shown. Lines with empty text are left out here, so line numbers
-    match the final script.
+    the chart is still shown. A chart is shown for one unbroken run of lines only: when
+    it comes back after a line without it, the card would pop up again for something
+    the listener has already been walked through, so later runs are dropped. Lines with
+    empty text are left out here, so line numbers match the final script.
     """
     attached: list[NarrationLine] = []
     removed: list[RemovedVisual] = []
+    shown: set[str] = set()
     for line in lines:
         if not line.text.strip():
             continue
         number = len(attached) + 1
         visual: LineVisual | None = None
         chart = charts.get(line.chart_id) if line.chart_id else None
+        previous = attached[-1].visual if attached else None
         if line.chart_id and chart is None:
             removed.append(
                 RemovedVisual(
@@ -109,7 +113,17 @@ def attach_visuals(
                     detail="No chart with this id was built.",
                 )
             )
+        elif chart is not None and chart.id in shown and (previous is None or previous.chart.id != chart.id):
+            removed.append(
+                RemovedVisual(
+                    line=number,
+                    chart_id=chart.id,
+                    reason="reappeared",
+                    detail="The chart was already shown earlier in the script.",
+                )
+            )
         elif chart is not None:
+            shown.add(chart.id)
             emphasis = line.chart_emphasis or None
             if emphasis and all(item.key != emphasis for item in chart.items):
                 removed.append(
