@@ -7,6 +7,7 @@ from app.models.llm_report import (
     LLMChartBlock,
     LLMFinancialReport,
     LLMParagraphBlock,
+    LLMRow,
     LLMTableBlock,
 )
 from app.models.report import (
@@ -18,6 +19,7 @@ from app.models.report import (
     ReportMeta,
     Row,
     Section,
+    SumTerm,
     TableBlock,
 )
 
@@ -34,6 +36,26 @@ def _heading(group: str | None) -> str | None:
     # colon a sub-heading usually ends with would read oddly.
     text = (group or "").strip().rstrip(":").strip()
     return text or None
+
+
+def _indexes_match(rows: list[LLMRow]) -> bool:
+    # Rows refer to each other by the index the model wrote on each. If any of those is
+    # off, its references may point one row away from what it meant, and a wrong
+    # relationship would flag correct figures - so the whole table's are left out.
+    return all(row.index == position for position, row in enumerate(rows))
+
+
+def _sum_terms(table_id: str, row_index: int, rows: list[LLMRow]) -> list[SumTerm]:
+    """The rows this one is the total of, by row id. Empty if any reference can't be
+    one: out of range, the row itself, a row without figures, or the same row twice."""
+    terms = rows[row_index].sum_of or []
+    indexes = [term.index for term in terms]
+    usable = len(set(indexes)) == len(indexes) and all(
+        0 <= index < len(rows) and index != row_index and rows[index].cells for index in indexes
+    )
+    if not usable:
+        return []
+    return [SumTerm(row_id=f"{table_id}__r{term.index}", sign=term.sign) for term in terms]
 
 
 class _IdAllocator:
@@ -70,6 +92,7 @@ def assign_ids(llm_report: LLMFinancialReport, source_filename: str) -> Financia
         elif isinstance(llm_block, LLMTableBlock):
             block_id = allocator.allocate("t", llm_block.slug)
             rows: list[Row] = []
+            sums_usable = _indexes_match(llm_block.rows)
             for row_index, llm_row in enumerate(llm_block.rows):
                 row_id = f"{block_id}__r{row_index}"
                 cells = [
@@ -91,6 +114,7 @@ def assign_ids(llm_report: LLMFinancialReport, source_filename: str) -> Financia
                         quantity=llm_row.quantity if cells else None,
                         scale=llm_row.scale if cells else None,
                         group=_heading(llm_row.group),
+                        sum_of=_sum_terms(block_id, row_index, llm_block.rows) if sums_usable and cells else [],
                     )
                 )
             blocks.append(

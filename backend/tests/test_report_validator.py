@@ -1,4 +1,4 @@
-from app.models.report import Cell, Column, Row, TableBlock
+from app.models.report import Cell, Column, Row, SumTerm, TableBlock
 from app.services.report_validator import validate
 
 
@@ -129,3 +129,92 @@ def test_balance_sheet_mismatch_is_still_flagged():
     validate(report)
 
     assert report.blocks[0].rows[0].flags[0].code == "arithmetic_mismatch"
+
+
+COLUMNS = ("q", "q_ly", "ytd")
+
+
+def _figures(row_id, values):
+    return [
+        Cell(id=f"{row_id}_{col_id}", col_id=col_id, value=value, raw_text="—" if value is None else f"{value:,}", value_type="number")
+        for col_id, value in zip(COLUMNS, values)
+    ]
+
+
+def _statement(sales, costs, margin, columns=COLUMNS, sum_of=(("r0", "add"), ("r1", "subtract"))):
+    """Three rows whose labels match none of the label rules, the last one declared as
+    the first less the second."""
+    terms = [SumTerm(row_id=row_id, sign=sign) for row_id, sign in sum_of]
+    report = _report(
+        [
+            Row(id="r0", label="Net sales", cells=_figures("r0", sales)),
+            Row(id="r1", label="Total cost of sales", cells=_figures("r1", costs)),
+            Row(id="r2", label="Margin", cells=_figures("r2", margin), sum_of=terms),
+        ]
+    )
+    report.blocks[0].columns = [Column(id=col_id, label=col_id) for col_id in columns]
+    return report
+
+
+def test_a_declared_sum_that_holds_gets_no_flags():
+    report = _statement(sales=(300, 250, 900), costs=(120, 110, 380), margin=(180, 140, 520))
+
+    validate(report)
+
+    assert all(row.flags == [] for row in report.blocks[0].rows)
+
+
+def test_a_figure_that_breaks_a_declared_sum_in_one_column_is_flagged():
+    report = _statement(sales=(300, 250, 900), costs=(120, 110, 380), margin=(180, 104, 520))
+
+    validate(report)
+
+    flags = report.blocks[0].rows[2].flags
+    assert [flag.code for flag in flags] == ["arithmetic_mismatch"]
+    assert flags[0].message == "Margin should equal Net sales - Total cost of sales in 'q_ly' (expected 140, got 104)"
+
+
+def test_a_declared_sum_that_fails_everywhere_is_a_wrong_relationship_not_a_flag():
+    # Declared as sales plus costs: off in every column, which a misread figure never is.
+    report = _statement(
+        sales=(300, 250, 900), costs=(120, 110, 380), margin=(180, 140, 520), sum_of=(("r0", "add"), ("r1", "add"))
+    )
+
+    validate(report)
+
+    assert report.blocks[0].rows[2].flags == []
+
+
+def test_a_failed_sum_with_one_column_to_check_is_unconfirmed():
+    report = _statement(sales=(300,), costs=(120,), margin=(999,), columns=("q",))
+
+    validate(report)
+
+    assert [flag.code for flag in report.blocks[0].rows[2].flags] == ["unconfirmed_sum"]
+
+
+def test_declared_sums_allow_for_rounding_and_read_a_dash_as_zero():
+    # 0.5 off per printed figure is rounding; a dash in a column of figures is nothing.
+    report = _statement(sales=(300, 250, 900), costs=(120, None, 380), margin=(181, 250, 520))
+
+    validate(report)
+
+    assert report.blocks[0].rows[2].flags == []
+
+
+def test_label_rules_are_not_used_once_a_table_declares_its_sums():
+    # The label rules would compare "Revenue" with "Cost of revenue" here and flag
+    # "Gross profit"; the table says how its rows add up, so they stay out of it.
+    report = _report(
+        [
+            Row(id="r0", label="Revenue", cells=[_cell("col1", 100)]),
+            Row(id="r1", label="Cost of revenue", cells=[_cell("col1", 40)]),
+            Row(id="r2", label="Gross profit", cells=[_cell("col1", 999)]),
+            Row(id="r3", label="Other", cells=[_cell("col1", 5)]),
+            Row(id="r4", label="Total", cells=[_cell("col1", 105)], sum_of=[SumTerm(row_id="r0", sign="add"), SumTerm(row_id="r3", sign="add")]),
+        ]
+    )
+
+    validate(report)
+
+    assert all(row.flags == [] for row in report.blocks[0].rows)

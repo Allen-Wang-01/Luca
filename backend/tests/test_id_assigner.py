@@ -4,6 +4,7 @@ from app.models.llm_report import (
     LLMParagraphBlock,
     LLMReportMeta,
     LLMRow,
+    LLMSumTerm,
     LLMSection,
     LLMTableBlock,
 )
@@ -86,6 +87,45 @@ def test_rows_keep_what_the_parser_says_they_measure():
     assert (rows[0].quantity, rows[0].scale, rows[0].group) == (None, None, None)
     assert (rows[1].quantity, rows[1].scale, rows[1].group) == ("per_share", "actual", "Per share")
     assert (rows[2].quantity, rows[2].scale, rows[2].group) == (None, None, None)
+
+
+def _summed_table(indexes=(0, 1, 2, 3), sum_of=((1, "add"), (2, "subtract"))):
+    table = _table("income_statement")
+    figures = table.rows[0].cells
+    terms = [LLMSumTerm(index=index, sign=sign) for index, sign in sum_of]
+    table.rows = [
+        LLMRow(index=indexes[0], label="Results:", cells=[]),
+        LLMRow(index=indexes[1], label="Sales", cells=figures),
+        LLMRow(index=indexes[2], label="Costs", cells=figures),
+        LLMRow(index=indexes[3], label="Margin", cells=figures, sum_of=terms),
+    ]
+    return assign_ids(LLMFinancialReport(meta=META, sections=[], blocks=[table]), "report.pdf").blocks[0]
+
+
+def test_a_total_refers_to_its_parts_by_row_id():
+    table = _summed_table()
+
+    assert [(term.row_id, term.sign) for term in table.rows[3].sum_of] == [
+        ("t_income_statement__r1", "add"),
+        ("t_income_statement__r2", "subtract"),
+    ]
+    assert table.rows[1].sum_of == []
+
+
+def test_sums_are_dropped_when_the_row_numbering_is_off():
+    # The model skipped a number, so its references can't be trusted to mean the rows
+    # they point at.
+    assert _summed_table(indexes=(0, 1, 3, 4)).rows[3].sum_of == []
+
+
+def test_a_sum_that_refers_to_an_impossible_row_is_dropped():
+    for sum_of in (
+        ((1, "add"), (9, "add")),  # no such row
+        ((1, "add"), (3, "add")),  # the total itself
+        ((0, "add"), (1, "add")),  # a sub-heading, which has no figures
+        ((1, "add"), (1, "add")),  # the same row twice
+    ):
+        assert _summed_table(sum_of=sum_of).rows[3].sum_of == []
 
 
 def test_section_block_slugs_resolve_to_final_ids():

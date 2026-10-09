@@ -1,12 +1,27 @@
 # Post-parse arithmetic consistency checks. Kept independent from the LLM prompt so
 # validation rules can evolve without touching parsing. Flags mutate rows in place.
+#
+# The parser says which rows each total is made of (Row.sum_of); this module only does
+# the arithmetic, so nothing here depends on what a company calls its rows. Flag codes:
+# - "arithmetic_mismatch": a total doesn't add up in some columns but does in others,
+#   or (tables without sum_of) a label rule failed. The figure is suspect, and the
+#   narration says so to the listener.
+# - "unconfirmed_sum": a total doesn't add up in a table with a single column to check.
+#   Shown on the page only.
 import re
 
-from app.models.report import FinancialReport, Flag, Row, TableBlock
+from app.core.logging import get_logger
+from app.models.report import Cell, FinancialReport, Flag, Row, TableBlock
+from app.services import report_labels
+
+logger = get_logger(__name__)
 
 _TOLERANCE = 1.0  # absolute, in the table's own unit (usually millions) - rounding slack
 
 _NON_ALNUM_RE = re.compile(r"[^a-z0-9]+")
+_NUMBER_RE = re.compile(r"\d[\d,]*(?:\.\d+)?")
+# How statements print "nothing" in a column of figures.
+_DASHES = frozenset({"-", "–", "—", ""})
 
 # Each rule: (minuend label, subtrahend label, result label) meaning
 # minuend - subtrahend ≈ result. Labels are matched case-insensitively, ignoring
@@ -79,6 +94,76 @@ def _find_rule_rows(table: TableBlock, rule_labels: tuple[str, ...]) -> list[Row
 
 
 def _check_table(table: TableBlock) -> None:
+    if any(row.sum_of for row in table.rows):
+        _check_declared_sums(table)
+    else:
+        # A table parsed before totals named their parts: all there is to go on is
+        # what the rows are called.
+        _check_label_rules(table)
+
+
+def _last_digit(cell: Cell) -> float:
+    """One unit of the cell's last printed digit: 1 for "1,250", 0.01 for "2.03"."""
+    match = _NUMBER_RE.search(cell.raw_text)
+    return 10 ** -len(match.group().partition(".")[2]) if match else 1.0
+
+
+def _term_cell(row: Row, col_id: str) -> Cell | None:
+    """The row's figure in that column, with a dash read as zero. None if the column
+    holds nothing that can be added up."""
+    cell = next((c for c in row.cells if c.col_id == col_id), None)
+    if cell is None or cell.value is not None:
+        return cell
+    return cell.model_copy(update={"value": 0.0}) if cell.raw_text.strip() in _DASHES else None
+
+
+def _check_declared_sums(table: TableBlock) -> None:
+    rows_by_id = {row.id: row for row in table.rows}
+    column_labels = report_labels.column_labels(table)
+    for total in table.rows:
+        terms = [(rows_by_id.get(term.row_id), term.sign) for term in total.sum_of]
+        if not terms or any(row is None for row, _ in terms):
+            continue
+
+        formula = " ".join(
+            f"{'+' if sign == 'add' else '-'} {row.label}" for row, sign in terms
+        ).removeprefix("+ ")
+        checked = 0
+        mismatches: list[str] = []
+        for total_cell in total.cells:
+            cells = [_term_cell(row, total_cell.col_id) for row, _ in terms]
+            if total_cell.value is None or any(cell is None for cell in cells):
+                continue
+            checked += 1
+            expected = sum(cell.value if sign == "add" else -cell.value for cell, (_, sign) in zip(cells, terms))
+            # Every figure is rounded to its last printed digit, so each can be half a
+            # unit off before the sum is.
+            tolerance = 0.5 * sum(_last_digit(cell) for cell in [total_cell, *cells])
+            if abs(expected - total_cell.value) > tolerance + 1e-9:
+                column = column_labels.get(total_cell.col_id, total_cell.col_id)
+                mismatches.append(
+                    f"{total.label} should equal {formula} in '{column}' "
+                    f"(expected {expected:g}, got {total_cell.value:g})"
+                )
+
+        if not mismatches:
+            continue
+        if checked == 1:
+            # One column can't tell a misread figure from a relationship that was
+            # never there.
+            total.flags.append(Flag(severity="warning", code="unconfirmed_sum", message=mismatches[0]))
+        elif len(mismatches) == checked:
+            # A misread figure breaks the column it is in. Every column failing means
+            # the rows don't add up this way at all: the relationship is wrong, not
+            # the figures, and flagging it would cast doubt on correct numbers.
+            logger.info("declared_sum_ignored row=%s formula=%r columns=%d", total.id, formula, checked)
+        else:
+            total.flags.extend(
+                Flag(severity="warning", code="arithmetic_mismatch", message=message) for message in mismatches
+            )
+
+
+def _check_label_rules(table: TableBlock) -> None:
     for rule in _DIFFERENCE_RULES:
         rows = _find_rule_rows(table, rule)
         if rows:

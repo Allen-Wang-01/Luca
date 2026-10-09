@@ -62,6 +62,14 @@ export interface Row {
   scale: UnitScale | null
   // The sub-heading the row sits under, for telling apart rows that share a label.
   group: string | null
+  // For a total or subtotal: the rows of the same table that add up to it. The backend
+  // checks the arithmetic and flags the row if it doesn't hold. Empty for other rows.
+  sum_of: SumTerm[]
+}
+
+export interface SumTerm {
+  row_id: string
+  sign: 'add' | 'subtract'
 }
 
 export interface TableBlock {

@@ -43,6 +43,9 @@ measures and the table's unit note, and set `group` to the sub-heading the row i
 listed under, if any. A statement often mixes kinds and scales (amounts in millions \
 next to per-share amounts and share counts), and repeats a label under different \
 sub-headings, so these are what tell such rows apart later.
+- Number every table row with its `index`, and for each total or subtotal list in \
+`sum_of` the rows that add up to it. These are used to check the extracted figures \
+against each other, so only state a relationship the statement itself shows.
 - Prefer expressing chart data as structured series (label/value pairs) rather than \
 describing the chart in prose.
 - Set `confidence` to "low" on any table or chart you were not confident reading \

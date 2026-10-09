@@ -7,6 +7,13 @@ from app.models.report import ChartBlock, FinancialReport, ParagraphBlock, Row, 
 from app.services import report_labels
 
 
+# The flags the model is shown, and so tells the listener about: the ones that say a
+# figure itself is suspect. Other codes are notes on how the report was parsed (see
+# report_validator.py) - shown on the page, but nothing a listener should hear as a
+# warning about a number.
+NARRATED_FLAG_CODES = frozenset({"arithmetic_mismatch"})
+
+
 def collect_target_ids(report: FinancialReport) -> set[str]:
     ids: set[str] = set()
     for block in report.blocks:
@@ -58,7 +65,8 @@ def _render_table(table: TableBlock) -> list[str]:
         header += " [LOW EXTRACTION CONFIDENCE]"
     lines = [header]
     for flag in table.flags:
-        lines.append(f"  ! table flag: {flag.message}")
+        if flag.code in NARRATED_FLAG_CODES:
+            lines.append(f"  ! table flag: {flag.message}")
 
     columns = " | ".join(f'{c.id}="{c.label}"' for c in table.columns)
     lines.append(f"  columns: {columns}")
@@ -88,7 +96,8 @@ def _render_row(row: Row, label: str) -> str:
     label += _row_note(row)
     text = f"[{row.id}] {label}: {values}" if values else f"[{row.id}] {label}"
     for flag in row.flags:
-        text += f"  ! FLAG: {flag.message}"
+        if flag.code in NARRATED_FLAG_CODES:
+            text += f"  ! FLAG: {flag.message}"
     return text
 
 

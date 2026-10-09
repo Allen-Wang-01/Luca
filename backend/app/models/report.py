@@ -55,6 +55,11 @@ class Cell(BaseModel):
 Quantity = Literal["money", "per_share", "share_count", "percent", "other"]
 
 
+class SumTerm(BaseModel):
+    row_id: str
+    sign: Literal["add", "subtract"]
+
+
 class Row(BaseModel):
     id: str
     label: str
@@ -69,6 +74,10 @@ class Row(BaseModel):
     scale: UnitScale | None = None
     # The sub-heading the row sits under, for telling apart rows that share a label.
     group: str | None = None
+    # For a total or subtotal: the rows of the same table that add up to it, as the
+    # parser read the statement. report_validator checks the arithmetic column by
+    # column. Empty for any other row, and throughout reports parsed before this existed.
+    sum_of: list[SumTerm] = Field(default_factory=list)
 
 
 class TableBlock(BaseModel):

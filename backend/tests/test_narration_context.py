@@ -1,3 +1,4 @@
+from app.models.report import Flag
 from app.services.narration_context import collect_target_ids, render_report_for_prompt
 
 
@@ -29,6 +30,18 @@ def test_render_surfaces_flags_and_sections(report):
     text = render_report_for_prompt(report)
 
     assert "## Section: Results" in text
+    assert "! FLAG: Other looks wrong" in text
+
+
+def test_render_leaves_out_flags_that_are_not_about_a_figure(report):
+    table = report.blocks[1]
+    table.flags.append(Flag(severity="warning", code="ambiguous_columns", message="Columns share a label"))
+    table.rows[0].flags.append(Flag(severity="warning", code="unconfirmed_sum", message="Revenue may not add up"))
+
+    text = render_report_for_prompt(report)
+
+    assert "Columns share a label" not in text
+    assert "Revenue may not add up" not in text
     assert "! FLAG: Other looks wrong" in text
 
 

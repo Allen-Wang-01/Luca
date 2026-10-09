@@ -35,9 +35,36 @@ class LLMCell(BaseModel):
     value_type: Literal["number", "percent", "currency", "text"]
 
 
+class LLMSumTerm(BaseModel):
+    index: int = Field(description="The `index` of a row in the same table.")
+    sign: Literal["add", "subtract"]
+
+
 class LLMRow(BaseModel):
+    # Rows have no ids yet, so one row refers to another by position. The model writes
+    # every row's position out because counting rows back from a total is where it
+    # would slip; id_assigner trusts the references only if these all match.
+    index: int | None = Field(
+        default=None,
+        description="The row's position in its table, counting every row from 0: 0, 1, 2, ...",
+    )
     label: str
     cells: list[LLMCell]
+    sum_of: list[LLMSumTerm] | None = Field(
+        default=None,
+        description=(
+            "For a row the statement presents as a total or a result of the rows above it: "
+            "those rows, each by its `index`, with 'add' or 'subtract'. Figures are taken "
+            "with the sign they are printed with, so an expense printed as 400 is "
+            "subtracted, while an outflow printed as (120) is negative already and is "
+            "added. E.g. a 'Total operating expenses' row at index 7 over expense rows 5 "
+            "and 6: [{index: 5, sign: 'add'}, {index: 6, sign: 'add'}]; an 'Operating "
+            "income' row that is gross profit at index 4 less that total: [{index: 4, "
+            "sign: 'add'}, {index: 7, sign: 'subtract'}]. Prefer the nearest subtotals "
+            "over listing every line beneath them. null for a row that is not a total, "
+            "and when unsure which rows make it up."
+        ),
+    )
     quantity: Quantity | None = Field(
         default=None,
         description=(
