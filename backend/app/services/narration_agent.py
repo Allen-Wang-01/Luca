@@ -26,7 +26,6 @@ from app.models.narration import (
     NarrationTrace,
     RemovedLine,
     ReviewFinding,
-    ReviewRound,
     ToolCallTrace,
     WebSearchTrace,
 )
@@ -111,7 +110,9 @@ Any number that is not printed in the report (a growth rate, a margin, a share o
 total, a difference, the growth implied by guidance) MUST come from the calculation \
 tools, never from your own mental arithmetic - and that includes simple ones, like how \
 much revenue was added since last quarter ("added $X billion in sales"). If you \
-didn't calculate it with a tool, don't say it. Tools look values up themselves; each \
+didn't calculate it with a tool, don't say it (the one exception, a calculation \
+written next to the line that states it, is described under "Figures" below). Tools \
+look values up themselves; each \
 operand is a reference, not a number:
 - a figure in a table: {id: <cell id>, quote: null}
 - a figure that only appears in paragraph text: {id: <paragraph id>, quote: <just the \
@@ -141,6 +142,12 @@ about this year that quotes last year's column is the most common mistake - when
 write a number, check which column it sits in.
 - A number you calculated lists its `calc_id`, not the cells that went into it. If a \
 line says both "$4.1 billion" and "up 12%", it lists the cell and the calculation.
+- A number that comes to you while writing, with no tool call behind it - "that is 2.4 \
+points more than last year", "together they come to $9.3 billion" - goes in the line's \
+`calculations` instead: name the figures and the operation, and the arithmetic is done \
+for you and compared with what the line says. This is for the one-step figure you \
+didn't plan; anything you can foresee, and anything a chart needs, still goes through \
+the tools before you write. A number with neither behind it must not be said.
 - Rounding the way a person would say it is fine ("about $4.1 billion" for 4,118 in \
 millions). A different number is not.
 - Keep a comparison within one period unless you say otherwise: "sales of 500 against \
@@ -316,11 +323,15 @@ Return the complete script again: every line, in order, changed only where a fix
 - MUST FIX, a figure that matches none of the line's `figures`: either the sentence states the wrong number \
 (say the one the report has), or the number is right and its reference is missing from `figures` (add the \
 cell id, the paragraph quote, or the calc_id it came from).
-- MUST FIX, a reference that doesn't exist: replace it with the id you meant, copied from the report.
+- A figure you worked out yourself, with no tool call behind it: keep it by putting the calculation in the \
+line's `calculations` - the figures it uses and the operation. It is then done for you and compared with what \
+the line says, so if the result differs from your number, the line has to say the result.
+- MUST FIX, a reference that doesn't exist or a calculation that failed: replace the id with the one you \
+meant, copied from the report, or correct the calculation's terms.
 - CHECK: look at the line and the figures again. If the sentence presents a figure as the wrong period or the \
 wrong item, correct the sentence or cite the right figure. If the line is right as it is, leave it.
-- You can't calculate or search anything new now. A number with no calculation behind it has to go: reword \
-the line without it.
+- You can't call tools or search now. A number that neither a reference nor a one-step calculation in \
+`calculations` can back has to go: reword the line without it.
 - If a line can't be fixed, remove it, and reword its neighbours where needed so the script still flows: no \
 line may refer back to something that is no longer said, and the thread from one line to the next has to hold \
 without it.
@@ -347,7 +358,8 @@ def _review_and_correct(
     unit_note = f"Report figures are in {report.meta.currency} {report.meta.unit_scale} unless a label says otherwise."
     review = NarrationReview(rounds=[])
     for attempt in range(MAX_CORRECTIONS + 1):
-        findings, confirmed = narration_figures.check_script(lines, index)
+        review_round = narration_figures.check_script(lines, index)
+        findings = review_round.findings
         if attempt == 0:
             reviewer_findings, reviewer_usage = narration_reviewer.review(lines, index, unit_note, client)
             findings.extend(reviewer_findings)
@@ -356,7 +368,7 @@ def _review_and_correct(
                 review.reviewer_output_tokens = reviewer_usage["output_tokens"]
                 review.reviewer_cost_usd = reviewer_usage["cost_usd"]
                 review.reviewer_duration_ms = reviewer_usage["duration_ms"]
-        review.rounds.append(ReviewRound(lines=len(lines), figures_confirmed=confirmed, findings=findings))
+        review.rounds.append(review_round)
 
         # Advice alone is worth one correction turn, not a second: the agent has
         # already looked at it once.

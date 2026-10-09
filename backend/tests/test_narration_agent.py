@@ -4,7 +4,9 @@ from types import SimpleNamespace
 import pytest
 
 from app.models.narration import (
+    CalculationTerm,
     FigureRef,
+    LineCalculation,
     LLMNarrationLine,
     LLMNarrationScript,
     LLMReview,
@@ -69,12 +71,13 @@ class _FakeClient:
         return self._responses.pop(0)
 
 
-def _line(text, target_id, source_urls=(), chart_id=None, chart_emphasis=None, figures=()):
+def _line(text, target_id, source_urls=(), chart_id=None, chart_emphasis=None, figures=(), calculations=()):
     return LLMNarrationLine(
         text=text,
         target_id=target_id,
         source_urls=list(source_urls),
         figures=[FigureRef(**figure) for figure in figures],
+        calculations=list(calculations),
         chart_id=chart_id,
         chart_emphasis=chart_emphasis,
     )
@@ -388,6 +391,30 @@ def test_a_figure_that_does_not_match_is_sent_back_and_fixed(report):
     review = trace.review
     assert [[f.check for f in r.findings] for r in review.rounds] == [["figure_mismatch"], []]
     assert review.removed_lines == []
+
+
+def test_a_figure_worked_out_while_writing_passes_with_its_calculation(report):
+    added = LineCalculation(
+        operation="difference",
+        terms=[CalculationTerm(**REVENUE_THIS_YEAR, sign="add"), CalculationTerm(**REVENUE_LAST_YEAR, sign="add")],
+    )
+    line = _line("Revenue rose by $100 million.", "t_income__r0_q2", calculations=[added])
+    client = _FakeClient([_final_response([line, CLOSING]), _review_response()])
+
+    lines, trace = narration_agent.generate_narration(report, client=client)
+
+    assert len(trace.turns) == 1  # nothing to correct
+    assert lines[0].calculations == [added]
+    assert [(c.line, c.formula) for c in trace.review.rounds[0].calculations] == [(1, "200 - 100 = 100")]
+    assert "calculated: 200 - 100 = 100" in client.calls[1]["input"][0]["content"]
+
+
+def test_the_correction_request_offers_a_calculation_for_an_uncalculated_figure(report):
+    client = _FakeClient([_final_response([WRONG, CLOSING]), _review_response(), _final_response([RIGHT, CLOSING])])
+
+    narration_agent.generate_narration(report, client=client)
+
+    assert "`calculations`" in client.calls[2]["input"][-1]["content"]
 
 
 def test_a_figure_still_wrong_after_every_correction_is_cut(report):

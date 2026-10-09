@@ -160,6 +160,7 @@ function pluralize(count: number, word: string): string {
 const CHECK_LABELS: Record<ReviewFinding['check'], string> = {
   figure_mismatch: 'Figure does not match what the line cites',
   unknown_reference: 'Cites something that is not in the report',
+  calculation_error: 'A calculation written with the line could not be done',
   isolated_cell: 'Figures from different rows and different periods',
   target_not_cited: 'Highlights a figure the line does not cite',
   reviewer: 'Second reader',
@@ -191,6 +192,8 @@ function ReviewView({ review }: { review: NarrationReview }) {
   if (!draft || !final) return null
   const reviewerRan = review.reviewer_input_tokens !== null
   const openAdvice = corrections.length > 0 ? final.findings.filter((finding) => !finding.must_fix) : []
+  // Those of the script as it ended up, not of a draft that was rewritten.
+  const lineCalculations = final.calculations ?? []
 
   return (
     <li className="advisor-notes__turn">
@@ -214,6 +217,24 @@ function ReviewView({ review }: { review: NarrationReview }) {
         {pluralize(final.figures_confirmed, 'figure')} confirmed across {pluralize(final.lines, 'line')}
         {draft.findings.length === 0 && ' · nothing to correct'}
       </p>
+      {lineCalculations.length > 0 && (
+        <>
+          <p className="advisor-notes__turn-summary">
+            Worked out while writing - the advisor named the figures and the operation, the arithmetic was done
+            here and compared with what the line says:
+          </p>
+          <ul className="advisor-notes__calls">
+            {lineCalculations.map((calculation, i) => (
+              <li key={i} className="advisor-notes__call">
+                <span className="advisor-notes__tool">Line {calculation.line}</span>
+                <div className="advisor-notes__call-body">
+                  <code className="advisor-notes__formula">{calculation.formula}</code>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
       {draft.findings.length > 0 && (
         <>
           <p className="advisor-notes__turn-summary">

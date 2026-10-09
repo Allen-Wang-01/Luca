@@ -142,7 +142,11 @@ in the report.
 
 Every narration line lists where its figures come from, in `figures`:
 `[{id, quote}]` - a cell id, a paragraph id plus the figure as written there, or the id
-of a calculation from the same run (`calc_1`, ...). After the script is written, each
+of a calculation from the same run (`calc_1`, ...). A line can also carry a calculation
+itself, in `calculations`: `[{operation, terms: [{id, quote, sign}]}]`, with `operation`
+one of `difference`, `combine`, `percent_change`, `ratio`. That is for a figure the
+model works out while writing the line; the backend does the arithmetic and treats the
+result as one more figure the line cites. After the script is written, each
 amount and percentage in a line's text is compared with what the line lists, a second
 model reads each line against the labels of those figures, and the agent is asked to
 correct what was found (`backend/app/services/narration_figures.py`,

@@ -13,13 +13,19 @@
 #   highlighted cell the line doesn't cite. These can be wrong about a deliberate
 #   comparison, so the model is asked to look again and the line stays either way.
 #
+# A line can also carry a calculation of its own (`calculations`): the figures and the
+# operation, for a number that came to the model while writing. It is worked out here
+# with the calculation tools' own code, and its result is one more thing the line's
+# figures may match - so the arithmetic is still not the model's, without the turn a
+# tool call would have cost.
+#
 # What these can't see - a sentence about one figure that names the wrong period - is
 # left to narration_reviewer.py. Pure functions, no I/O.
 import re
 from dataclasses import dataclass
 
-from app.models.narration import LLMNarrationLine, ReviewFinding
-from app.services.narration_tools import FigureIndex, _Operand
+from app.models.narration import LineCalculationResult, LLMNarrationLine, ReviewFinding, ReviewRound
+from app.services.narration_tools import FigureIndex, _Operand, evaluate
 
 _SCALE_WORD_FACTORS = {"thousand": 1e3, "million": 1e6, "billion": 1e9, "trillion": 1e12}
 
@@ -93,17 +99,36 @@ def _finding(number: int, line: LLMNarrationLine, check: str, detail: str, must_
     return ReviewFinding(line=number, text=line.text, check=check, detail=detail, must_fix=must_fix)
 
 
-def resolve_figures(line: LLMNarrationLine, index: FigureIndex) -> tuple[list[_Operand], list[str]]:
-    """The figures the line cites, and an error for each reference that names nothing."""
+@dataclass(frozen=True)
+class LineFigures:
+    # Everything the line's stated figures may match: what it cites, and the results of
+    # the calculations it carries.
+    operands: list[_Operand]
+    # Formulas of the calculations it carries, as worked out.
+    formulas: list[str]
+    # (check, detail) for each reference that names nothing and each calculation that
+    # couldn't be done.
+    errors: list[tuple[str, str]]
+
+
+def resolve_figures(line: LLMNarrationLine, index: FigureIndex) -> LineFigures:
     operands: list[_Operand] = []
-    errors: list[str] = []
+    formulas: list[str] = []
+    errors: list[tuple[str, str]] = []
     for reference in line.figures:
         operand, error = index.resolve(reference.model_dump())
         if operand is not None:
             operands.append(operand)
         else:
-            errors.append(error)
-    return operands, errors
+            errors.append(("unknown_reference", error))
+    for calculation in line.calculations:
+        operand, output = evaluate(index, calculation.operation, [term.model_dump() for term in calculation.terms])
+        if operand is not None:
+            operands.append(operand)
+            formulas.append(output["formula"])
+        else:
+            errors.append(("calculation_error", f"The line's `{calculation.operation}` calculation failed: {output['error']}"))
+    return LineFigures(operands=operands, formulas=formulas, errors=errors)
 
 
 def _isolated_cells(operands: list[_Operand], index: FigureIndex) -> list[_Operand]:
@@ -120,12 +145,14 @@ def _isolated_cells(operands: list[_Operand], index: FigureIndex) -> list[_Opera
     return isolated
 
 
-def check_line(number: int, line: LLMNarrationLine, index: FigureIndex) -> tuple[list[ReviewFinding], int]:
-    """Returns (findings, how many of the line's stated figures matched a reference)."""
+def check_line(number: int, line: LLMNarrationLine, index: FigureIndex) -> tuple[list[ReviewFinding], int, list[str]]:
+    """Returns (findings, how many of the line's stated figures matched a reference,
+    the formulas of the calculations the line carries)."""
     findings: list[ReviewFinding] = []
-    operands, errors = resolve_figures(line, index)
-    for error in errors:
-        findings.append(_finding(number, line, "unknown_reference", error, must_fix=True))
+    resolved = resolve_figures(line, index)
+    operands = resolved.operands
+    for check, detail in resolved.errors:
+        findings.append(_finding(number, line, check, detail, must_fix=True))
 
     confirmed = 0
     for spoken in spoken_figures(line.text):
@@ -157,15 +184,15 @@ def check_line(number: int, line: LLMNarrationLine, index: FigureIndex) -> tuple
             "or cite the highlighted one if the line states it."
         )
         findings.append(_finding(number, line, "target_not_cited", detail, must_fix=False))
-    return findings, confirmed
+    return findings, confirmed, resolved.formulas
 
 
-def check_script(lines: list[LLMNarrationLine], index: FigureIndex) -> tuple[list[ReviewFinding], int]:
-    """Checks every line; lines are numbered from 1. Returns (findings, figures confirmed)."""
-    findings: list[ReviewFinding] = []
-    confirmed = 0
+def check_script(lines: list[LLMNarrationLine], index: FigureIndex) -> ReviewRound:
+    """Checks every line; lines are numbered from 1."""
+    review_round = ReviewRound(lines=len(lines), figures_confirmed=0, findings=[])
     for number, line in enumerate(lines, start=1):
-        line_findings, line_confirmed = check_line(number, line, index)
-        findings.extend(line_findings)
-        confirmed += line_confirmed
-    return findings, confirmed
+        findings, confirmed, formulas = check_line(number, line, index)
+        review_round.findings.extend(findings)
+        review_round.figures_confirmed += confirmed
+        review_round.calculations.extend(LineCalculationResult(line=number, formula=formula) for formula in formulas)
+    return review_round

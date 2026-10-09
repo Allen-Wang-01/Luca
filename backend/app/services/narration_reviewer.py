@@ -56,7 +56,7 @@ def render_for_review(lines: list[LLMNarrationLine], index: FigureIndex, unit_no
     """The script as the reviewer reads it, or None if no line cites a figure."""
     parts: list[str] = []
     for number, line in enumerate(lines, start=1):
-        operands, _ = narration_figures.resolve_figures(line, index)
+        operands = narration_figures.resolve_figures(line, index).operands
         if not operands:
             continue
         cited = "\n".join(f"  - {_describe(operand)}" for operand in operands)

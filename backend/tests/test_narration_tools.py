@@ -193,6 +193,7 @@ def test_two_ratios_give_a_change_in_percentage_points(report):
     )
 
     assert change["result"] == 25
+    assert change["formula"] == "75.00% - 50.00% = 25.00%"
     assert "percentage" in mixed["error"]
 
 

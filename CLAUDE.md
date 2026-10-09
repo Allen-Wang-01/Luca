@@ -173,6 +173,11 @@ tool the model may or may not call (`_review_and_correct`). Every line lists whe
 figures come from (`figures`, the same references the tools take):
 - `narration_figures.py` compares each amount and percentage in a line's text with what
   the line lists, within the rounding it was said with. A mismatch is `must_fix`. It
+  A line can also carry a calculation of its own (`calculations`: the figures and one
+  operation), for a number that occurs to the model while writing - calling a tool
+  there would cost a turn, so it used to do the arithmetic in its head. The backend
+  works it out with the tools' own code (`narration_tools.evaluate`) and the text has
+  to match the result. It
   also raises two patterns as advice: a cited cell sharing neither row nor column with
   the others cited from its table (this year's figure for one thing against last year's
   for another), and a highlighted cell the line doesn't cite.
@@ -182,7 +187,8 @@ figures come from (`figures`, the same references the tools take):
   conversation. Its findings are advice, and a failed call is logged and skipped.
 - Findings go back to the agent, which rewrites the script in its own conversation
   without tools - up to `MAX_CORRECTIONS` turns, the second only if a figure is still
-  wrong. It is told to remove what it can't fix and reword the neighbouring lines so the
+  wrong. A figure it worked out itself can stay if it adds the calculation to the line.
+  It is told to remove what it can't fix and reword the neighbouring lines so the
   script still flows. Only a line with a `must_fix` finding left after that is cut by
   the code, and a script that loses more than half its lines is rejected (→ 502).
 The rounds, findings and cut lines are in the trace's `review` and shown in the

@@ -49,6 +49,15 @@ export interface NarrationLine {
   // Where the figures the line states come from; the backend checked the text against
   // them. Absent on the stub script and on runs saved before lines listed them.
   figures?: FigureRef[]
+  // Calculations the line carries itself, for a figure worked out while writing; the
+  // backend did the arithmetic and checked the text against it.
+  calculations?: LineCalculation[]
+}
+
+export interface LineCalculation {
+  operation: 'difference' | 'combine' | 'percent_change' | 'ratio'
+  // `sign` is only read by 'combine'; the other operations go by the order of terms.
+  terms: (FigureRef & { sign: 'add' | 'subtract' })[]
 }
 
 // A cell id, a paragraph id plus the figure as written there, or the id of a
@@ -122,10 +131,17 @@ export interface RemovedVisual {
 // from its table - the pattern of a figure taken from the wrong period.
 // 'target_not_cited': the line highlights one cell but cites others from that table.
 // 'reviewer': a second model reading each line against the labels of what it cites.
+// 'calculation_error': a calculation the line carries couldn't be done.
 export interface ReviewFinding {
   line: number // 1-based position in the script as it stood in that round
   text: string
-  check: 'figure_mismatch' | 'unknown_reference' | 'isolated_cell' | 'target_not_cited' | 'reviewer'
+  check:
+    | 'figure_mismatch'
+    | 'unknown_reference'
+    | 'calculation_error'
+    | 'isolated_cell'
+    | 'target_not_cited'
+    | 'reviewer'
   detail: string
   // true: checked exactly, and the line is cut if it is still there after the
   // corrections. false: a judgement - the model looks again, the line stays either way.
@@ -136,6 +152,8 @@ export interface ReviewRound {
   lines: number
   figures_confirmed: number
   findings: ReviewFinding[]
+  // The calculations lines carried themselves, as the backend worked them out.
+  calculations?: { line: number; formula: string }[]
 }
 
 export interface RemovedLine {

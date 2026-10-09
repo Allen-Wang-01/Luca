@@ -53,6 +53,23 @@ class FigureRef(BaseModel):
     quote: str | None
 
 
+class CalculationTerm(BaseModel):
+    id: str
+    quote: str | None
+    # Only `combine` reads it; the other operations go by the order of their terms.
+    sign: Literal["add", "subtract"]
+
+
+class LineCalculation(BaseModel):
+    # A calculation written next to the line that states its result, instead of a tool
+    # call in an earlier turn: the model names the figures and the operation, and the
+    # backend does the arithmetic (narration_tools.evaluate) and checks the number in
+    # the text against it. For the figure that occurs to the model while it is writing
+    # - "that is 3.6 points more" - where calling a tool would cost a whole turn.
+    operation: Literal["difference", "combine", "percent_change", "ratio"]
+    terms: list[CalculationTerm]
+
+
 class NarrationLine(BaseModel):
     text: str
     target_id: str
@@ -64,6 +81,8 @@ class NarrationLine(BaseModel):
     # What the line's figures were checked against (narration_figures.py). A calc id
     # only means something next to the trace of the run that made it.
     figures: list[FigureRef] = Field(default_factory=list)
+    # Calculations the line carries itself; their results were checked like `figures`.
+    calculations: list[LineCalculation] = Field(default_factory=list)
 
 
 class LLMNarrationLine(BaseModel):
@@ -89,6 +108,21 @@ class LLMNarrationLine(BaseModel):
             "the sentence actually means - the right row and the right period. Empty for a "
             "line that states no figure, and nothing to list for a figure that came from "
             "a web page."
+        )
+    )
+    calculations: list[LineCalculation] = Field(
+        description=(
+            "For a number this line states that is neither printed in the report nor the "
+            "result of a tool call you already made: the calculation that gives it, which "
+            "is then done for you and compared with what the line says. `terms` are "
+            "references like those in `figures`, each with a `sign`. 'difference': [the "
+            "figure to subtract from, the figure to subtract]. 'percent_change': [the "
+            "earlier figure, the later one]. 'ratio': [numerator, denominator], giving a "
+            "percentage. 'combine': 2 to 8 figures added or subtracted by their `sign`. "
+            "`sign` only matters for 'combine'; give 'add' elsewhere. E.g. a line saying a "
+            "margin widened by 2.4 points, where the two margins are calc_3 and calc_4: "
+            "{operation: 'difference', terms: [{id: 'calc_3', quote: null, sign: 'add'}, "
+            "{id: 'calc_4', quote: null, sign: 'add'}]}. Empty for most lines."
         )
     )
     chart_id: str | None = Field(
@@ -178,7 +212,10 @@ class ReviewFinding(BaseModel):
     # cited from its table - the pattern of a figure taken from the wrong period.
     # "target_not_cited": the line highlights one cell but cites others from that table.
     # "reviewer": the second model reading each line against the labels of what it cites.
-    check: Literal["figure_mismatch", "unknown_reference", "isolated_cell", "target_not_cited", "reviewer"]
+    # "calculation_error": a calculation the line carries couldn't be done.
+    check: Literal[
+        "figure_mismatch", "unknown_reference", "calculation_error", "isolated_cell", "target_not_cited", "reviewer"
+    ]
     detail: str
     # True for what can be checked exactly: the line is cut if it is still there after
     # the corrections. False for a judgement that can be wrong: the model is asked to
@@ -186,11 +223,19 @@ class ReviewFinding(BaseModel):
     must_fix: bool
 
 
+class LineCalculationResult(BaseModel):
+    line: int
+    formula: str  # as the backend worked it out, e.g. "50.1 - 46.5 = 3.6"
+
+
 class ReviewRound(BaseModel):
     lines: int
     # Figures stated in the script that matched something their line cites.
     figures_confirmed: int
     findings: list[ReviewFinding]
+    # The calculations lines carried themselves, as worked out here. One that failed
+    # is a "calculation_error" finding instead.
+    calculations: list[LineCalculationResult] = Field(default_factory=list)
 
 
 class RemovedLine(BaseModel):

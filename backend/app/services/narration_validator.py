@@ -138,7 +138,12 @@ def attach_visuals(
             visual = LineVisual(chart=chart, emphasis=emphasis)
         attached.append(
             NarrationLine(
-                text=line.text, target_id=line.target_id, sources=line.source_urls, visual=visual, figures=line.figures
+                text=line.text,
+                target_id=line.target_id,
+                sources=line.source_urls,
+                visual=visual,
+                figures=line.figures,
+                calculations=line.calculations,
             )
         )
     return attached, removed

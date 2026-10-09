@@ -1,4 +1,4 @@
-from app.models.narration import FigureRef, LLMNarrationLine
+from app.models.narration import CalculationTerm, FigureRef, LineCalculation, LLMNarrationLine
 from app.services.narration_figures import check_line, check_script, spoken_figures
 from app.services.narration_tools import FigureIndex, execute_tool
 
@@ -10,15 +10,32 @@ PER_SHARE = "t_ops__r6_q"  # 2.5, per share
 SHARES = "t_ops__r8_q"  # 20,000 (thousands)
 
 
-def _line(text, *cited, target_id="t_ops", source_urls=()):
+def _line(text, *cited, target_id="t_ops", source_urls=(), calculations=()):
     figures = [FigureRef(id=c, quote=None) if isinstance(c, str) else FigureRef(id=c[0], quote=c[1]) for c in cited]
     return LLMNarrationLine(
-        text=text, target_id=target_id, source_urls=list(source_urls), figures=figures, chart_id=None, chart_emphasis=None
+        text=text,
+        target_id=target_id,
+        source_urls=list(source_urls),
+        figures=figures,
+        calculations=list(calculations),
+        chart_id=None,
+        chart_emphasis=None,
+    )
+
+
+def _calculation(operation, *terms):
+    """Terms are cell ids, or (cell id, "subtract") for a term `combine` takes off."""
+    return LineCalculation(
+        operation=operation,
+        terms=[
+            CalculationTerm(id=t, quote=None, sign="add") if isinstance(t, str) else CalculationTerm(id=t[0], quote=None, sign=t[1])
+            for t in terms
+        ],
     )
 
 
 def _checks(line, index):
-    findings, confirmed = check_line(1, line, index)
+    findings, confirmed, _ = check_line(1, line, index)
     return [(finding.check, finding.must_fix) for finding in findings], confirmed
 
 
@@ -66,7 +83,7 @@ def test_a_number_that_is_not_among_the_cited_figures_must_be_fixed(statement):
     # number is a real figure of the report, just not the one the line cites.
     line = _line("Sales were $300 million, against a profit of $40 million.", SALES, PROFIT)
 
-    findings, confirmed = check_line(1, line, FigureIndex(statement))
+    findings, confirmed, _ = check_line(1, line, FigureIndex(statement))
 
     assert [(f.check, f.must_fix) for f in findings] == [("figure_mismatch", True)]
     assert "'$40 million' matches none of the figures the line cites" in findings[0].detail
@@ -115,7 +132,7 @@ def test_a_cell_off_the_row_and_column_of_the_others_is_questioned(statement):
     # cited, so only the shape of the citation gives it away.
     line = _line("Sales were $300 million, against a profit of $40 million.", SALES, PROFIT_LAST_YEAR)
 
-    findings, confirmed = check_line(1, line, FigureIndex(statement))
+    findings, confirmed, _ = check_line(1, line, FigureIndex(statement))
 
     assert [(f.check, f.must_fix) for f in findings] == [("isolated_cell", False)]
     assert confirmed == 2
@@ -148,7 +165,80 @@ def test_a_highlighted_cell_the_line_does_not_cite_is_questioned(statement):
 def test_script_findings_carry_their_line_number(statement):
     lines = [_line("Sales were $300 million.", SALES), _line("Profit was $45 million.", PROFIT)]
 
-    findings, confirmed = check_script(lines, FigureIndex(statement))
+    review_round = check_script(lines, FigureIndex(statement))
 
-    assert [(f.line, f.check, f.text) for f in findings] == [(2, "figure_mismatch", "Profit was $45 million.")]
-    assert confirmed == 1
+    assert [(f.line, f.check, f.text) for f in review_round.findings] == [
+        (2, "figure_mismatch", "Profit was $45 million.")
+    ]
+    assert (review_round.lines, review_round.figures_confirmed) == (2, 1)
+
+
+def test_a_line_can_carry_the_calculation_behind_a_figure(statement):
+    index = FigureIndex(statement)
+    added = _line("Sales rose by $50 million.", calculations=[_calculation("difference", SALES, SALES_LAST_YEAR)])
+    grew = _line("Sales grew 20%.", calculations=[_calculation("percent_change", SALES_LAST_YEAR, SALES)])
+    margin = _line("Profit was 16.7% of sales.", calculations=[_calculation("ratio", PROFIT, SALES)])
+    left = _line(
+        "Sales less profit, both years: $460 million.",
+        calculations=[_calculation("combine", SALES, SALES_LAST_YEAR, (PROFIT, "subtract"), (PROFIT_LAST_YEAR, "subtract"))],
+    )
+
+    assert [_checks(line, index) for line in (added, grew, margin, left)] == [([], 1)] * 4
+
+
+def test_the_line_has_to_say_what_its_calculation_comes_to(statement):
+    # The model's own arithmetic was off: the calculation is done here, and the line
+    # doesn't match it.
+    line = _line("Sales rose by $60 million.", calculations=[_calculation("difference", SALES, SALES_LAST_YEAR)])
+
+    findings, confirmed, formulas = check_line(1, line, FigureIndex(statement))
+
+    assert [(f.check, f.must_fix) for f in findings] == [("figure_mismatch", True)]
+    assert "300 - 250 = 50" in findings[0].detail
+    assert formulas == ["300 - 250 = 50"]
+
+
+def test_a_calculation_that_cannot_be_done_must_be_fixed(statement):
+    index = FigureIndex(statement)
+    unknown = _line("Sales rose.", calculations=[_calculation("difference", SALES, "t_ops__r99_q")])
+    mixed = _line("Sales rose.", calculations=[_calculation("difference", SALES, SHARES)])
+    one_term = _line("Sales rose.", calculations=[_calculation("ratio", SALES)])
+
+    assert [_checks(line, index)[0] for line in (unknown, mixed, one_term)] == [[("calculation_error", True)]] * 3
+    findings, _, _ = check_line(1, mixed, index)
+    assert "different kinds" in findings[0].detail
+
+
+def test_a_lines_calculations_leave_no_results_behind(statement):
+    # A script is checked once per round; results kept each time would shift the ids
+    # of the calculations the model made with the tools.
+    import json
+
+    index = FigureIndex(statement)
+    lines = [_line("Sales rose by $50 million.", calculations=[_calculation("difference", SALES, SALES_LAST_YEAR)])]
+
+    first = check_script(lines, index)
+    second = check_script(lines, index)
+    growth = {"base": {"id": SALES_LAST_YEAR, "quote": None}, "current": {"id": SALES, "quote": None}}
+    _, output = execute_tool(index, "percent_change", json.dumps(growth))
+
+    assert [(c.line, c.formula) for c in first.calculations] == [(1, "300 - 250 = 50")]
+    assert first == second
+    assert output["calc_id"] == "calc_1"
+
+
+def test_a_calculation_can_use_an_earlier_tool_result(statement):
+    import json
+
+    index = FigureIndex(statement)
+    ratio = lambda top, bottom: json.dumps(  # noqa: E731
+        {"numerator": {"id": top, "quote": None}, "denominator": {"id": bottom, "quote": None}}
+    )
+    this_year = execute_tool(index, "ratio", ratio(PROFIT, SALES))[1]["calc_id"]  # 16.67%
+    last_year = execute_tool(index, "ratio", ratio(PROFIT_LAST_YEAR, SALES_LAST_YEAR))[1]["calc_id"]  # 16%
+    line = _line(
+        "That is 0.7 percentage points more than a year ago.",
+        calculations=[_calculation("difference", this_year, last_year)],
+    )
+
+    assert _checks(line, index) == ([], 1)

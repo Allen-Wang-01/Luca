@@ -53,6 +53,8 @@ def main() -> None:
             f"figure check, round {number}: {review_round.figures_confirmed} figures confirmed "
             f"in {review_round.lines} lines, {len(review_round.findings)} findings"
         )
+        for calculation in review_round.calculations:
+            print(f"      line {calculation.line} carries: {calculation.formula}")
         for finding in review_round.findings:
             kind = "must fix" if finding.must_fix else "advice"
             print(f"      line {finding.line} ({finding.check}, {kind}): {finding.detail}")

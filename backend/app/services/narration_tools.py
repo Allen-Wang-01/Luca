@@ -287,6 +287,9 @@ def _fmt(value: float, actual: bool = True) -> str:
 
 def _formatter(operands: list[_Operand]) -> Callable[[float], str]:
     """How to write the values `_values` gives for these operands."""
+    if operands[0].is_percent:
+        # Mostly earlier results, which carry far more decimals than anyone reads.
+        return lambda value: f"{value:.2f}%"
     actual = _in_actual_units(operands)
     return lambda value: _fmt(value, actual)
 
@@ -399,6 +402,28 @@ _TOOLS: dict[str, Callable[..., dict[str, Any]]] = {
     "difference": difference,
     "combine": combine,
 }
+
+def evaluate(index: FigureIndex, operation: str, terms: list[dict[str, Any]]) -> tuple[_Operand | None, dict[str, Any]]:
+    """Works out a calculation written on a narration line (models.LineCalculation):
+    the same arithmetic, scale handling and kind checks as the tools, since it runs
+    them. Returns (the result as an operand, the tool's output); the operand is None
+    when the output is an error.
+
+    Unlike a tool call, the result is not kept under a calc id: nothing else refers to
+    it, and a script is checked more than once."""
+    figures = [{"id": term.get("id"), "quote": term.get("quote")} for term in terms]
+    if operation == "combine":
+        output = combine(index, [{"figure": figure, "sign": term.get("sign")} for figure, term in zip(figures, terms)])
+    elif operation in ("difference", "percent_change", "ratio"):
+        if len(figures) != 2:
+            return None, {"error": f"`{operation}` takes exactly two terms, got {len(figures)}."}
+        output = _TOOLS[operation](index, *figures)
+    else:
+        return None, {"error": f"Unknown operation '{operation}'."}
+    if "error" in output:
+        return None, output
+    return index._results.pop(output["calc_id"]), output
+
 
 _OPERAND_SCHEMA_DESCRIPTION = (
     "A figure from the report. Table figure: {id: <cell id>, quote: null}. Figure that "
