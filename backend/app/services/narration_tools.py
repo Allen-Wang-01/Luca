@@ -189,7 +189,7 @@ class FigureIndex:
         self._results[calc_id] = _Operand(
             id=calc_id,
             label=formula,
-            raw_text=f"{value:.1f}%" if is_percent else _fmt(value),
+            raw_text=f"{value:.1f}%" if is_percent else _fmt(value, actual=value == absolute),
             value=value,
             absolute=absolute,
             is_percent=is_percent,
@@ -273,13 +273,22 @@ def _values(operands: list[_Operand]) -> list[float]:
     return [operand.value for operand in operands]
 
 
-def _fmt(value: float) -> str:
+def _fmt(value: float, actual: bool = True) -> str:
+    """A value as written in a formula. Scale words are only right for a value in
+    actual units; one still in its row's printed scale is written as the number it is,
+    or a share count of 14,250,000 (thousands) would read as "14.25 million" shares."""
     magnitude = abs(value)
-    if magnitude >= 1e9:
+    if actual and magnitude >= 1e9:
         return f"{value / 1e9:,.2f} billion"
-    if magnitude >= 1e6:
+    if actual and magnitude >= 1e6:
         return f"{value / 1e6:,.2f} million"
-    return f"{value:g}"
+    return f"{value:.12g}"
+
+
+def _formatter(operands: list[_Operand]) -> Callable[[float], str]:
+    """How to write the values `_values` gives for these operands."""
+    actual = _in_actual_units(operands)
+    return lambda value: _fmt(value, actual)
 
 
 def percent_change(index: FigureIndex, base: Any, current: Any) -> dict[str, Any]:
@@ -291,7 +300,8 @@ def percent_change(index: FigureIndex, base: Any, current: Any) -> dict[str, Any
         return {"error": f"Cannot compute percent change from zero ({operands[0].label})."}
 
     change = (end - start) / abs(start) * 100
-    formula = f"({_fmt(end)} - {_fmt(start)}) / |{_fmt(start)}| = {change:+.1f}%"
+    fmt = _formatter(operands)
+    formula = f"({fmt(end)} - {fmt(start)}) / |{fmt(start)}| = {change:+.1f}%"
     return {
         "calc_id": index.record(formula, change, change, operands, "percent"),
         "result_percent": round(change, 2),
@@ -309,11 +319,12 @@ def ratio(index: FigureIndex, numerator: Any, denominator: Any) -> dict[str, Any
         return {"error": f"Cannot divide by zero ({operands[1].label})."}
 
     value = top / bottom
+    fmt = _formatter(operands)
     kinds = [operand.kind for operand in operands]
     if None not in kinds and kinds[0] != kinds[1]:
         # One kind over another is a quantity of its own, not a share of anything: an
         # amount of money over a number of shares is a per-share amount.
-        formula = f"{_fmt(top)} / {_fmt(bottom)} = {value:.4g}"
+        formula = f"{fmt(top)} / {fmt(bottom)} = {value:.4g}"
         kind = "per_share" if kinds == ["money", "share_count"] else "other"
         return {
             "calc_id": index.record(formula, value, value, operands, kind),
@@ -322,7 +333,7 @@ def ratio(index: FigureIndex, numerator: Any, denominator: Any) -> dict[str, Any
             "inputs": [_input(o) for o in operands],
         }
 
-    formula = f"{_fmt(top)} / {_fmt(bottom)} = {value * 100:.1f}%"
+    formula = f"{fmt(top)} / {fmt(bottom)} = {value * 100:.1f}%"
     return {
         # Kept as a percentage, so two ratios can go into `difference` for the change
         # in percentage points.
@@ -341,7 +352,8 @@ def difference(index: FigureIndex, minuend: Any, subtrahend: Any) -> dict[str, A
     a, b = _values(operands)
 
     value = a - b
-    formula = f"{_fmt(a)} - {_fmt(b)} = {_fmt(value)}"
+    fmt = _formatter(operands)
+    formula = f"{fmt(a)} - {fmt(b)} = {fmt(value)}"
     absolute = operands[0].absolute - operands[1].absolute
     return {
         "calc_id": index.record(formula, value, absolute, operands, _result_kind(operands)),
@@ -367,11 +379,12 @@ def combine(index: FigureIndex, terms: Any) -> dict[str, Any]:
     absolute = sum(sign * operand.absolute for sign, operand in zip(signs, operands))
     # A figure the report prints as negative keeps its brackets, so the formula shows
     # that adding it lowers the total.
-    shown = [f"({_fmt(v)})" if v < 0 else _fmt(v) for v in values]
+    fmt = _formatter(operands)
+    shown = [f"({fmt(v)})" if v < 0 else fmt(v) for v in values]
     formula = shown[0] if signs[0] == 1 else f"-{shown[0]}"
     for sign, text in zip(signs[1:], shown[1:]):
         formula += f" {'+' if sign == 1 else '-'} {text}"
-    formula += f" = {_fmt(value)}"
+    formula += f" = {fmt(value)}"
     return {
         "calc_id": index.record(formula, value, absolute, operands, _result_kind(operands)),
         "result": round(value, 4),

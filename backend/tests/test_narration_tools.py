@@ -244,6 +244,18 @@ def test_same_kind_rows_still_calculate_as_printed(statement):
     assert output["formula"] == "300 - 120 = 180"
 
 
+def test_a_formula_does_not_put_scale_words_on_figures_still_in_their_printed_scale(statement):
+    # 20,000 and 25,000 are thousands of shares. Written with scale words they would
+    # read as "20 thousand" shares; mixed with a prose figure they are in actual units
+    # and the words are right.
+    statement.blocks[0].rows[8].cells[0].value = 20_000_000
+    statement.blocks[0].rows[8].cells[1].value = 25_000_000
+
+    output = _run(statement, "percent_change", base=cell("t_ops__r8_q_ly"), current=cell("t_ops__r8_q"))
+
+    assert output["formula"] == "(20000000 - 25000000) / |25000000| = -20.0%"
+
+
 def test_labels_tell_apart_repeated_rows_and_columns(statement):
     output = _run(statement, "difference", minuend=cell("t_ops__r1_ytd"), subtrahend=cell("t_ops__r4_q"))
 
