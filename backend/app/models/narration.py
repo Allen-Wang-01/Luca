@@ -45,6 +45,14 @@ class LineVisual(BaseModel):
     emphasis: str | None = None
 
 
+class FigureRef(BaseModel):
+    # Where a figure a line states comes from - the same reference the calculation
+    # tools take as an operand: a cell id, a paragraph id plus the figure as written
+    # there, or the calc id of a result.
+    id: str
+    quote: str | None
+
+
 class NarrationLine(BaseModel):
     text: str
     target_id: str
@@ -53,6 +61,9 @@ class NarrationLine(BaseModel):
     sources: list[str] = Field(default_factory=list)
     # Consecutive lines may carry the same chart with a different emphasis.
     visual: LineVisual | None = None
+    # What the line's figures were checked against (narration_figures.py). A calc id
+    # only means something next to the trace of the run that made it.
+    figures: list[FigureRef] = Field(default_factory=list)
 
 
 class LLMNarrationLine(BaseModel):
@@ -68,6 +79,18 @@ class LLMNarrationLine(BaseModel):
         )
     )
     source_urls: list[str]
+    figures: list[FigureRef] = Field(
+        description=(
+            "Where every figure this line states comes from - every amount and every "
+            "percentage, each as one reference. A table figure: {id: <cell id>, quote: "
+            "null}. A figure from paragraph text: {id: <paragraph id>, quote: <the figure "
+            "exactly as written there>}. A figure you calculated: {id: <its calc_id>, "
+            "quote: null}. Each stated figure is checked against these, so list the cell "
+            "the sentence actually means - the right row and the right period. Empty for a "
+            "line that states no figure, and nothing to list for a figure that came from "
+            "a web page."
+        )
+    )
     chart_id: str | None = Field(
         description=(
             "Id of a chart to show while this line is spoken, exactly as returned by a "
@@ -80,6 +103,16 @@ class LLMNarrationLine(BaseModel):
             "the chart tool. null when the line is about the chart as a whole."
         )
     )
+
+
+class LLMReviewIssue(BaseModel):
+    line: int = Field(description="The number of the line, as given.")
+    problem: str = Field(description="One sentence: what the line says, and what the figure it cites actually is.")
+
+
+class LLMReview(BaseModel):
+    # What the reviewer model returns. Empty when every line matches what it cites.
+    issues: list[LLMReviewIssue]
 
 
 class LLMNarrationScript(BaseModel):
@@ -102,6 +135,9 @@ class WebSearchTrace(BaseModel):
 
 class AgentTurn(BaseModel):
     turn: int
+    # "draft": working towards the script. "correction": rewriting it after the review
+    # (see NarrationReview) found something.
+    purpose: Literal["draft", "correction"] = "draft"
     tool_calls: list[ToolCallTrace]
     web_searches: list[WebSearchTrace] = Field(default_factory=list)
     input_tokens: int
@@ -133,6 +169,48 @@ class RemovedVisual(BaseModel):
     detail: str
 
 
+class ReviewFinding(BaseModel):
+    line: int  # 1-based position in the script as it stood in that round
+    text: str  # the line as it stood
+    # "figure_mismatch": a figure the line states matches none of the figures it cites.
+    # "unknown_reference": the line cites something that doesn't exist.
+    # "isolated_cell": a cited cell shares neither a row nor a column with the others
+    # cited from its table - the pattern of a figure taken from the wrong period.
+    # "target_not_cited": the line highlights one cell but cites others from that table.
+    # "reviewer": the second model reading each line against the labels of what it cites.
+    check: Literal["figure_mismatch", "unknown_reference", "isolated_cell", "target_not_cited", "reviewer"]
+    detail: str
+    # True for what can be checked exactly: the line is cut if it is still there after
+    # the corrections. False for a judgement that can be wrong: the model is asked to
+    # look again, and the line stays either way.
+    must_fix: bool
+
+
+class ReviewRound(BaseModel):
+    lines: int
+    # Figures stated in the script that matched something their line cites.
+    figures_confirmed: int
+    findings: list[ReviewFinding]
+
+
+class RemovedLine(BaseModel):
+    text: str
+    detail: str
+
+
+class NarrationReview(BaseModel):
+    # What checking the script against the report found, round by round: the first is
+    # the model's draft, each later one the script after a correction turn.
+    rounds: list[ReviewRound]
+    # Lines cut because a must-fix finding survived every correction.
+    removed_lines: list[RemovedLine] = Field(default_factory=list)
+    # The reviewer's own model call; None if it didn't run or failed.
+    reviewer_input_tokens: int | None = None
+    reviewer_output_tokens: int | None = None
+    reviewer_cost_usd: float | None = None
+    reviewer_duration_ms: int | None = None
+
+
 class NarrationTrace(BaseModel):
     turns: list[AgentTurn]
     total_input_tokens: int
@@ -154,6 +232,9 @@ class NarrationTrace(BaseModel):
     # Chart references that were dropped or stripped of their emphasis. Charts that
     # failed their own checks show up as failed tool calls in `turns` instead.
     removed_visuals: list[RemovedVisual] = Field(default_factory=list)
+    # None on runs saved before scripts were reviewed. Its model call is included in
+    # the totals above.
+    review: NarrationReview | None = None
 
 
 class NarrationRequest(BaseModel):

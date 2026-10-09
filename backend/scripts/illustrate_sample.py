@@ -78,6 +78,7 @@ def main() -> None:
                 text=line.text,
                 target_id=line.target_id,
                 source_urls=line.sources,
+                figures=line.figures,
                 chart_id=assignment.get("chart_id"),
                 chart_emphasis=assignment.get("emphasis"),
             )

@@ -46,6 +46,16 @@ export interface NarrationLine {
   // Consecutive lines may carry the same chart with a different emphasis. Absent on the
   // stub script and on runs saved before charts existed.
   visual?: LineVisual | null
+  // Where the figures the line states come from; the backend checked the text against
+  // them. Absent on the stub script and on runs saved before lines listed them.
+  figures?: FigureRef[]
+}
+
+// A cell id, a paragraph id plus the figure as written there, or the id of a
+// calculation from the same run's trace.
+export interface FigureRef {
+  id: string
+  quote: string | null
 }
 
 export type NarrationScript = NarrationLine[]
@@ -75,6 +85,9 @@ export interface WebSearchTrace {
 
 export interface AgentTurn {
   turn: number
+  // 'correction': rewriting the script after its review found something. Absent on
+  // runs saved before scripts were reviewed, where every turn is a draft turn.
+  purpose?: 'draft' | 'correction'
   tool_calls: ToolCallTrace[]
   web_searches: WebSearchTrace[]
   input_tokens: number
@@ -102,6 +115,46 @@ export interface RemovedVisual {
   detail: string
 }
 
+// Something the review of the script found on one line.
+// 'figure_mismatch': a figure the line states matches none of the figures it cites.
+// 'unknown_reference': the line cites something that doesn't exist.
+// 'isolated_cell': a cited cell shares neither a row nor a column with the others cited
+// from its table - the pattern of a figure taken from the wrong period.
+// 'target_not_cited': the line highlights one cell but cites others from that table.
+// 'reviewer': a second model reading each line against the labels of what it cites.
+export interface ReviewFinding {
+  line: number // 1-based position in the script as it stood in that round
+  text: string
+  check: 'figure_mismatch' | 'unknown_reference' | 'isolated_cell' | 'target_not_cited' | 'reviewer'
+  detail: string
+  // true: checked exactly, and the line is cut if it is still there after the
+  // corrections. false: a judgement - the model looks again, the line stays either way.
+  must_fix: boolean
+}
+
+export interface ReviewRound {
+  lines: number
+  figures_confirmed: number
+  findings: ReviewFinding[]
+}
+
+export interface RemovedLine {
+  text: string
+  detail: string
+}
+
+// What checking the script against the report found. The first round is the model's
+// draft, each later one the script after a correction turn.
+export interface NarrationReview {
+  rounds: ReviewRound[]
+  removed_lines: RemovedLine[]
+  // The reviewer's own model call; null if it didn't run or failed.
+  reviewer_input_tokens: number | null
+  reviewer_output_tokens: number | null
+  reviewer_cost_usd: number | null
+  reviewer_duration_ms: number | null
+}
+
 export interface NarrationTrace {
   turns: AgentTurn[]
   total_input_tokens: number
@@ -117,6 +170,8 @@ export interface NarrationTrace {
   removed_sources?: RemovedSource[]
   // Charts that failed their own checks are failed tool calls in `turns` instead.
   removed_visuals?: RemovedVisual[]
+  // Absent or null on runs saved before scripts were reviewed.
+  review?: NarrationReview | null
 }
 
 export interface NarrationResponse {

@@ -48,6 +48,16 @@ def main() -> None:
             print(f"      source: {url}")
     for removed in trace.removed_sources:
         print(f"removed source ({removed.reason}), line {removed.line}: {removed.url}")
+    for number, review_round in enumerate(trace.review.rounds, start=1):
+        print(
+            f"figure check, round {number}: {review_round.figures_confirmed} figures confirmed "
+            f"in {review_round.lines} lines, {len(review_round.findings)} findings"
+        )
+        for finding in review_round.findings:
+            kind = "must fix" if finding.must_fix else "advice"
+            print(f"      line {finding.line} ({finding.check}, {kind}): {finding.detail}")
+    for removed in trace.review.removed_lines:
+        print(f"cut line: {removed.text}\n      {removed.detail}")
     print(
         f"\n{len(lines)} lines, {len(trace.turns)} turns, "
         f"{sum(len(t.tool_calls) for t in trace.turns)} calculations, "

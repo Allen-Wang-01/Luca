@@ -19,9 +19,14 @@ from app.core.logging import get_logger
 from app.core.pricing import calculate_cost, calculate_web_search_cost
 from app.models.narration import (
     AgentTurn,
+    LLMNarrationLine,
     LLMNarrationScript,
     NarrationLine,
+    NarrationReview,
     NarrationTrace,
+    RemovedLine,
+    ReviewFinding,
+    ReviewRound,
     ToolCallTrace,
     WebSearchTrace,
 )
@@ -29,6 +34,8 @@ from app.models.report import FinancialReport
 from app.services import (
     llm_client,
     narration_context,
+    narration_figures,
+    narration_reviewer,
     narration_tools,
     narration_validator,
     narration_visuals,
@@ -45,6 +52,10 @@ MAX_TOOL_CALLS = 60
 # Across all turns. Each search is billed per call and adds its results to the context,
 # so this is both a cost and a latency guard. Once it's used up, the tool is withdrawn.
 MAX_WEB_SEARCHES = 5
+
+# Turns the agent gets to fix what the review of its script found, on top of MAX_TURNS.
+# The second is only used when a figure is still wrong after the first.
+MAX_CORRECTIONS = 2
 
 WEB_SEARCH_TOOL: dict[str, Any] = {"type": "web_search"}
 
@@ -119,6 +130,25 @@ guidance versus the current quarter) and request all the calculations you need i
 parallel, in as few turns as possible. If a tool returns an error, fix the operand and \
 retry. If the report already prints a figure (e.g. a Y/Y column), quote it instead of \
 recomputing it.
+
+# Figures - say where each number comes from
+Every line has a `figures` list: one reference for each amount and each percentage \
+the line states, in the same form as a tool operand - a cell id, a paragraph id with \
+the figure quoted from it, or the `calc_id` of a calculation. After you finish, each \
+number in your text is compared with the figures its line lists, so:
+- List the cell you actually mean: the right row and the right period. A sentence \
+about this year that quotes last year's column is the most common mistake - when you \
+write a number, check which column it sits in.
+- A number you calculated lists its `calc_id`, not the cells that went into it. If a \
+line says both "$4.1 billion" and "up 12%", it lists the cell and the calculation.
+- Rounding the way a person would say it is fine ("about $4.1 billion" for 4,118 in \
+millions). A different number is not.
+- Keep a comparison within one period unless you say otherwise: "sales of 500 against \
+a profit of 80" takes both from the same column.
+- A figure from a web page has nothing to list; its line carries the page in \
+`source_urls` instead.
+A line whose number matches nothing it lists is sent back to you to fix, and cut if \
+it still doesn't.
 
 # Outside context - web search
 A report says what happened; a good advisor also knows how it compared with what was \
@@ -261,6 +291,133 @@ def _cited_urls(output: list[Any]) -> set[str]:
     return urls
 
 
+def _correction_request(findings: list[ReviewFinding], last_chance: bool) -> str:
+    by_line: dict[int, list[ReviewFinding]] = {}
+    for finding in findings:
+        by_line.setdefault(finding.line, []).append(finding)
+    problems = "\n\n".join(
+        f'Line {number}: "{line_findings[0].text}"\n'
+        + "\n".join(
+            f"- [{'MUST FIX' if finding.must_fix else 'CHECK'}] {finding.detail}" for finding in line_findings
+        )
+        for number, line_findings in sorted(by_line.items())
+    )
+    closing = (
+        "This is the last pass: any line that still has a MUST FIX problem after it is cut as it stands, with "
+        "nothing reworded around it. So where you can't fix a line, remove it yourself, as described above."
+        if last_chance
+        else "A line that still has a MUST FIX problem afterwards will be cut."
+    )
+    return f"""Your script was checked against the report, line by line. These lines have problems:
+
+{problems}
+
+Return the complete script again: every line, in order, changed only where a fix needs it.
+- MUST FIX, a figure that matches none of the line's `figures`: either the sentence states the wrong number \
+(say the one the report has), or the number is right and its reference is missing from `figures` (add the \
+cell id, the paragraph quote, or the calc_id it came from).
+- MUST FIX, a reference that doesn't exist: replace it with the id you meant, copied from the report.
+- CHECK: look at the line and the figures again. If the sentence presents a figure as the wrong period or the \
+wrong item, correct the sentence or cite the right figure. If the line is right as it is, leave it.
+- You can't calculate or search anything new now. A number with no calculation behind it has to go: reword \
+the line without it.
+- If a line can't be fixed, remove it, and reword its neighbours where needed so the script still flows: no \
+line may refer back to something that is no longer said, and the thread from one line to the next has to hold \
+without it.
+{closing}"""
+
+
+def _review_and_correct(
+    client: Any,
+    report: FinancialReport,
+    index: narration_tools.FigureIndex,
+    input_items: list[Any],
+    response: Any,
+    lines: list[LLMNarrationLine],
+    turns: list[AgentTurn],
+) -> tuple[list[LLMNarrationLine], NarrationReview]:
+    """Checks the script's figures against what each line cites, has a second model
+    read it (narration_reviewer.py), and gives the agent up to MAX_CORRECTIONS turns
+    to fix what was found. Returns (the lines that hold up, what was found).
+
+    Corrections are the agent's own turns, in its own conversation, so it rewrites with
+    everything it knew when drafting - but without tools: a correction is one call, not
+    a new loop. Lines the agent removes itself come with their neighbours reworded;
+    cutting one here is the last resort for a figure that is still wrong."""
+    unit_note = f"Report figures are in {report.meta.currency} {report.meta.unit_scale} unless a label says otherwise."
+    review = NarrationReview(rounds=[])
+    for attempt in range(MAX_CORRECTIONS + 1):
+        findings, confirmed = narration_figures.check_script(lines, index)
+        if attempt == 0:
+            reviewer_findings, reviewer_usage = narration_reviewer.review(lines, index, unit_note, client)
+            findings.extend(reviewer_findings)
+            if reviewer_usage:
+                review.reviewer_input_tokens = reviewer_usage["input_tokens"]
+                review.reviewer_output_tokens = reviewer_usage["output_tokens"]
+                review.reviewer_cost_usd = reviewer_usage["cost_usd"]
+                review.reviewer_duration_ms = reviewer_usage["duration_ms"]
+        review.rounds.append(ReviewRound(lines=len(lines), figures_confirmed=confirmed, findings=findings))
+
+        # Advice alone is worth one correction turn, not a second: the agent has
+        # already looked at it once.
+        worth_a_turn = findings if attempt == 0 else [f for f in findings if f.must_fix]
+        if attempt == MAX_CORRECTIONS or not worth_a_turn:
+            break
+
+        input_items.extend(_as_input_item(item) for item in response.output)
+        input_items.append(
+            {"role": "user", "content": _correction_request(findings, last_chance=attempt == MAX_CORRECTIONS - 1)}
+        )
+        start = time.monotonic()
+        response = client.responses.parse(
+            model=llm_client.MODEL,
+            instructions=INSTRUCTIONS,
+            input=input_items,
+            tools=[*narration_tools.TOOL_DEFINITIONS, *narration_visuals.TOOL_DEFINITIONS],
+            tool_choice="none",
+            text_format=LLMNarrationScript,
+        )
+        duration_ms = int((time.monotonic() - start) * 1000)
+        usage = response.usage
+        cost = calculate_cost(llm_client.MODEL, usage.input_tokens, usage.output_tokens)
+        turns.append(
+            AgentTurn(
+                turn=len(turns) + 1,
+                purpose="correction",
+                tool_calls=[],
+                input_tokens=usage.input_tokens,
+                output_tokens=usage.output_tokens,
+                cost_usd=cost,
+                duration_ms=duration_ms,
+            )
+        )
+        logger.info(
+            "narration_correction turn=%d findings=%d must_fix=%d input_tokens=%d output_tokens=%d cost_usd=%.6f duration_ms=%d",
+            len(turns),
+            len(findings),
+            sum(1 for f in findings if f.must_fix),
+            usage.input_tokens,
+            usage.output_tokens,
+            cost,
+            duration_ms,
+        )
+        corrected = [line for line in response.output_parsed.lines if line.text.strip()] if response.output_parsed else []
+        if not corrected:
+            # Nothing usable came back; the script as it stood is cut below instead.
+            break
+        lines = corrected
+
+    # `rounds[-1]` is always a check of `lines` as they now stand.
+    failed: dict[int, str] = {}
+    for finding in review.rounds[-1].findings:
+        if finding.must_fix:
+            failed.setdefault(finding.line, finding.detail)
+    review.removed_lines = [
+        RemovedLine(text=lines[number - 1].text, detail=detail) for number, detail in sorted(failed.items())
+    ]
+    return [line for number, line in enumerate(lines, start=1) if number not in failed], review
+
+
 def generate_narration(
     report: FinancialReport,
     client: Any = None,
@@ -369,7 +526,11 @@ def generate_narration(
             f"Model did not produce a narration script within {MAX_TURNS} turns."
         )
 
-    cited, removed_visuals = narration_validator.attach_visuals(parsed.lines, chart_builder.charts)
+    draft_lines = [line for line in parsed.lines if line.text.strip()]
+    checked_lines, review = _review_and_correct(client, report, index, input_items, response, draft_lines, turns)
+    narration_validator.check_removed_lines(len(review.removed_lines), review.rounds[-1].lines)
+
+    cited, removed_visuals = narration_validator.attach_visuals(checked_lines, chart_builder.charts)
     fallback_id = report.blocks[0].id if report.blocks else ""
     targeted, repair_count = narration_validator.repair_target_ids(
         cited, narration_context.collect_target_ids(report), fallback_id
@@ -383,17 +544,30 @@ def generate_narration(
 
     trace = NarrationTrace(
         turns=turns,
-        total_input_tokens=sum(t.input_tokens for t in turns),
-        total_output_tokens=sum(t.output_tokens for t in turns),
-        total_cost_usd=sum(t.cost_usd for t in turns),
-        total_duration_ms=sum(t.duration_ms for t in turns),
+        total_input_tokens=sum(t.input_tokens for t in turns) + (review.reviewer_input_tokens or 0),
+        total_output_tokens=sum(t.output_tokens for t in turns) + (review.reviewer_output_tokens or 0),
+        total_cost_usd=sum(t.cost_usd for t in turns) + (review.reviewer_cost_usd or 0),
+        total_duration_ms=sum(t.duration_ms for t in turns) + (review.reviewer_duration_ms or 0),
         total_web_searches=web_searches_used,
         repaired_target_ids=repair_count,
         dropped_source_urls=dropped_urls,
         blocked_source_urls=blocked_urls,
         removed_sources=removed_sources,
         removed_visuals=removed_visuals,
+        review=review,
     )
+    for number, review_round in enumerate(review.rounds, start=1):
+        for finding in review_round.findings:
+            logger.info(
+                "narration_review_finding round=%d line=%d check=%s must_fix=%s detail=%s",
+                number,
+                finding.line,
+                finding.check,
+                finding.must_fix,
+                finding.detail,
+            )
+    for removed in review.removed_lines:
+        logger.info("narration_line_removed detail=%s text=%r", removed.detail, removed.text)
     for source in removed_sources:
         logger.info("narration_source_removed line=%d reason=%s url=%s", source.line, source.reason, source.url)
     for visual in removed_visuals:
@@ -405,9 +579,12 @@ def generate_narration(
             visual.detail,
         )
     logger.info(
-        "narration_done turns=%d lines=%d charts=%d illustrated_lines=%d web_searches=%d sourced_lines=%d dropped_source_urls=%d blocked_source_urls=%d repaired_target_ids=%d total_cost_usd=%.6f total_duration_ms=%d",
+        "narration_done turns=%d lines=%d figures_confirmed=%d review_rounds=%d removed_lines=%d charts=%d illustrated_lines=%d web_searches=%d sourced_lines=%d dropped_source_urls=%d blocked_source_urls=%d repaired_target_ids=%d total_cost_usd=%.6f total_duration_ms=%d",
         len(turns),
         len(lines),
+        review.rounds[-1].figures_confirmed,
+        len(review.rounds),
+        len(review.removed_lines),
         len(chart_builder.charts),
         sum(1 for line in lines if line.visual),
         web_searches_used,

@@ -3,7 +3,14 @@ from types import SimpleNamespace
 
 import pytest
 
-from app.models.narration import LLMNarrationLine, LLMNarrationScript, NarrationLine
+from app.models.narration import (
+    FigureRef,
+    LLMNarrationLine,
+    LLMNarrationScript,
+    LLMReview,
+    LLMReviewIssue,
+    NarrationLine,
+)
 from app.services import narration_agent
 from app.services.narration_validator import NarrationQualityError
 
@@ -62,11 +69,12 @@ class _FakeClient:
         return self._responses.pop(0)
 
 
-def _line(text, target_id, source_urls=(), chart_id=None, chart_emphasis=None):
+def _line(text, target_id, source_urls=(), chart_id=None, chart_emphasis=None, figures=()):
     return LLMNarrationLine(
         text=text,
         target_id=target_id,
         source_urls=list(source_urls),
+        figures=[FigureRef(**figure) for figure in figures],
         chart_id=chart_id,
         chart_emphasis=chart_emphasis,
     )
@@ -322,3 +330,117 @@ def test_search_sources_are_not_fed_back_as_input(report):
 
     search_item = next(i for i in client.calls[1]["input"] if i.get("type") == "web_search_call")
     assert search_item["action"] == {"type": "search", "query": "acme", "queries": None}
+
+
+def _review_response(*issues):
+    return SimpleNamespace(
+        output=[],
+        output_parsed=LLMReview(issues=[LLMReviewIssue(line=line, problem=problem) for line, problem in issues]),
+        usage=SimpleNamespace(input_tokens=400, output_tokens=20),
+    )
+
+
+def _revenue_line(text):
+    return _line(text, "t_income__r0_q2", figures=[REVENUE_THIS_YEAR])
+
+
+RIGHT = _revenue_line("Revenue was $200 million.")
+WRONG = _revenue_line("Revenue was $150 million.")
+CLOSING = _line("That's the headline.", "t_income")
+
+
+def test_a_script_whose_figures_check_out_is_reviewed_once_and_left_alone(report):
+    client = _FakeClient([_final_response([RIGHT, CLOSING]), _review_response()])
+
+    lines, trace = narration_agent.generate_narration(report, client=client)
+
+    assert [line.text for line in lines] == ["Revenue was $200 million.", "That's the headline."]
+    assert lines[0].figures == [FigureRef(**REVENUE_THIS_YEAR)]
+    assert len(trace.turns) == 1
+    review = trace.review
+    assert [(r.lines, r.figures_confirmed, r.findings) for r in review.rounds] == [(2, 1, [])]
+    assert review.removed_lines == []
+    # The reviewer reads each line next to the label of what it cites, not the report.
+    review_call = client.calls[1]
+    assert review_call["text_format"] is LLMReview
+    assert 'Line 1: "Revenue was $200 million."' in review_call["input"][0]["content"]
+    assert "Revenue · Q2 FY26 = 200" in review_call["input"][0]["content"]
+    assert "Line 2" not in review_call["input"][0]["content"]
+    # Its call is part of what the run cost.
+    assert trace.total_input_tokens == 1200 + 400
+    assert review.reviewer_input_tokens == 400
+
+
+def test_a_figure_that_does_not_match_is_sent_back_and_fixed(report):
+    client = _FakeClient([_final_response([WRONG, CLOSING]), _review_response(), _final_response([RIGHT, CLOSING])])
+
+    lines, trace = narration_agent.generate_narration(report, client=client)
+
+    assert [line.text for line in lines] == ["Revenue was $200 million.", "That's the headline."]
+    assert [turn.purpose for turn in trace.turns] == ["draft", "correction"]
+    correction = client.calls[2]
+    assert correction["tool_choice"] == "none" and not _has_web_search(correction)
+    request = correction["input"][-1]["content"]
+    assert 'Line 1: "Revenue was $150 million."' in request
+    assert "[MUST FIX] '$150 million' matches none of the figures the line cites" in request
+    # The draft itself is in the conversation the correction continues.
+    assert any(item.get("type") == "message" for item in correction["input"])
+    review = trace.review
+    assert [[f.check for f in r.findings] for r in review.rounds] == [["figure_mismatch"], []]
+    assert review.removed_lines == []
+
+
+def test_a_figure_still_wrong_after_every_correction_is_cut(report):
+    draft = [RIGHT, WRONG, CLOSING]
+    client = _FakeClient([_final_response(draft), _review_response(), _final_response(draft), _final_response(draft)])
+
+    lines, trace = narration_agent.generate_narration(report, client=client)
+
+    assert [line.text for line in lines] == ["Revenue was $200 million.", "That's the headline."]
+    assert [turn.purpose for turn in trace.turns] == ["draft", "correction", "correction"]
+    assert "last pass" not in client.calls[2]["input"][-1]["content"]
+    assert "last pass" in client.calls[3]["input"][-1]["content"]
+    assert len(trace.review.rounds) == 3
+    assert [removed.text for removed in trace.review.removed_lines] == ["Revenue was $150 million."]
+
+
+def test_the_reviewers_advice_gets_one_correction_turn_and_never_cuts_a_line(report):
+    script = [RIGHT, CLOSING]
+    client = _FakeClient(
+        [
+            _final_response(script),
+            _review_response((1, "The sentence presents last year's revenue as this year's."), (9, "No such line.")),
+            _final_response(script),  # the agent looked again and kept its line
+        ]
+    )
+
+    lines, trace = narration_agent.generate_narration(report, client=client)
+
+    assert [line.text for line in lines] == ["Revenue was $200 million.", "That's the headline."]
+    assert "[CHECK] The sentence presents last year's revenue as this year's." in client.calls[2]["input"][-1]["content"]
+    findings = trace.review.rounds[0].findings
+    assert [(f.line, f.check, f.must_fix) for f in findings] == [(1, "reviewer", False)]
+    assert len(trace.turns) == 2  # advice is not worth a second correction
+    assert trace.review.removed_lines == []
+
+
+def test_a_failed_review_call_does_not_cost_the_script(report):
+    class _NoReviewer(_FakeClient):
+        def parse(self, **kwargs):
+            if kwargs["text_format"] is LLMReview:
+                raise RuntimeError("review unavailable")
+            return super().parse(**kwargs)
+
+    lines, trace = narration_agent.generate_narration(report, client=_NoReviewer([_final_response([RIGHT, CLOSING])]))
+
+    assert len(lines) == 2
+    assert trace.review.reviewer_input_tokens is None
+    assert trace.review.rounds[0].figures_confirmed == 1
+
+
+def test_a_script_that_loses_most_of_its_lines_is_rejected(report):
+    draft = [WRONG, _revenue_line("Up from $90 million."), CLOSING]
+    client = _FakeClient([_final_response(draft), _review_response(), _final_response(draft), _final_response(draft)])
+
+    with pytest.raises(NarrationQualityError, match="2 of 3"):
+        narration_agent.generate_narration(report, client=client)

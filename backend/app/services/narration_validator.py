@@ -137,7 +137,9 @@ def attach_visuals(
                 emphasis = None
             visual = LineVisual(chart=chart, emphasis=emphasis)
         attached.append(
-            NarrationLine(text=line.text, target_id=line.target_id, sources=line.source_urls, visual=visual)
+            NarrationLine(
+                text=line.text, target_id=line.target_id, sources=line.source_urls, visual=visual, figures=line.figures
+            )
         )
     return attached, removed
 
@@ -179,6 +181,15 @@ def filter_sources(
                 kept.append(match)
         filtered.append(line.model_copy(update={"sources": kept}))
     return filtered, removed
+
+
+def check_removed_lines(removed: int, total: int, max_removed_ratio: float = 0.5) -> None:
+    """Rejects a script that lost most of its lines to figures that didn't check out -
+    what is left is not the walkthrough the model wrote, and not worth playing."""
+    if total and removed / total > max_removed_ratio:
+        raise NarrationQualityError(
+            f"{removed} of {total} narration lines stated figures that don't match the report."
+        )
 
 
 def check_quality(lines: list[NarrationLine], repair_count: int, max_repair_ratio: float = 0.5) -> None:

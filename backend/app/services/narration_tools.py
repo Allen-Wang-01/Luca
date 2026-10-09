@@ -119,6 +119,9 @@ class FigureIndex:
         self._paragraphs: dict[str, str] = {}
         # Results of the calculations made so far in this run, by calc id.
         self._results: dict[str, _Operand] = {}
+        # Cell id -> (table id, row id, column id), for telling whether two cells
+        # share a row or a column.
+        self.cell_positions: dict[str, tuple[str, str, str]] = {}
         for block in report.blocks:
             if isinstance(block, ParagraphBlock):
                 self._paragraphs[block.id] = block.text
@@ -129,6 +132,7 @@ class FigureIndex:
             for row in block.rows:
                 self._row_ids.add(row.id)
                 for cell in row.cells:
+                    self.cell_positions[cell.id] = (block.id, row.id, cell.col_id)
                     label = f"{row_labels[row.id]} · {column_labels.get(cell.col_id, cell.col_id)}"
                     if cell.value is None:
                         self._empty_cells[cell.id] = label

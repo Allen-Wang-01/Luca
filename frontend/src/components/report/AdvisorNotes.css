@@ -176,3 +176,19 @@
 .advisor-notes__error {
   color: var(--color-negative);
 }
+
+/* The narration line a finding of the figure check is about, as it was written. */
+.advisor-notes__quote {
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+/* The figure check's result in one line. */
+.advisor-notes__verdict {
+  margin: 0.375rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-positive);
+}

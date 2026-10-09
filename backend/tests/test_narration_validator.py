@@ -136,7 +136,7 @@ CHART = Visual(
 
 def _llm_line(text="Some narration.", chart_id=None, chart_emphasis=None) -> LLMNarrationLine:
     return LLMNarrationLine(
-        text=text, target_id="t_income__r0", source_urls=[], chart_id=chart_id, chart_emphasis=chart_emphasis
+        text=text, target_id="t_income__r0", source_urls=[], figures=[], chart_id=chart_id, chart_emphasis=chart_emphasis
     )
 
 
