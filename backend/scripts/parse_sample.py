@@ -9,6 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from app.core.logging import configure_logging
 from app.services import id_assigner, llm_client, pdf_gatekeeper, report_validator
 
 
@@ -16,6 +17,8 @@ def main() -> None:
     if len(sys.argv) != 2:
         print("Usage: python scripts/parse_sample.py path/to/report.pdf", file=sys.stderr)
         sys.exit(1)
+
+    configure_logging()
 
     pdf_path = Path(sys.argv[1])
     pdf_bytes = pdf_path.read_bytes()
