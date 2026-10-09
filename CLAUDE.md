@@ -224,8 +224,10 @@ pipeline:
   error the model can correct. A `ChartBuilder` holds the charts built in one run.
 - `narration_validator.py` attaches each line's chart (`attach_visuals`: a `chart_id`
   no tool produced is dropped and the line kept; an unknown `chart_emphasis` is dropped
-  and the chart kept; a chart that comes back after a line without it is only shown for
-  its first run of lines - all recorded in the trace's `removed_visuals`), repairs
+  and the chart kept; an emphasis follows the line's highlight where that is one of the
+  chart's items, and is otherwise dropped unless it is a figure the line cites; a chart
+  that comes back after a line without it is only shown for its first run of lines -
+  all recorded in the trace's `removed_visuals`), repairs
   `target_id`s that don't exist (nearest valid
   ancestor cell → row → block, then the previous line's target), drops cited source
   URLs that didn't come back from a web search in this run or are on a blocked site

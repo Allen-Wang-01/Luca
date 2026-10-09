@@ -81,6 +81,43 @@ def repair_target_ids(
     return repaired, repair_count
 
 
+def _settle_emphasis(line: LLMNarrationLine, chart: Visual) -> tuple[str | None, tuple[str, str] | None]:
+    """The chart item to emphasize for this line, and (reason, detail) if that isn't
+    the one the model named.
+
+    What a line highlights in the report and what it emphasizes in its chart are the
+    same thing said twice, and the model sometimes says them differently - highlighting
+    one region's figure while emphasizing the next region's bar. The highlight is the
+    more deliberate of the two, so where it is one of the chart's own items the
+    emphasis follows it. Otherwise the emphasized item has to be something the line
+    cites; a bar the line never mentions is not what it is about.
+    """
+    stated = line.chart_emphasis or None
+    if stated is None:
+        # The line is about the chart as a whole; nothing to settle.
+        return None, None
+
+    by_key = {item.key: item for item in chart.items}
+    highlighted = next((item for item in chart.items if item.source_id == line.target_id), None)
+    if highlighted is not None:
+        if highlighted.key == stated:
+            return stated, None
+        detail = f"'{stated}' changed to '{highlighted.key}' ({highlighted.label}): the figure the line highlights."
+        return highlighted.key, ("emphasis_moved", detail)
+
+    item = by_key.get(stated)
+    if item is None:
+        return None, ("unknown_emphasis", f"The chart has no item '{stated}'.")
+    cited = {figure.id for figure in line.figures}
+    # A row target takes in the item's cell; a line that cites nothing at all (it names
+    # the item without a number) is taken at its word.
+    in_highlighted_row = item.source_id.startswith(f"{line.target_id}_")
+    if cited and item.source_id not in cited and not in_highlighted_row:
+        detail = f"'{stated}' ({item.label}) is not a figure the line highlights or cites."
+        return None, ("emphasis_dropped", detail)
+    return stated, None
+
+
 def attach_visuals(
     lines: list[LLMNarrationLine], charts: dict[str, Visual]
 ) -> tuple[list[NarrationLine], list[RemovedVisual]]:
@@ -88,8 +125,8 @@ def attach_visuals(
 
     Returns (lines, the chart references that didn't hold up and why). A chart id that
     no chart tool produced is dropped - that includes charts that failed their checks,
-    which never got an id. An emphasis key the chart doesn't have is dropped on its own;
-    the chart is still shown. A chart is shown for one unbroken run of lines only: when
+    which never got an id. An emphasis that doesn't hold up is moved or dropped on its
+    own (see `_settle_emphasis`); the chart is still shown. A chart is shown for one unbroken run of lines only: when
     it comes back after a line without it, the card would pop up again for something
     the listener has already been walked through, so later runs are dropped. Lines with
     empty text are left out here, so line numbers match the final script.
@@ -124,17 +161,10 @@ def attach_visuals(
             )
         elif chart is not None:
             shown.add(chart.id)
-            emphasis = line.chart_emphasis or None
-            if emphasis and all(item.key != emphasis for item in chart.items):
-                removed.append(
-                    RemovedVisual(
-                        line=number,
-                        chart_id=chart.id,
-                        reason="unknown_emphasis",
-                        detail=f"The chart has no item '{emphasis}'.",
-                    )
-                )
-                emphasis = None
+            emphasis, problem = _settle_emphasis(line, chart)
+            if problem:
+                reason, detail = problem
+                removed.append(RemovedVisual(line=number, chart_id=chart.id, reason=reason, detail=detail))
             visual = LineVisual(chart=chart, emphasis=emphasis)
         attached.append(
             NarrationLine(

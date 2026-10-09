@@ -1,6 +1,6 @@
 import pytest
 
-from app.models.narration import LineVisual, LLMNarrationLine, NarrationLine, Visual, VisualItem
+from app.models.narration import FigureRef, LineVisual, LLMNarrationLine, NarrationLine, Visual, VisualItem
 from app.services.narration_validator import (
     NarrationQualityError,
     attach_visuals,
@@ -134,10 +134,58 @@ CHART = Visual(
 )
 
 
-def _llm_line(text="Some narration.", chart_id=None, chart_emphasis=None) -> LLMNarrationLine:
+def _llm_line(
+    text="Some narration.", chart_id=None, chart_emphasis=None, target_id="t_income__r0", cites=()
+) -> LLMNarrationLine:
     return LLMNarrationLine(
-        text=text, target_id="t_income__r0", source_urls=[], figures=[], calculations=[], chart_id=chart_id, chart_emphasis=chart_emphasis
+        text=text,
+        target_id=target_id,
+        source_urls=[],
+        figures=[FigureRef(id=cell_id, quote=None) for cell_id in cites],
+        calculations=[],
+        chart_id=chart_id,
+        chart_emphasis=chart_emphasis,
     )
+
+
+THIS_YEAR, LAST_YEAR = "t_income__r0_q2", "t_income__r0_q2_ly"  # the cells behind CHART's i2 and i1
+
+
+def _emphasis(**line):
+    lines, removed = attach_visuals([_llm_line(chart_id="chart_1", **line)], {"chart_1": CHART})
+    return lines[0].visual.emphasis, [(r.reason, r.detail) for r in removed]
+
+
+def test_the_emphasis_follows_the_figure_the_line_highlights():
+    # Highlights this year's cell, emphasizes last year's bar: the highlight wins.
+    emphasis, removed = _emphasis(chart_emphasis="i1", target_id=THIS_YEAR, cites=[THIS_YEAR, LAST_YEAR])
+
+    assert emphasis == "i2"
+    assert removed == [("emphasis_moved", "'i1' changed to 'i2' (This year): the figure the line highlights.")]
+
+
+def test_an_emphasis_that_agrees_with_the_highlight_is_left_alone():
+    assert _emphasis(chart_emphasis="i2", target_id=THIS_YEAR, cites=[THIS_YEAR]) == ("i2", [])
+    # A row highlight takes in every one of its cells.
+    assert _emphasis(chart_emphasis="i1", target_id="t_income__r0", cites=[THIS_YEAR]) == ("i1", [])
+    # Highlighting something else, but the emphasized figure is one the line cites.
+    assert _emphasis(chart_emphasis="i1", target_id="p_overview", cites=[LAST_YEAR]) == ("i1", [])
+
+
+def test_an_emphasized_item_the_line_neither_highlights_nor_cites_is_dropped():
+    emphasis, removed = _emphasis(chart_emphasis="i1", target_id="p_overview", cites=[THIS_YEAR])
+
+    assert emphasis is None
+    assert [reason for reason, _ in removed] == ["emphasis_dropped"]
+
+
+def test_a_line_that_cites_no_figures_keeps_the_emphasis_it_named():
+    # "The biggest piece is last year's" - no number, nothing to hold the emphasis to.
+    assert _emphasis(chart_emphasis="i1", target_id="p_overview") == ("i1", [])
+
+
+def test_a_line_about_the_whole_chart_stays_without_emphasis():
+    assert _emphasis(chart_emphasis=None, target_id=THIS_YEAR, cites=[THIS_YEAR]) == (None, [])
 
 
 def test_lines_carry_the_chart_they_reference():

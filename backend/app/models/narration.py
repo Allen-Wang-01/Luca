@@ -199,7 +199,11 @@ class RemovedVisual(BaseModel):
     # with nothing emphasized.
     # "reappeared": the chart came back after a line without it; it is only shown for
     # its first run of lines.
-    reason: Literal["unknown_chart", "unknown_emphasis", "reappeared"]
+    # "emphasis_moved": the line highlights the figure of a different item of the
+    # chart than it emphasized, so the emphasis was moved to that item.
+    # "emphasis_dropped": the emphasized item is not a figure the line highlights or
+    # cites, so the chart is shown with nothing emphasized.
+    reason: Literal["unknown_chart", "unknown_emphasis", "reappeared", "emphasis_moved", "emphasis_dropped"]
     detail: str
 
 

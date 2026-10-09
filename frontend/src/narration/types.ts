@@ -116,11 +116,14 @@ export interface RemovedSource {
 // A chart reference on a line that didn't hold up: 'unknown_chart' if no chart with
 // that id was built (the line plays without one), 'unknown_emphasis' if the chart has
 // no such item (it is shown with nothing emphasized), 'reappeared' if the chart came
-// back after a line without it (it is only shown for its first run of lines).
+// back after a line without it (it is only shown for its first run of lines),
+// 'emphasis_moved' if the line highlights the figure of a different item than it
+// emphasized (the emphasis follows the highlight), 'emphasis_dropped' if the emphasized
+// item is not a figure the line highlights or cites.
 export interface RemovedVisual {
   line: number // 1-based position in the script
   chart_id: string
-  reason: 'unknown_chart' | 'unknown_emphasis' | 'reappeared'
+  reason: 'unknown_chart' | 'unknown_emphasis' | 'reappeared' | 'emphasis_moved' | 'emphasis_dropped'
   detail: string
 }
 

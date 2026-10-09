@@ -151,6 +151,8 @@ const REMOVED_VISUAL_LABELS: Record<RemovedVisual['reason'], string> = {
   unknown_chart: 'No such chart was built (a rejected chart has no id) - line plays without a chart',
   unknown_emphasis: 'Chart has no such item - shown with nothing emphasized',
   reappeared: 'Chart was already shown earlier - line plays without a chart',
+  emphasis_moved: 'Emphasized a different item than the line highlights - emphasis moved to match',
+  emphasis_dropped: 'Emphasized an item the line neither highlights nor cites - shown with nothing emphasized',
 }
 
 function pluralize(count: number, word: string): string {
@@ -426,11 +428,11 @@ export function AdvisorNotes({ trace, lineCount, onClose }: AdvisorNotesProps) {
         {removedVisuals.length > 0 && (
           <li className="advisor-notes__turn">
             <div className="advisor-notes__turn-header">
-              <span className="advisor-notes__turn-title">Charts removed by the validator</span>
+              <span className="advisor-notes__turn-title">Charts adjusted by the validator</span>
             </div>
             <p className="advisor-notes__turn-summary">
-              The advisor attached a chart to these lines that failed our checks. The lines themselves are still
-              in the script.
+              On these lines the chart, or the item emphasized in it, failed our checks and was removed or
+              corrected. The lines themselves are still in the script.
             </p>
             <ul className="advisor-notes__calls">
               {removedVisuals.map((visual, i) => (
