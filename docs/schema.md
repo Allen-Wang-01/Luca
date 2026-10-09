@@ -68,6 +68,44 @@ row and cell ids are derived from their parent's id.
 Chart data points have no ids, so narration about a chart always targets the whole
 chart block.
 
+## What a row measures, and where it sits
+
+A statement mixes kinds of figures in one table: amounts in millions, per-share amounts
+printed as they are, share counts in thousands. It also repeats labels - "Products"
+under both sales and costs, "Basic" under both earnings per share and share counts.
+Nothing in a row's label reliably says which is which, so the parser marks each row:
+
+| Field | Meaning |
+|---|---|
+| `quantity` | `money`, `per_share`, `share_count`, `percent` or `other` |
+| `scale` | the scale this row's figures are printed in (`actual`, `thousands`, ...), which need not be `meta.unit_scale` |
+| `group` | the sub-heading the row is listed under, without its trailing colon |
+
+All three are optional and `null` on a row without figures and on reports parsed before
+they existed; code that reads them falls back to the report's unit scale and to a row
+label containing "per share". They are used to put figures on one scale before
+calculating with them, to refuse adding or comparing figures of different kinds (only
+a ratio makes sense across kinds), and to name a row away from its table: where a label
+is shared by several rows it is shown as `{group} · {label}`, and a column under a group
+header as `{group label} · {column label}` (`backend/app/services/report_labels.py`,
+mirrored in `frontend/src/narration/targetIndex.ts`).
+
+## Totals name their parts
+
+A row that is a total or a result of other rows lists them in `sum_of`:
+`[{row_id, sign: "add" | "subtract"}]`. Figures are taken with the sign they are printed
+with, so a cost printed as 400 is subtracted and an outflow printed as (120) is added.
+This is what the arithmetic check runs on (see "Validation and confidence flags"), so
+it doesn't depend on what a company calls its rows.
+
+Rows have no ids while the LLM is filling in the report, so there it refers to rows by
+position: every `LLMRow` carries an `index` the model writes out (0, 1, 2, ...), and
+`sum_of` uses those. `id_assigner` converts them to row ids, and leaves out all of a
+table's relationships if any written index doesn't match the row's real position - a
+reference that is off by one would flag correct figures. A single relationship is left
+out if it names a row that doesn't exist, the row itself, a row without figures, or the
+same row twice.
+
 ## Charts the narration brings up
 
 Separately from the report's own chart blocks, a narration line can carry a small chart
@@ -95,6 +133,24 @@ before giving it an id. Lines then refer to that id. Consecutive lines can share
 chart and move the `emphasis`, so the chart is embedded in every line that shows it
 rather than stored once on the side.
 
+A chart item can also be the result of a calculation (a margin the report doesn't
+print, a growth rate per division). Such an item has `computed: true`, the calculation's
+id as its `source_id`, and the card marks it so a viewer knows the figure isn't printed
+in the report.
+
+## Figures a narration line states
+
+Every narration line lists where its figures come from, in `figures`:
+`[{id, quote}]` - a cell id, a paragraph id plus the figure as written there, or the id
+of a calculation from the same run (`calc_1`, ...). After the script is written, each
+amount and percentage in a line's text is compared with what the line lists, a second
+model reads each line against the labels of those figures, and the agent is asked to
+correct what was found (`backend/app/services/narration_figures.py`,
+`narration_reviewer.py`). What that found is returned in the trace as `review`: the
+findings of each round, and any line that was cut because its figure was still wrong
+after the corrections. A calculation id only means something next to the trace of the
+run that produced it.
+
 ## Id generation rules (implemented in the Phase 1 parser, not by the LLM)
 
 A multimodal model asked to invent globally-unique ids across a long document is
@@ -112,7 +168,8 @@ Concretely, this is two separate Pydantic schemas, not one:
 
 - `backend/app/models/llm_report.py` — what the LLM's structured output actually
   produces. Same shape as `report.py`, but blocks and sections carry `slug` instead of
-  `id`, and rows/cells carry no id field at all.
+  `id`, and rows/cells carry no id field at all (rows carry an `index` instead, for
+  `sum_of` - see "Totals name their parts").
 - `backend/app/services/id_assigner.py` — `assign_ids(llm_report, source_filename) ->
   FinancialReport`, the pure function that applies the table above and produces the
   schema this document otherwise describes. It also fills in `meta.source_filename` and
@@ -126,17 +183,45 @@ suspected parsing errors" requirement:
 - `confidence: "high" | "low"` — the LLM's own self-reported certainty about a table or
   chart it extracted (e.g. a smudged scan, an ambiguous figure).
 - `flags: Flag[]` — populated by a **separate backend validation pass** over the parsed
-  output (e.g. checking `revenue - cost = gross_profit` within tolerance). Kept separate
-  from the LLM prompt so validation rules can be iterated on independently of parsing.
+  output (`backend/app/services/report_validator.py`). Kept separate from the LLM prompt
+  so validation rules can be iterated on independently of parsing.
 
-`Flag` has `severity` (`warning` | `error`), a `code` (e.g. `arithmetic_mismatch`), and a
-human-readable `message`.
+`Flag` has `severity` (`warning` | `error`), a `code`, and a human-readable `message`.
+
+The validation pass checks every total against the rows its `sum_of` names, column by
+column, allowing for the rounding of the printed figures and reading a dash as zero.
+What a failure means depends on where it fails:
+
+| Outcome | What it means | Flag |
+|---|---|---|
+| fails in some columns, holds in others | a figure in a failing column was misread | `arithmetic_mismatch` on the total's row |
+| fails in every column (two or more) | the relationship itself is wrong, not the figures | none; logged only |
+| fails in a table with one column to check | can't tell which | `unconfirmed_sum` on the total's row |
+
+A table in which no row has `sum_of` (a report parsed before it existed) is checked
+with a few rules that find rows by label instead, which also produce
+`arithmetic_mismatch`.
+
+A table gets `ambiguous_columns` when two of its columns read the same once their group
+header is counted in - see "Two-level column headers".
+
+Only `arithmetic_mismatch` says a figure is suspect, so it is the only code the
+narration is shown and tells the listener about
+(`narration_context.NARRATED_FLAG_CODES`). The others are about how the report was
+parsed and appear on the page only.
 
 ## Two-level column headers
 
 Real filings often group columns under a shared header (e.g. "Three Months Ended" over
 two date columns). `TableBlock.column_groups` is optional and only used when a table
 actually has this structure; simple tables omit it.
+
+When the source prints such a header once for several tables - a statement followed by
+breakdowns under the same column headings, or a table continued on the next page - the
+parser repeats the full header, groups included, on each table. Without the groups, two
+columns with the same date can't be told apart, by a reader or by the narration model
+picking a figure; the validation pass flags a table where that happened
+(`ambiguous_columns`).
 
 ## Example
 
@@ -200,7 +285,11 @@ A minimal report with one heading and a one-row income statement table:
               "value_type": "number"
             }
           ],
-          "flags": []
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
         }
       ],
       "confidence": "high",

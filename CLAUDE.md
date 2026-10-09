@@ -15,7 +15,8 @@ python3 -m venv .venv              # first time only; use python3.11+ (system py
 source .venv/bin/activate          # every session, before running pip/uvicorn/python
 pip install -r requirements.txt
 cp .env.example .env               # fill in OPENAI_API_KEY (and OPENAI_BASE_URL if needed)
-uvicorn app.main:app --reload      # serves http://localhost:8000, health at /api/health
+python start.py                    # serves http://localhost:8000, health at /api/health
+                                    # (short for `uvicorn app.main:app --reload`)
 ```
 
 Tests (`pip install -r requirements-dev.txt` first — adds pytest/httpx/reportlab on top
@@ -64,6 +65,8 @@ Charts can be previewed the same way, on top of a narration that already has spe
 (no API calls) runs hand-written chart tool calls through the real chart tools and
 validator and writes `temp/NVIDIAAn.narration.charts.json`, served at
 `?sample=NVIDIAAn&version=charts`. Line text is untouched, so saved clips still match.
+The charts file can also list `calculations`, run first through the real calculation
+tools, so charts of calculated figures can be previewed the same way.
 
 ## Architecture
 
@@ -107,6 +110,14 @@ self-reported certainty) and `flags` (populated by a separate backend validation
 e.g. an arithmetic check like `revenue - cost == gross_profit`) — kept separate so
 validation logic can evolve independently of the parsing prompt.
 
+Nothing downstream is meant to depend on what a company calls its rows. The parser
+marks each row with what it measures (`quantity`), the scale it is printed in (`scale`),
+the sub-heading it sits under (`group`), and, for a total, the rows that add up to it
+(`sum_of`); calculations, labels and the arithmetic check all work from those. All four
+are optional, and a report parsed before they existed falls back to the older guesses
+(report-wide unit scale, a row label containing "per share", a few label-matching
+arithmetic rules) - which is why the saved NVIDIA sample still loads unchanged.
+
 ### PDF parsing pipeline (`POST /api/reports/parse`, `app/routers/reports.py`)
 
 `pdf_gatekeeper.check_pdf()` (`app/services/pdf_gatekeeper.py`) runs first and returns
@@ -124,8 +135,18 @@ It returns an `LLMFinancialReport` (`app/models/llm_report.py`) — the schema t
 actually fills in, which is id-free (slugs instead; see the schema section above).
 
 `id_assigner.assign_ids()` (`app/services/id_assigner.py`) converts that into the real
-`FinancialReport`, then `report_validator.validate()` (`app/services/report_validator.py`)
-attaches arithmetic-mismatch `Flag`s in place. Both are pure functions with no I/O, so
+`FinancialReport`. Rows have no ids yet at that point, so a total refers to its parts by
+the row `index` the model writes on every row; those are turned into row ids here, and
+a table whose written indexes don't match the rows' real positions loses all its
+`sum_of` rather than risk pointing one row off. Then `report_validator.validate()`
+(`app/services/report_validator.py`) attaches `Flag`s in place: each total is checked
+against the rows it names, column by column. A sum that fails in some columns is a
+misread figure (`arithmetic_mismatch`); one that fails in every column is a wrong
+relationship and is only logged; one that fails with a single column to check is
+`unconfirmed_sum`. A table whose columns can't be told apart gets `ambiguous_columns`.
+Only `arithmetic_mismatch` is shown to the narration model
+(`narration_context.NARRATED_FLAG_CODES`), since the prompt tells it to warn the
+listener about every flag it sees. Both are pure functions with no I/O, so
 they're covered by fast unit tests independent of the API (`tests/test_id_assigner.py`,
 `tests/test_report_validator.py`) — the LLM call itself is only exercised by
 `scripts/parse_sample.py` (manual, costs money) or stubbed out via monkeypatching
@@ -147,29 +168,58 @@ and `MAX_TOOL_CALLS` caps total calculations. Each turn is logged and recorded i
 `NarrationTrace` (tool calls, tokens, cost, latency) that the frontend shows in its
 "Advisor's notes" panel.
 
+Once the script is written it is checked, as a fixed step of the loop rather than a
+tool the model may or may not call (`_review_and_correct`). Every line lists where its
+figures come from (`figures`, the same references the tools take):
+- `narration_figures.py` compares each amount and percentage in a line's text with what
+  the line lists, within the rounding it was said with. A mismatch is `must_fix`. It
+  also raises two patterns as advice: a cited cell sharing neither row nor column with
+  the others cited from its table (this year's figure for one thing against last year's
+  for another), and a highlighted cell the line doesn't cite.
+- `narration_reviewer.py` is one separate model call that reads each line next to the
+  full labels of the figures it cites and reports any presented as the wrong period or
+  item. It sees only the script and the labels, not the report or the agent's
+  conversation. Its findings are advice, and a failed call is logged and skipped.
+- Findings go back to the agent, which rewrites the script in its own conversation
+  without tools - up to `MAX_CORRECTIONS` turns, the second only if a figure is still
+  wrong. It is told to remove what it can't fix and reword the neighbouring lines so the
+  script still flows. Only a line with a `must_fix` finding left after that is cut by
+  the code, and a script that loses more than half its lines is rejected (→ 502).
+The rounds, findings and cut lines are in the trace's `review` and shown in the
+"Advisor's notes" panel; the reviewer call and correction turns are counted in the
+trace's totals.
+
 The supporting pieces are pure functions with their own tests, same as the parsing
 pipeline:
 - `narration_context.py` renders the report into compact, id-annotated prompt text
   (one line per row, with the row id and every cell id written out next to its value)
   and collects the set of valid target ids.
-- `narration_tools.py` — `percent_change` / `ratio` / `difference`. Operands are
+- `narration_tools.py` — `percent_change` / `ratio` / `difference` / `combine` (several
+  figures added and subtracted in one call). Operands are
   **references, not numbers**: `{id: <cell id>, quote: null}` for a table figure, or
   `{id: <paragraph id>, quote: "$3.2 billion"}` for a figure that only appears in
   prose — the quote is checked to appear verbatim in that paragraph before use. Values
-  are looked up here, and table (report unit scale) and prose ("billion") figures are
-  put on a common scale when mixed, so figures never pass through the model's own
-  transcription or mental arithmetic. Errors come back as tool output so the model can
-  correct itself.
+  are looked up here, and figures printed in different scales (a row's own `scale`, the
+  report's unit scale, "billion" in prose) are put on a common one when mixed, so
+  figures never pass through the model's own transcription or mental arithmetic. Every
+  result gets a `calc_id` that a later call can pass as an operand, for figures that
+  take two steps. Figures of different kinds (a row's `quantity`) can't be added,
+  subtracted or compared; `ratio` can divide one by another. Errors come back as tool
+  output so the model can correct itself.
+- `report_labels.py` — how a row and a column are named away from their table: with
+  the sub-heading where a row label is shared, and with the column's group header.
 - `narration_visuals.py` — `bar_chart` / `share_bar` / `waterfall`, the charts a line
   can bring up in a card. Same reference operands as the calculation tools (it reuses
   `FigureIndex.resolve`), so the model picks the chart type, labels and figures but
-  never writes a value. A chart is checked against itself before it gets an id (a
+  never writes a value; an item can be a `calc_id`, and is then marked as calculated on
+  the card. A chart is checked against itself before it gets an id (a
   waterfall's start plus its steps must equal its end, a share bar's parts can't exceed
   its total - both within the rounding of the printed figures); a failed chart is a tool
   error the model can correct. A `ChartBuilder` holds the charts built in one run.
 - `narration_validator.py` attaches each line's chart (`attach_visuals`: a `chart_id`
   no tool produced is dropped and the line kept; an unknown `chart_emphasis` is dropped
-  and the chart kept - both recorded in the trace's `removed_visuals`), repairs
+  and the chart kept; a chart that comes back after a line without it is only shown for
+  its first run of lines - all recorded in the trace's `removed_visuals`), repairs
   `target_id`s that don't exist (nearest valid
   ancestor cell → row → block, then the previous line's target), drops cited source
   URLs that didn't come back from a web search in this run or are on a blocked site
@@ -208,7 +258,10 @@ While a line plays, a card floats next to its target (`AnchoredCard`, which hand
 placement): `VisualCard` with the line's chart if it has one (`charts/VisualChart.tsx`;
 the item named by `emphasis` stays in full color and the rest fades, and the card stays
 up across consecutive lines that share a chart), otherwise `FocusCard` repeating the
-table figure for row and cell targets. Only charts in cards have item-level emphasis;
+table figure for row and cell targets. A card names its row and column the way the
+backend does (`narration/targetIndex.ts`: sub-heading in front of a shared row label,
+group header in front of the column) and gives the row's own unit where it isn't the
+table's. Only charts in cards have item-level emphasis;
 the report's own `ChartBlock`s still have no data-point ids.
 
 On the frontend, `useGeneratedNarration` requests the script once per report (cached at
@@ -240,9 +293,27 @@ pydantic emits `anyOf` instead — see `llm_report.py`), and paragraph text bein
 paraphrased instead of extracted verbatim, plus bullet lists being merged into one
 paragraph instead of split per item (fixed via `llm_client.py` prompt instructions and
 a new `style: "list_item"` — that specific fix has not yet been re-verified against a
-real run). `report_validator`'s row-label matching is still expected to need tuning for
-non-English or differently-worded reports (see the language-independence discussion
-this repo's chat history covered, not yet acted on).
+real run).
+
+The pipeline has also been run on a second report, Apple's quarterly statements, with
+no code changed for it: all 238 cells matched the PDF and ids were fine, but the run
+exposed what the next round of changes addressed - a line that read out last year's
+net income as this year's, per-share and share-count rows scaled by the report-wide
+unit, repeated row labels and repeated column dates that cards couldn't tell apart,
+arithmetic rules that matched none of its row labels, no way to add more than two
+figures or calculate in two steps, and charts brought back at the end of the script.
+Those changes (row `quantity`/`scale`/`group`/`sum_of`, `combine` and reusable
+calculation results, charts of calculated figures, the figure check with its reviewer
+and correction turns) are covered by unit tests and replayed against both saved
+reports, but **none of the model-facing parts has been run against the real API yet**:
+whether the parser fills in the new row fields and repeats column groups correctly,
+whether the narration model lists its figures and uses the new tools, and how good the
+reviewer's findings and the corrections are. The first real parse and narration after
+this is the test. A third report (Meta) is being held back, unparsed, to check that
+none of this was fitted to the first two.
+
+Supported input is English-language earnings releases and financial statements of
+listed companies; banks, insurers and funds are out of scope.
 
 - **Phase 1** — PDF parsing: a multimodal LLM reads the PDF directly (no traditional
   PDF-to-text/Markdown library in the pipeline) and outputs JSON matching the schema
