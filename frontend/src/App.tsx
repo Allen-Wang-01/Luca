@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import { loadDevSample } from './api/devSamples'
 import { parseReport } from './api/reports'
-import { PdfUploader } from './components/PdfUploader'
+import { HomeScreen } from './components/HomeScreen'
+import { PreparationSteps } from './components/report/PreparationSteps'
 import { ReportView } from './components/report/ReportView'
 import { seedNarration } from './narration/useGeneratedNarration'
 import type { FinancialReport } from './types/report'
 
-type ParseStatus = 'idle' | 'parsing' | 'success' | 'error'
+// 'idle': the start page. 'parsing': a report is on its way. Once there is a report it
+// takes over the whole page (ReportView), whatever the status was.
+type Status = 'idle' | 'parsing' | 'error'
 
 // Dev-only `?sample=<name>[&version=<v>]`: preview a saved run instead of uploading a
 // PDF. Read once at startup; production builds compile this down to null.
@@ -20,12 +23,10 @@ function readDevSampleParams(): { name: string; version: string | null } | null 
 
 function App() {
   const [devSample] = useState(readDevSampleParams)
-  const [status, setStatus] = useState<ParseStatus>(devSample ? 'parsing' : 'idle')
+  const [status, setStatus] = useState<Status>(devSample ? 'parsing' : 'idle')
   const [report, setReport] = useState<FinancialReport | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isSample, setIsSample] = useState(false)
-  // Bumped on reset to remount PdfUploader with fresh internal state (selected file, etc).
-  const [uploaderKey, setUploaderKey] = useState(0)
 
   useEffect(() => {
     if (!devSample) return
@@ -38,7 +39,7 @@ function App() {
         seedNarration(sample.report, sample.narration, sample.audio)
         setReport(sample.report)
         setIsSample(true)
-        setStatus('success')
+        setStatus('idle')
       },
       (err: unknown) => {
         if (cancelled) return
@@ -58,19 +59,24 @@ function App() {
     try {
       const result = await parseReport(file)
       setReport(result)
-      setStatus('success')
+      setStatus('idle')
     } catch (err) {
       setErrorMessage(err instanceof Error ? err.message : 'Failed to parse report.')
       setStatus('error')
     }
   }
 
-  const handleReset = () => {
+  const handleExit = () => {
     setStatus('idle')
     setReport(null)
     setErrorMessage(null)
     setIsSample(false)
-    setUploaderKey((key) => key + 1)
+  }
+
+  if (report) {
+    const sampleLabel =
+      isSample && devSample ? `Saved sample: ${devSample.name}${devSample.version ? ` (${devSample.version})` : ''}` : null
+    return <ReportView report={report} sampleLabel={sampleLabel} onExit={handleExit} />
   }
 
   return (
@@ -88,40 +94,25 @@ function App() {
       </header>
 
       <main className="app-main">
-        <PdfUploader key={uploaderKey} onFileSelected={handleFileSelected} disabled={status === 'parsing'} />
-
-        {status === 'parsing' && (
-          <div className="status-banner status-banner--loading">
-            <span className="spinner" aria-hidden="true" />
-            {devSample && !report ? 'Loading saved sample…' : 'Parsing report…'}
-          </div>
-        )}
-
-        {status === 'error' && errorMessage && (
-          <div className="status-banner status-banner--error">{errorMessage}</div>
-        )}
-
-        {status === 'success' && report && (
-          <section className="report-panel">
-            <div className="report-panel__header">
-              <div>
-                <h2 className="report-panel__title">{report.meta.company_name}</h2>
-                <span className="report-panel__meta">
-                  {report.meta.report_type} · {report.meta.fiscal_period}
-                </span>
-                {isSample && devSample && (
-                  <span className="report-panel__sample-badge" title="Loaded from a saved run - no API calls">
-                    Saved sample: {devSample.name}
-                    {devSample.version ? ` (${devSample.version})` : ''}
-                  </span>
-                )}
+        {status === 'parsing' ? (
+          <div className="app-waiting">
+            {devSample ? (
+              <div className="status-banner status-banner--loading">
+                <span className="spinner" aria-hidden="true" />
+                Loading saved sample…
               </div>
-              <button type="button" className="report-panel__reset" onClick={handleReset}>
-                Upload another report
-              </button>
-            </div>
-            <ReportView report={report} />
-          </section>
+            ) : (
+              <>
+                <h2 className="app-waiting__title">Getting your walkthrough ready</h2>
+                <PreparationSteps stage="parsing" />
+                <p className="app-waiting__hint">
+                  This can take a minute or two. The report opens as soon as it has been read.
+                </p>
+              </>
+            )}
+          </div>
+        ) : (
+          <HomeScreen onFileSelected={handleFileSelected} error={status === 'error' ? errorMessage : null} />
         )}
       </main>
     </div>

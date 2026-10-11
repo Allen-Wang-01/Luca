@@ -70,3 +70,23 @@
   font-size: 0.75rem;
   color: var(--color-text-muted);
 }
+
+/* Docked above the narration bar on a phone, where height is what's scarce. */
+@media (max-width: 640px) {
+  .focus-card__metric {
+    font-size: 1rem;
+  }
+
+  .focus-card__value {
+    font-size: 2.125rem;
+  }
+
+  .focus-card__series {
+    gap: 0.375rem 1.125rem;
+    margin-top: 0.375rem;
+  }
+
+  .focus-card__series-item dd {
+    font-size: 1.25rem;
+  }
+}

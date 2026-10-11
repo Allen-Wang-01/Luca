@@ -1,0 +1,201 @@
+/* Beside the report on a wide screen; a drawer, opened from the narration bar, on
+   anything narrower (see the breakpoint below, shared with ReportView.css). */
+.figure-rail {
+  position: fixed;
+  top: 3.5rem;
+  right: 1rem;
+  bottom: calc(var(--narration-bar-height, 6.5rem) + 1rem);
+  z-index: 7; /* under the cards, which may reach over it */
+  width: 17rem;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.figure-rail__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.875rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.figure-rail__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.figure-rail__count {
+  min-width: 1.375rem;
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.figure-rail__close {
+  display: none;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.figure-rail__list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.figure-rail__empty {
+  margin: 0.5rem 0.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+@keyframes mention-tile-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mention-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.125rem;
+  width: 100%;
+  flex-shrink: 0;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  animation: mention-tile-in 0.35s ease both;
+  transition: border-color 0.15s ease;
+}
+
+.mention-tile:hover {
+  border-color: var(--color-primary);
+}
+
+.mention-tile[data-current='true'] {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.mention-tile[data-kind='chart'] {
+  border-left-color: var(--color-primary);
+}
+
+.mention-tile__eyebrow {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.mention-tile__label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.mention-tile__values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.125rem 0.875rem;
+}
+
+.mention-tile__entry {
+  display: flex;
+  flex-direction: column;
+}
+
+.mention-tile__value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+
+.mention-tile__period,
+.mention-tile__unit {
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 1239px) {
+  .figure-rail {
+    top: auto;
+    right: 0.75rem;
+    left: auto;
+    z-index: 11; /* a drawer goes over the cards and the narration bar's shadow */
+    width: min(20rem, calc(100vw - 1.5rem));
+    max-height: min(60vh, 30rem);
+    box-shadow: var(--shadow-md);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0.2s;
+  }
+
+  .figure-rail[data-open='true'] {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .figure-rail__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .figure-rail {
+    right: 0.5rem;
+    left: 0.5rem;
+    width: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mention-tile {
+    animation: none;
+  }
+}

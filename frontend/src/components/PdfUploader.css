@@ -52,22 +52,30 @@
   font-size: 0.8125rem;
 }
 
+.uploader__browse {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
 .uploader__filename {
   margin: 0.75rem 0 0;
+  max-width: 100%;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--color-primary);
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
+  overflow-wrap: anywhere;
 }
 
 .uploader__remove {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
   padding: 0;
   border: none;
   border-radius: 50%;
@@ -83,11 +91,6 @@
   color: var(--color-text);
 }
 
-.uploader__remove:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 .uploader__error {
   margin: 0;
   color: var(--color-negative);
@@ -96,15 +99,12 @@
 
 .uploader__submit {
   align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1.25rem;
+  padding: 0.75rem 1.5rem;
   border: none;
   border-radius: var(--radius-md);
   background: var(--color-primary);
   color: #fff;
-  font-size: 0.9rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.15s ease;
@@ -118,4 +118,23 @@
   background: var(--color-border);
   color: var(--color-text-muted);
   cursor: not-allowed;
+}
+
+/* Nothing is dragged onto a phone; the prompt there is just the thing to tap. */
+@media (max-width: 640px) {
+  .uploader__dropzone {
+    padding: 1.75rem 1rem;
+  }
+
+  .uploader__prompt-wide {
+    display: none;
+  }
+
+  .uploader__browse {
+    text-transform: capitalize;
+  }
+
+  .uploader__submit {
+    align-self: stretch;
+  }
 }

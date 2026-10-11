@@ -1,0 +1,205 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.home__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.home__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.home__headline {
+  margin: 0;
+  font-size: clamp(2rem, 1.25rem + 3vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+.home__lede {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.home__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home__step {
+  padding: 1.25rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.home__step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.home__step-title {
+  margin: 0.75rem 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.home__step-detail {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+.home__scope {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* The still of a walkthrough. Everything in it is decoration, sized in em so the whole
+   picture scales with one font-size. */
+.home-preview {
+  position: relative;
+  padding: 1.25em 1.25em 4.25em;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  font-size: 0.875rem;
+  user-select: none;
+}
+
+.home-preview__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) 1fr 1fr;
+  gap: 0.5em;
+  padding: 0.55em 0.6em;
+  border-bottom: 1px solid var(--color-border);
+  font-variant-numeric: tabular-nums;
+}
+
+.home-preview__row > span:not(:first-child) {
+  text-align: right;
+}
+
+.home-preview__row--head {
+  font-size: 0.8em;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.home-preview__row--dim {
+  opacity: 0.45;
+}
+
+.home-preview__row--active {
+  background: color-mix(in srgb, var(--color-accent) 24%, transparent);
+  box-shadow: inset 4px 0 0 var(--color-accent);
+  font-weight: 600;
+}
+
+.home-preview__cell--active {
+  margin: -0.25em -0.3em;
+  padding: 0.25em 0.3em;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 2px var(--color-accent);
+}
+
+.home-preview__card {
+  position: absolute;
+  top: 1.75em;
+  right: -0.75em;
+  display: flex;
+  flex-direction: column;
+  padding: 0.6em 0.9em 0.7em;
+  background: var(--color-surface);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.22);
+}
+
+.home-preview__card-label {
+  font-size: 0.75em;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.home-preview__card-value {
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.home-preview__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+  padding: 0.8em 1.25em;
+  border-top: 3px solid var(--color-accent);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  background: var(--color-bg);
+  font-size: 0.9em;
+  line-height: 1.35;
+}
+
+.home-preview__play {
+  width: 1.9em;
+  height: 1.9em;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+@media (max-width: 860px) {
+  .home {
+    gap: 2rem;
+  }
+
+  .home__hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+  }
+
+  .home__steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-preview {
+    font-size: 0.8125rem;
+  }
+
+  .home-preview__card {
+    right: 0.5em;
+  }
+}

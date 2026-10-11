@@ -57,8 +57,19 @@
   border-width: 2px 0 0 2px;
 }
 
-.anchored-card[data-placement='over'] .anchored-card__body::after {
+.anchored-card[data-placement='over'] .anchored-card__body::after,
+.anchored-card[data-placement='docked'] .anchored-card__body::after {
   display: none;
+}
+
+/* Docked above the narration bar on a phone: full width, rising from below. */
+.anchored-card[data-placement='docked'] {
+  width: calc(100vw - 1.5rem);
+}
+
+.anchored-card[data-placement='docked'] .anchored-card__body {
+  padding: 0.625rem 0.875rem 0.75rem;
+  transform-origin: 50% 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {

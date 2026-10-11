@@ -19,17 +19,25 @@ export interface NarrationPlayer {
   isPlaying: boolean
   // Whether the current line has audio; false means it's timed and shown as a caption only.
   isSpoken: boolean
+  // The last line has played through to its end. Cleared by anything that moves or
+  // restarts playback.
+  hasEnded: boolean
   total: number
   durationMs: number
   play: () => void
   pause: () => void
   next: () => void
   prev: () => void
+  // Jumps to a line; playback carries on from there if it was running.
+  seek: (index: number) => void
+  // Jumps to a line and plays from it, whether or not playback was running.
+  playFrom: (index: number) => void
 }
 
 export function useNarrationPlayer(script: NarrationScript, audio: NarrationAudio | null = null): NarrationPlayer {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [hasEnded, setHasEnded] = useState(false)
 
   // A different script (another language, or the fallback after a failed generation)
   // starts over from the top rather than landing mid-way at the old index. Adjusting
@@ -39,6 +47,7 @@ export function useNarrationPlayer(script: NarrationScript, audio: NarrationAudi
     setPrevScript(script)
     setCurrentIndex(0)
     setIsPlaying(false)
+    setHasEnded(false)
   }
 
   const total = script.length
@@ -46,16 +55,52 @@ export function useNarrationPlayer(script: NarrationScript, audio: NarrationAudi
   const clip = audio?.[currentIndex] ?? null
   const durationMs = currentLine ? (clip?.duration_ms ?? lineDurationMs(currentLine.text)) : 0
 
-  const play = useCallback(() => setIsPlaying(true), [])
-  const pause = useCallback(() => setIsPlaying(false), [])
-  const next = useCallback(() => setCurrentIndex((i) => Math.min(i + 1, total - 1)), [total])
-  const prev = useCallback(() => setCurrentIndex((i) => Math.max(i - 1, 0)), [])
-
   // One audio element for the whole script. `loadedUrlRef` is the clip it currently
   // holds: pausing and resuming the same line keeps the element (and its position),
   // while leaving a line clears this so coming back to it starts from the top.
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const loadedUrlRef = useRef<string | null>(null)
+
+  const play = useCallback(() => {
+    // Phone browsers only let sound start from inside a tap. `play` is called from
+    // one, so the clip is started right here, on the element every later line reuses;
+    // the effect below then finds it already playing and only attaches its listeners.
+    if (clip) {
+      const element = (audioRef.current ??= new Audio())
+      if (loadedUrlRef.current !== clip.url) {
+        element.src = clip.url
+        loadedUrlRef.current = clip.url
+      }
+      element.play().catch(() => {})
+    }
+    setHasEnded(false)
+    setIsPlaying(true)
+  }, [clip])
+  const pause = useCallback(() => setIsPlaying(false), [])
+  const seek = useCallback(
+    (index: number) => {
+      setHasEnded(false)
+      setCurrentIndex(Math.min(Math.max(index, 0), Math.max(total - 1, 0)))
+    },
+    [total],
+  )
+  // Not `seek` followed by `play`: that would start the clip of the line being left.
+  const playFrom = useCallback(
+    (index: number) => {
+      seek(index)
+      setIsPlaying(true)
+    },
+    [seek],
+  )
+  const next = useCallback(() => {
+    setHasEnded(false)
+    setCurrentIndex((i) => Math.min(i + 1, total - 1))
+  }, [total])
+  const prev = useCallback(() => {
+    setHasEnded(false)
+    setCurrentIndex((i) => Math.max(i - 1, 0))
+  }, [])
+
   useEffect(() => {
     return () => {
       loadedUrlRef.current = null
@@ -69,6 +114,7 @@ export function useNarrationPlayer(script: NarrationScript, audio: NarrationAudi
     const advance = () => {
       if (isLastLine) {
         setIsPlaying(false)
+        setHasEnded(true)
       } else {
         setCurrentIndex((i) => i + 1)
       }
@@ -110,5 +156,19 @@ export function useNarrationPlayer(script: NarrationScript, audio: NarrationAudi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, isPlaying, total, clip])
 
-  return { currentIndex, currentLine, isPlaying, isSpoken: clip !== null, total, durationMs, play, pause, next, prev }
+  return {
+    currentIndex,
+    currentLine,
+    isPlaying,
+    isSpoken: clip !== null,
+    hasEnded,
+    total,
+    durationMs,
+    play,
+    pause,
+    next,
+    prev,
+    seek,
+    playFrom,
+  }
 }

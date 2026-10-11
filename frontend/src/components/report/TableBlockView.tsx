@@ -67,10 +67,20 @@ function TableCellView({ cell }: { cell: Cell }) {
   )
 }
 
+// How a row stands in its statement, from what the parser recorded about it rather than
+// from its label: a sub-heading has no figures, a total names the rows that add up to
+// it, and a row listed under a sub-heading is one of its items. A report parsed before
+// rows carried this comes out flat, as it always did.
+function rowLevel(row: Row): 'heading' | 'total' | 'item' | 'plain' {
+  if (row.cells.length === 0) return 'heading'
+  if ((row.sum_of ?? []).length > 0) return 'total'
+  return row.group ? 'item' : 'plain'
+}
+
 function TableRowView({ row, columns }: { row: Row; columns: Column[] }) {
   const { ref, state } = useSyncTarget(row.id)
   return (
-    <tr ref={ref} data-sync={state} className="sync--dense">
+    <tr ref={ref} data-sync={state} data-level={rowLevel(row)} className="sync--dense">
       <th scope="row" className="table-block__row-label">
         {row.label}
         <FlagBadge flags={row.flags} />

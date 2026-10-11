@@ -1,5 +1,8 @@
+import { useLayoutEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
+import type { Segment } from '../../narration/segments'
 import { sourceLabel } from '../../narration/sourceLabel'
+import { SegmentedProgress } from './SegmentedProgress'
 import './NarrationPlayer.css'
 
 interface NarrationPlayerProps {
@@ -10,13 +13,11 @@ interface NarrationPlayerProps {
   currentSources?: string[]
   isPlaying: boolean
   durationMs: number
+  // The parts of the report the script passes through, for the progress bar.
+  segments: Segment[]
   // The script has audio, but not for the current line - say so, so a silent stretch
   // doesn't look like broken playback.
   captionsOnly?: boolean
-  // No script to play yet (e.g. narration still generating) - controls are inert and
-  // `placeholder` takes the caption's place.
-  disabled?: boolean
-  placeholder?: ReactNode
   // A one-line strip above the controls, e.g. explaining a fallback script.
   notice?: ReactNode
   // Right-hand slot for extra controls.
@@ -25,6 +26,7 @@ interface NarrationPlayerProps {
   onPause: () => void
   onNext: () => void
   onPrev: () => void
+  onSeek: (index: number) => void
 }
 
 // Fixed bottom bar. The caption shows the line being spoken; for lines without audio
@@ -37,31 +39,47 @@ export function NarrationPlayer({
   currentSources = [],
   isPlaying,
   durationMs,
+  segments,
   captionsOnly = false,
-  disabled = false,
-  placeholder,
   notice,
   actions,
   onPlay,
   onPause,
   onNext,
   onPrev,
+  onSeek,
 }: NarrationPlayerProps) {
-  const inert = disabled || total === 0
+  const inert = total === 0
+  const segment = segments.find((s) => currentIndex >= s.start && currentIndex < s.start + s.count)
+
+  // The bar grows and shrinks with its caption. Whatever else is fixed to the window
+  // (the spotlight line, the figure rail, the notes panel) keeps clear of it through
+  // this variable rather than by guessing its height.
+  const barRef = useRef<HTMLDivElement>(null)
+  useLayoutEffect(() => {
+    const bar = barRef.current
+    if (!bar) return
+    const root = document.documentElement
+    const publish = () => root.style.setProperty('--narration-bar-height', `${bar.offsetHeight}px`)
+    publish()
+    const observer = new ResizeObserver(publish)
+    observer.observe(bar)
+    return () => {
+      observer.disconnect()
+      root.style.removeProperty('--narration-bar-height')
+    }
+  }, [])
 
   return (
-    <div className="narration-player">
+    <div ref={barRef} className="narration-player">
       {notice && <div className="narration-player__notice">{notice}</div>}
-      <div className="narration-player__progress-track">
-        <div
-          key={currentIndex}
-          className="narration-player__progress-fill"
-          style={{
-            animationDuration: `${durationMs}ms`,
-            animationPlayState: isPlaying ? 'running' : 'paused',
-          }}
-        />
-      </div>
+      <SegmentedProgress
+        segments={segments}
+        currentIndex={currentIndex}
+        isPlaying={isPlaying}
+        durationMs={durationMs}
+        onSeek={onSeek}
+      />
 
       <div className="narration-player__row">
         <div className="narration-player__controls">
@@ -115,26 +133,23 @@ export function NarrationPlayer({
           )}
         </div>
 
-        {inert && placeholder ? (
-          <div className="narration-player__caption narration-player__caption--placeholder">{placeholder}</div>
-        ) : (
-          <div className="narration-player__caption-group">
-            <p className="narration-player__caption">{currentText}</p>
-            {currentSources.length > 0 && (
-              <p className="narration-player__sources">
-                Source{currentSources.length > 1 ? 's' : ''}:{' '}
-                {currentSources.map((url, i) => (
-                  <span key={url}>
-                    {i > 0 && ', '}
-                    <a href={url} target="_blank" rel="noopener noreferrer" title={url}>
-                      {sourceLabel(url)}
-                    </a>
-                  </span>
-                ))}
-              </p>
-            )}
-          </div>
-        )}
+        <div className="narration-player__caption-group">
+          {segment && <p className="narration-player__segment">{segment.label}</p>}
+          <p className="narration-player__caption">{currentText}</p>
+          {currentSources.length > 0 && (
+            <p className="narration-player__sources">
+              Source{currentSources.length > 1 ? 's' : ''}:{' '}
+              {currentSources.map((url, i) => (
+                <span key={url}>
+                  {i > 0 && ', '}
+                  <a href={url} target="_blank" rel="noopener noreferrer" title={url}>
+                    {sourceLabel(url)}
+                  </a>
+                </span>
+              ))}
+            </p>
+          )}
+        </div>
 
         {actions && <div className="narration-player__actions">{actions}</div>}
       </div>

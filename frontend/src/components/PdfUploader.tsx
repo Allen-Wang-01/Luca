@@ -20,6 +20,8 @@ function validatePdf(file: File): string | null {
   return null
 }
 
+// Choosing a file only selects it; the button under the box starts the upload. Reading
+// a report takes a while and costs money, so a mis-dropped file shouldn't set it off.
 export function PdfUploader({ onFileSelected, disabled }: PdfUploaderProps) {
   const [isDragging, setIsDragging] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -29,15 +31,12 @@ export function PdfUploader({ onFileSelected, disabled }: PdfUploaderProps) {
   const handleFile = (file: File) => {
     const error = validatePdf(file)
     setValidationError(error)
-    if (!error) {
-      setSelectedFile(file)
-    }
+    if (!error) setSelectedFile(file)
   }
 
   const handleRemove = () => {
     setSelectedFile(null)
     setValidationError(null)
-    if (inputRef.current) inputRef.current.value = ''
   }
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
@@ -71,6 +70,11 @@ export function PdfUploader({ onFileSelected, disabled }: PdfUploaderProps) {
         }}
         onDrop={handleDrop}
         onClick={() => !disabled && inputRef.current?.click()}
+        onKeyDown={(e) => {
+          if (disabled || (e.key !== 'Enter' && e.key !== ' ')) return
+          e.preventDefault()
+          inputRef.current?.click()
+        }}
         role="button"
         tabIndex={disabled ? -1 : 0}
       >
@@ -99,7 +103,10 @@ export function PdfUploader({ onFileSelected, disabled }: PdfUploaderProps) {
           <path d="M12 15.5V4m0 0-3.5 3.5M12 4l3.5 3.5" strokeLinecap="round" strokeLinejoin="round" />
           <path d="M4.5 15.5v2a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <p className="uploader__prompt">Drag and drop a financial report PDF here, or click to browse.</p>
+        <p className="uploader__prompt">
+          <span className="uploader__prompt-wide">Drop a financial report PDF here, or </span>
+          <span className="uploader__browse">choose a file</span>
+        </p>
         <p className="uploader__hint">PDF up to 25MB</p>
         {selectedFile && (
           <p className="uploader__filename">
@@ -128,14 +135,7 @@ export function PdfUploader({ onFileSelected, disabled }: PdfUploaderProps) {
         disabled={!selectedFile || disabled}
         onClick={() => selectedFile && onFileSelected(selectedFile)}
       >
-        {disabled ? (
-          <>
-            <span className="spinner" aria-hidden="true" />
-            Parsing…
-          </>
-        ) : (
-          'Parse Report'
-        )}
+        Analyze report
       </button>
     </div>
   )

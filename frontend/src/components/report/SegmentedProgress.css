@@ -1,0 +1,73 @@
+.segmented-progress {
+  display: flex;
+  gap: 3px;
+  padding: 0 3px;
+  background: var(--color-surface);
+}
+
+/* The bar itself is thin; the button around it is tall enough to tap. */
+.segmented-progress__segment {
+  flex: 1 1 0;
+  min-width: 6px;
+  height: 16px;
+  padding: 6px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.segmented-progress__track {
+  position: relative;
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-border);
+  overflow: hidden;
+  transition: transform 0.15s ease;
+}
+
+.segmented-progress__segment:hover .segmented-progress__track,
+.segmented-progress__segment:focus-visible .segmented-progress__track {
+  transform: scaleY(1.75);
+}
+
+.segmented-progress__segment:focus-visible {
+  outline: none;
+}
+
+.segmented-progress__done {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--color-accent);
+}
+
+.segmented-progress__line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+@keyframes segmented-progress-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.segmented-progress__line-fill {
+  display: block;
+  height: 100%;
+  background: var(--color-accent);
+  animation-name: segmented-progress-fill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segmented-progress__line-fill {
+    animation: none;
+    width: 100%;
+  }
+}

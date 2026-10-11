@@ -278,6 +278,33 @@ On the frontend, `useNarrationPlayer` takes the script plus an optional list of 
 parallel to its lines. A line with a clip lasts exactly as long as its audio; a line
 without one is timed from its word count, so a partly voiced script still plays through.
 
+A report is shown as a sequence of screens (`ReportView`): a cover (company, period,
+what the parse found, and the start button once the narration is ready), the
+walkthrough itself, a closing screen when the last line has played, and a plain reading
+view. The start page (`HomeScreen`) is only there while no report is loaded.
+
+The page works from what a script already carries - each line's target, the figures it
+cites, its chart and sources - plus the report's own structure. It knows nothing of how
+the narration is organized, so the narration can be rewritten without touching it:
+- `narration/lineFocus.ts` decides what a line lights up. Besides its target, the other
+  cells it cites in the same table are lit more quietly. A line that targets a whole
+  table is narrowed to the cells it cites there; if it cites none it is a remark, and
+  nothing is highlighted - the line is shown in the middle of the screen instead
+  (`SpotlightLine`).
+- `narration/segments.ts` cuts the progress bar into runs of lines that stay in one
+  section of the report (`SegmentedProgress`; a segment jumps to its first line).
+- `narration/mentions.ts` lists the figures and charts the lines have pointed at, in
+  order. `FigureRail` shows the ones reached so far beside the report (a drawer on
+  narrower screens), and the closing screen lays all of them out with the sources.
+Tables show the statement's hierarchy from `sum_of`, `group` and rows without figures
+(totals, items, sub-headings); a report parsed before those existed comes out flat.
+
+On a phone a card docks above the narration bar instead of following its target, the
+target is scrolled to the top of the screen rather than the middle, tables scroll
+sideways under a fixed label column, and `useNarrationPlayer.play` starts the clip
+inside the tap, which phone browsers require for sound. None of the phone behaviour
+has been tried on a real device yet.
+
 While a line plays, a card floats next to its target (`AnchoredCard`, which handles
 placement): `VisualCard` with the line's chart if it has one (`charts/VisualChart.tsx`;
 the item named by `emphasis` stays in full color and the rest fades, and the card stays
