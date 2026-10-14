@@ -3,6 +3,7 @@
 import re
 from datetime import datetime, timezone
 
+from app.core.logging import get_logger
 from app.models.llm_report import (
     LLMChartBlock,
     LLMFinancialReport,
@@ -22,6 +23,8 @@ from app.models.report import (
     SumTerm,
     TableBlock,
 )
+
+logger = get_logger(__name__)
 
 _SLUG_RE = re.compile(r"[^a-z0-9]+")
 
@@ -148,14 +151,21 @@ def assign_ids(llm_report: LLMFinancialReport, source_filename: str) -> Financia
 
         slug_to_id[llm_block.slug] = block_id
 
-    sections = [
-        Section(
-            id=allocator.allocate("sec", llm_section.slug),
-            title=llm_section.title,
-            block_ids=[slug_to_id[slug] for slug in llm_section.block_slugs],
-        )
-        for llm_section in llm_report.sections
-    ]
+    # Sections are only navigation, and the model can name a block in one that it never
+    # wrote. Such a reference is dropped, and a section left with nothing in it with it,
+    # rather than failing a parse whose content is all there.
+    sections: list[Section] = []
+    for llm_section in llm_report.sections:
+        block_ids: list[str] = []
+        for slug in llm_section.block_slugs:
+            if slug in slug_to_id:
+                block_ids.append(slug_to_id[slug])
+            else:
+                logger.warning("section_block_missing section=%s slug=%s", llm_section.slug, slug)
+        if block_ids:
+            sections.append(
+                Section(id=allocator.allocate("sec", llm_section.slug), title=llm_section.title, block_ids=block_ids)
+            )
 
     meta = ReportMeta(
         **llm_report.meta.model_dump(),

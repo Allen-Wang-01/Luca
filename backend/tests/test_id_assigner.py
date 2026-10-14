@@ -138,3 +138,20 @@ def test_section_block_slugs_resolve_to_final_ids():
     report = assign_ids(llm_report, source_filename="report.pdf")
 
     assert report.sections[0].block_ids == ["t_income_statement"]
+
+
+def test_a_section_naming_a_block_that_was_never_written_keeps_the_rest():
+    llm_report = LLMFinancialReport(
+        meta=META,
+        sections=[
+            LLMSection(slug="statements", title="Statements", block_slugs=["income_statement", "missing_block"]),
+            LLMSection(slug="ghost", title="Nothing real", block_slugs=["missing_block"]),
+        ],
+        blocks=[_table("income_statement")],
+    )
+
+    report = assign_ids(llm_report, source_filename="report.pdf")
+
+    assert [(section.title, section.block_ids) for section in report.sections] == [
+        ("Statements", ["t_income_statement"])
+    ]
