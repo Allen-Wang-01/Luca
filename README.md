@@ -7,6 +7,8 @@ chart.
 
 The name is after Luca Pacioli, who first set out double-entry bookkeeping in 1494.
 
+**Live demo:** https://luca-ruby.vercel.app
+
 ## How it works
 
 1. **Reading the report.** A multimodal model reads the PDF directly and returns the
@@ -21,6 +23,34 @@ The name is after Luca Pacioli, who first set out double-entry bookkeeping in 14
    fix, and a line that still can't be backed is cut.
 4. **Playing it.** The page follows the script line by line: it scrolls to the figure,
    highlights it, and shows the card.
+
+```mermaid
+flowchart LR
+    subgraph FE["Frontend · React on Vercel"]
+        Upload["Upload a PDF"]
+        Live["Live panel<br/>the agent's work as it happens"]
+        Player["Walkthrough<br/>highlights · cards · charts"]
+    end
+
+    subgraph BE["Backend · FastAPI on Fly.io"]
+        Parser["Parser<br/>a model reads the PDF into tables,<br/>every cell with its own id"]
+        Totals["Totals check"]
+        subgraph Agent["Narration agent loop"]
+            Model["Model turn"]
+            Tools["Calculation and chart tools<br/>take cell ids, code does the math"]
+            Search["Web search<br/>and notes on what it found"]
+            Model <--> Tools
+            Model <--> Search
+        end
+        Review["Figure check and reviewer model<br/>then correction turns"]
+    end
+
+    Upload --> Parser --> Totals
+    Totals -- "report" --> Agent
+    Agent --> Review
+    Agent -. "streamed events" .-> Live
+    Review -- "script: each line with the cells it cites" --> Player
+```
 
 While the walkthrough is being prepared, the page shows the agent's work as it happens:
 each turn, its calculations, searches and notes. Afterwards the same record, with tokens
