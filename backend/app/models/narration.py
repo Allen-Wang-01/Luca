@@ -189,6 +189,9 @@ class AgentTurn(BaseModel):
     purpose: Literal["draft", "correction"] = "draft"
     tool_calls: list[ToolCallTrace]
     web_searches: list[WebSearchTrace] = Field(default_factory=list)
+    # The model's own summaries of its reasoning in this turn, in order. Only asked for
+    # when a run is being followed live, so empty otherwise.
+    thinking: list[str] = Field(default_factory=list)
     input_tokens: int
     output_tokens: int
     cost_usd: float

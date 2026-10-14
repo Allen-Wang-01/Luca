@@ -7,10 +7,10 @@ class Settings(BaseSettings):
 
     openai_api_key: str | None = None
     openai_base_url: str | None = None
-    # Local development only: a directory of saved runs (`{name}.json` parsed report +
-    # `{name}.narration.json` from scripts/narrate_sample.py) the frontend can load via
-    # /api/dev/samples/{name} to preview the UI without any API calls. Unset (the
-    # default) leaves that endpoint unregistered entirely.
+    # A directory of saved runs (`{name}.json` parsed report + `{name}.narration.json`
+    # from scripts/narrate_sample.py) the frontend can load via /api/dev/samples/{name}
+    # without any API calls: a preview while developing, and the demos on the start
+    # page. Unset (the default) leaves that endpoint unregistered entirely.
     dev_samples_dir: str | None = None
 
     @field_validator("openai_api_key", "openai_base_url", "dev_samples_dir", mode="before")

@@ -99,6 +99,9 @@ export interface AgentTurn {
   purpose?: 'draft' | 'correction'
   tool_calls: ToolCallTrace[]
   web_searches: WebSearchTrace[]
+  // The model's own summaries of its reasoning in this turn. Only there for a run that
+  // was followed live; absent on runs saved before these were kept.
+  thinking?: string[]
   input_tokens: number
   output_tokens: number
   cost_usd: number
@@ -200,3 +203,25 @@ export interface NarrationResponse {
   lines: NarrationScript
   trace: NarrationTrace
 }
+
+// What a run reports while it is still going (mirrors the backend's
+// narration_agent.EventHandler). The three in the middle come from inside a turn, while
+// its model call is still out; `turn_finished` then has the whole turn, with what the
+// tools returned.
+export type NarrationEvent =
+  | { type: 'turn_started'; turn: number; purpose: 'draft' | 'correction' }
+  // A summary of the model's reasoning, as the model itself gives it.
+  | { type: 'thinking'; turn: number; text: string }
+  | { type: 'web_search'; turn: number; search: WebSearchTrace }
+  | { type: 'tool_requested'; turn: number; name: string; arguments: Record<string, unknown> }
+  | { type: 'line_written'; turn: number; text: string }
+  | { type: 'turn_finished'; turn: AgentTurn }
+  | { type: 'review_started' }
+  | {
+      type: 'review_finished'
+      round: number
+      lines: number
+      figures_confirmed: number
+      findings: number
+      must_fix: number
+    }

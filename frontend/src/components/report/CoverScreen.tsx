@@ -1,5 +1,7 @@
+import type { NarrationEvent } from '../../narration/types'
 import type { NarrationStatus } from '../../narration/useGeneratedNarration'
 import type { FinancialReport } from '../../types/report'
+import { LiveActivity } from './LiveActivity'
 import { PreparationSteps } from './PreparationSteps'
 import './CoverScreen.css'
 
@@ -7,6 +9,8 @@ interface CoverScreenProps {
   report: FinancialReport
   status: NarrationStatus
   error: string | null
+  // What the advisor has reported doing so far, shown while the walkthrough is prepared.
+  progress: NarrationEvent[]
   lineCount: number
   // Running time of the whole script, from its clips where it has them.
   durationMs: number
@@ -51,6 +55,7 @@ export function CoverScreen({
   report,
   status,
   error,
+  progress,
   lineCount,
   durationMs,
   canResume,
@@ -82,6 +87,7 @@ export function CoverScreen({
         {status === 'loading' ? (
           <div className="cover-screen__preparing">
             <PreparationSteps stage="narrating" />
+            <LiveActivity events={progress} />
             <p className="cover-screen__hint">This can take a couple of minutes. You can read the report while you wait.</p>
           </div>
         ) : (

@@ -42,15 +42,18 @@ npx tsc --noEmit    # type-check only, no build output
 
 There is no test suite yet.
 
-### Previewing saved runs without API calls (local dev only)
+### Saved runs: previews and the start page's demos (no API calls)
 
-Set `DEV_SAMPLES_DIR=../temp` in `backend/.env` and restart the backend, then open
+Set `DEV_SAMPLES_DIR=../temp` in `backend/.env` and restart the backend. The start page
+then lists every `{name}.json` that has a `{name}.narration.json` as a demo (`GET
+/api/dev/samples`), and any saved run opens at
 `http://localhost:5173/?sample=NVIDIAAn` (optionally `&version=v1`). This loads
 `temp/NVIDIAAn.json` (parsed report, re-validated with the current rules) plus
 `temp/NVIDIAAn.narration.json` (or `.narration.v1.json`, as saved by
 `scripts/narrate_sample.py`) and seeds the narration cache, so no parse or narration
 request is made. The endpoint (`app/routers/dev_samples.py`) isn't registered at all
-unless `DEV_SAMPLES_DIR` is set.
+unless `DEV_SAMPLES_DIR` is set. Everything in that directory is served to anyone, so
+a deployed backend should point it at one holding only the demos.
 
 Saved speech is part of the same preview. `python scripts/synthesize_sample.py
 ../temp/NVIDIAAn.narration.json` (real API, costs money; `--dry-run` shows the estimate
@@ -258,6 +261,22 @@ the script is written, and the URL is checked against the search results on the 
 while the model can still correct it. Search calls are billed per
 call ($10 / 1k) on top of tokens; `pricing.py` adds that fee to each turn's cost (the
 search content itself already shows up in the response's input token usage).
+
+A run can be followed while it happens. `generate_narration` takes an `on_event`
+callback and reports each turn as it starts and ends (the finished turn is the trace's
+own `AgentTurn`) and each check of the script. `POST /api/reports/narration/stream`
+sends those as server-sent events, with a keep-alive comment every 15 seconds, and
+ends with a `result` event carrying what `/narration` returns, or an `error` event.
+The frontend uses the stream (`api/narration.ts`) and shows the events on the cover
+while the walkthrough is prepared (`LiveActivity`, built from the notes panel's
+`TurnView`). With a listener the model calls themselves are streamed
+(`_call_model`, `client.responses.stream`), so three things are reported from inside a
+turn: each web search as it comes back, each tool call as the model asks for it, and
+each line of the script as its text is completed (read out of the JSON written so
+far). Tools still run after the call returns, so results come with `turn_finished`.
+Without a listener (`/narration`, `scripts/narrate_sample.py`) the call is the plain
+`responses.parse` it always was. The run is not cancelled when the listener
+disconnects. The streamed call has only been tested with fakes, not yet on a real run.
 
 The agent loop is tested with a fake client (`tests/test_narration_agent.py`);
 `scripts/narrate_sample.py parsed.json` runs it against the real API (costs money).

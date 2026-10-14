@@ -101,6 +101,17 @@
   gap: 0.375rem;
 }
 
+/* The model's own summary of its reasoning, set apart from what it did. */
+.advisor-notes__thought {
+  padding-left: 0.625rem;
+  border-left: 2px solid var(--color-border);
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+  white-space: pre-line;
+}
+
 .advisor-notes__call {
   display: flex;
   gap: 0.5rem;

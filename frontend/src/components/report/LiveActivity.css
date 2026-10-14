@@ -1,0 +1,70 @@
+/* The entries themselves are the advisor's notes' own (AdvisorNotes.css); this is only
+   the box they sit in on the cover. */
+.live-activity {
+  width: 100%;
+  margin-top: 1.25rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+
+.live-activity__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.live-activity__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-positive);
+  animation: live-activity-pulse 1.6s ease-in-out infinite;
+}
+
+.live-activity__turns {
+  max-height: min(22rem, 45vh);
+}
+
+.live-activity__current {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+/* The script, line by line, as it is written. */
+.live-activity__lines {
+  margin: 0.5rem 0 0;
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.live-activity__lines li::marker {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+@keyframes live-activity-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-activity__dot {
+    animation: none;
+  }
+}

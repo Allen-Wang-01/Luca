@@ -39,6 +39,18 @@ def test_serves_saved_report_and_narration(samples_dir):
     assert body["narration"]["lines"][0]["text"] == "Hello."
 
 
+def test_lists_the_samples_that_have_a_narration(samples_dir, report):
+    (samples_dir / "no_narration.json").write_text(report.model_dump_json())
+    (samples_dir / "acme.charts.json").write_text("{}")
+    (samples_dir / "broken.json").write_text("{}")
+    (samples_dir / "broken.narration.json").write_text("{}")
+
+    body = client.get("/api/dev/samples").json()
+
+    assert [sample["name"] for sample in body] == ["acme"]
+    assert body[0]["company_name"] == "Acme Corp"
+
+
 def test_saved_flags_are_replaced_by_current_validation(samples_dir, report):
     # The conftest report's "Other" row carries a flag no current rule produces.
     assert report.blocks[1].rows[2].flags

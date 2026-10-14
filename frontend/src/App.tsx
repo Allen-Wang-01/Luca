@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { loadDevSample } from './api/devSamples'
+import { listDevSamples, loadDevSample, type DevSampleSummary } from './api/devSamples'
 import { parseReport } from './api/reports'
 import { HomeScreen } from './components/HomeScreen'
 import { PreparationSteps } from './components/report/PreparationSteps'
@@ -12,21 +12,42 @@ import type { FinancialReport } from './types/report'
 // takes over the whole page (ReportView), whatever the status was.
 type Status = 'idle' | 'parsing' | 'error'
 
-// Dev-only `?sample=<name>[&version=<v>]`: preview a saved run instead of uploading a
-// PDF. Read once at startup; production builds compile this down to null.
-function readDevSampleParams(): { name: string; version: string | null } | null {
-  if (!import.meta.env.DEV) return null
+// A saved run shown instead of an uploaded PDF: a demo picked on the start page, or
+// `?sample=<name>[&version=<v>]` in the address. `live` (`&live=1`) takes only the
+// saved report and has the advisor prepare the walkthrough again, for real.
+interface SampleChoice {
+  name: string
+  version: string | null
+  live: boolean
+}
+
+function readSampleParams(): SampleChoice | null {
   const params = new URLSearchParams(window.location.search)
   const name = params.get('sample')
-  return name ? { name, version: params.get('version') } : null
+  return name ? { name, version: params.get('version'), live: params.get('live') === '1' } : null
 }
 
 function App() {
-  const [devSample] = useState(readDevSampleParams)
+  const [devSample, setDevSample] = useState(readSampleParams)
+  const [demos, setDemos] = useState<DevSampleSummary[]>([])
   const [status, setStatus] = useState<Status>(devSample ? 'parsing' : 'idle')
   const [report, setReport] = useState<FinancialReport | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isSample, setIsSample] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    listDevSamples().then(
+      (samples) => {
+        if (!cancelled) setDemos(samples)
+      },
+      // No demos to offer is not an error worth showing: uploading still works.
+      () => {},
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     if (!devSample) return
@@ -35,8 +56,9 @@ function App() {
       (sample) => {
         if (cancelled) return
         // Seeded before the report renders, so the saved narration is used as-is and
-        // no generation request (and no API cost) ever happens.
-        seedNarration(sample.report, sample.narration, sample.audio)
+        // no generation request (and no API cost) ever happens. A live run is left
+        // unseeded: rendering the report then requests its narration like an upload's.
+        if (!devSample.live) seedNarration(sample.report, sample.narration, sample.audio)
         setReport(sample.report)
         setIsSample(true)
         setStatus('idle')
@@ -52,10 +74,17 @@ function App() {
     }
   }, [devSample])
 
+  const handleDemoSelected = (name: string, live: boolean) => {
+    setStatus('parsing')
+    setErrorMessage(null)
+    setDevSample({ name, version: null, live })
+  }
+
   const handleFileSelected = async (file: File) => {
     setStatus('parsing')
     setErrorMessage(null)
     setIsSample(false)
+    setDevSample(null)
     try {
       const result = await parseReport(file)
       setReport(result)
@@ -71,11 +100,15 @@ function App() {
     setReport(null)
     setErrorMessage(null)
     setIsSample(false)
+    setDevSample(null)
   }
 
   if (report) {
-    const sampleLabel =
-      isSample && devSample ? `Saved sample: ${devSample.name}${devSample.version ? ` (${devSample.version})` : ''}` : null
+    const sampleLabel = !isSample || !devSample
+      ? null
+      : devSample.live
+        ? `Live run on a saved report: ${devSample.name}`
+        : `Saved run: ${devSample.name}${devSample.version ? ` (${devSample.version})` : ''}`
     return <ReportView report={report} sampleLabel={sampleLabel} onExit={handleExit} />
   }
 
@@ -99,7 +132,7 @@ function App() {
             {devSample ? (
               <div className="status-banner status-banner--loading">
                 <span className="spinner" aria-hidden="true" />
-                Loading saved sample…
+                {devSample.live ? 'Opening the saved report…' : 'Opening the saved walkthrough…'}
               </div>
             ) : (
               <>
@@ -112,7 +145,12 @@ function App() {
             )}
           </div>
         ) : (
-          <HomeScreen onFileSelected={handleFileSelected} error={status === 'error' ? errorMessage : null} />
+          <HomeScreen
+            demos={demos}
+            onDemoSelected={handleDemoSelected}
+            onFileSelected={handleFileSelected}
+            error={status === 'error' ? errorMessage : null}
+          />
         )}
       </main>
     </div>

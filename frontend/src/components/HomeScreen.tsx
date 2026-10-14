@@ -1,7 +1,12 @@
+import type { DevSampleSummary } from '../api/devSamples'
 import { PdfUploader } from './PdfUploader'
 import './HomeScreen.css'
 
 interface HomeScreenProps {
+  // Reports read earlier that open without uploading anything; may be empty.
+  demos: DevSampleSummary[]
+  // `live`: have the advisor prepare the walkthrough again instead of playing the saved one.
+  onDemoSelected: (name: string, live: boolean) => void
   onFileSelected: (file: File) => void
   // Why the last upload didn't go through, if it didn't.
   error: string | null
@@ -67,7 +72,7 @@ function WalkthroughPreview() {
 }
 
 // The start page: what this is, the upload, and what to expect.
-export function HomeScreen({ onFileSelected, error }: HomeScreenProps) {
+export function HomeScreen({ demos, onDemoSelected, onFileSelected, error }: HomeScreenProps) {
   return (
     <div className="home">
       <section className="home__hero">
@@ -79,6 +84,41 @@ export function HomeScreen({ onFileSelected, error }: HomeScreenProps) {
           </p>
           <PdfUploader onFileSelected={onFileSelected} />
           {error && <div className="status-banner status-banner--error">{error}</div>}
+          {demos.length > 0 && (
+            <div className="home__demos">
+              <p className="home__demos-title">Or try a report that has already been read - no upload</p>
+              <div className="home__demo-list">
+                {demos.map((demo) => (
+                  <div key={demo.name} className="home__demo">
+                    <span className="home__demo-company">{demo.company_name}</span>
+                    <span className="home__demo-period">
+                      {demo.report_type} · {demo.fiscal_period}
+                    </span>
+                    <div className="home__demo-actions">
+                      <button
+                        type="button"
+                        className="home__demo-button home__demo-button--primary"
+                        onClick={() => onDemoSelected(demo.name, false)}
+                      >
+                        Play the walkthrough
+                      </button>
+                      <button
+                        type="button"
+                        className="home__demo-button"
+                        onClick={() => onDemoSelected(demo.name, true)}
+                      >
+                        Run the agent live
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="home__demos-note">
+                Running the agent live prepares a new walkthrough for real, which takes about two minutes, and
+                plays it with captions. The saved walkthrough opens at once, with the voice where one was recorded.
+              </p>
+            </div>
+          )}
         </div>
         <WalkthroughPreview />
       </section>

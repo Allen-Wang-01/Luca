@@ -11,8 +11,17 @@
 # model call, so this loop doesn't execute them - it records what was searched and
 # which URLs came back, caps the total with MAX_WEB_SEARCHES, and uses the returned
 # URLs to verify the sources the model cites.
+#
+# A caller can also follow a run while it happens: `on_event` is called as each turn
+# starts and ends and as the script is checked, with the same records the trace keeps.
+# With a listener the model calls are streamed (`_call_model`), so what happens inside
+# one is reported too: each search as it comes back, each tool call as the model asks
+# for it, and each line of the script as it is written. Tools still run once the call
+# has returned, so their results come with the finished turn.
 import json
+import re
 import time
+from collections.abc import Callable
 from typing import Any
 
 from app.core.logging import get_logger
@@ -43,6 +52,69 @@ from app.services import (
 )
 
 logger = get_logger(__name__)
+
+# What a run reports while it is going, as plain JSON-ready dicts with a `type`:
+#   turn_started    {turn, purpose}
+#   thinking        {turn, text}                       - inside a turn: a reasoning summary
+#   web_search      {turn, search: <WebSearchTrace>}   - inside a turn, as it comes back
+#   tool_requested  {turn, name, arguments}            - inside a turn, before it is run
+#   line_written    {turn, text}                       - inside a turn, as the script grows
+#   turn_finished   {turn: <AgentTurn>}
+#   review_started  {}
+#   review_finished {round, lines, figures_confirmed, findings, must_fix}
+EventHandler = Callable[[dict[str, Any]], None]
+
+
+def _emit(on_event: EventHandler | None, event_type: str, **fields: Any) -> None:
+    if on_event is not None:
+        on_event({"type": event_type, **fields})
+
+
+# A line's `text` in the script's JSON, once its closing quote has been written.
+_WRITTEN_TEXT_RE = re.compile(r'"text"\s*:\s*"((?:[^"\\]|\\.)*)"')
+
+
+def _call_model(client: Any, on_event: EventHandler | None, turn: int, **kwargs: Any) -> tuple[Any, list[str]]:
+    """One model call. Without a listener it is the plain call; with one, the same call
+    is streamed and what it does is reported as it happens. Either way the response
+    that comes back is the same, so the loop doesn't know which it was. Returns it with
+    the reasoning summaries the model gave along the way (none for the plain call)."""
+    if on_event is None:
+        return client.responses.parse(**kwargs), []
+
+    thinking: list[str] = []
+    lines_reported = 0
+    # Only asked for here, where there is someone to show it to: a summary of the
+    # model's reasoning, which fills the stretch of a call before it does anything else.
+    with client.responses.stream(**kwargs, reasoning={"summary": "auto"}) as stream:
+        for event in stream:
+            if event.type == "response.reasoning_summary_text.done":
+                if event.text.strip():
+                    thinking.append(event.text.strip())
+                    _emit(on_event, "thinking", turn=turn, text=thinking[-1])
+            elif event.type == "response.output_item.done":
+                item = event.item
+                if item.type == "web_search_call" and getattr(item, "action", None) is not None:
+                    _emit(on_event, "web_search", turn=turn, search=_web_search_trace(item).model_dump(mode="json"))
+                elif item.type == "function_call":
+                    try:
+                        arguments = json.loads(item.arguments)
+                    except (TypeError, ValueError):
+                        arguments = {}
+                    _emit(on_event, "tool_requested", turn=turn, name=item.name, arguments=arguments)
+            elif event.type == "response.output_text.delta":
+                # The script arrives as JSON text. `snapshot` is all of it so far, so
+                # the lines already reported are the first ones it matches.
+                written = _WRITTEN_TEXT_RE.findall(getattr(event, "snapshot", "") or "")
+                for raw in written[lines_reported:]:
+                    try:
+                        text = json.loads(f'"{raw}"')
+                    except ValueError:
+                        continue
+                    _emit(on_event, "line_written", turn=turn, text=text)
+                lines_reported = len(written)
+        return stream.get_final_response(), thinking
+
 
 # The last turn always forbids tools, so the model has MAX_TURNS - 1 turns to calculate.
 # A calculation on an earlier result needs that result's id first, so each extra step
@@ -381,6 +453,7 @@ def _review_and_correct(
     response: Any,
     lines: list[LLMNarrationLine],
     turns: list[AgentTurn],
+    on_event: EventHandler | None = None,
 ) -> tuple[list[LLMNarrationLine], NarrationReview]:
     """Checks the script's figures against what each line cites, has a second model
     read it (narration_reviewer.py), and gives the agent up to MAX_CORRECTIONS turns
@@ -395,6 +468,7 @@ def _review_and_correct(
     unit_note = f"Report figures are in {report.meta.currency} {report.meta.unit_scale} unless a label says otherwise."
     review = NarrationReview(rounds=[])
     for attempt in range(MAX_CORRECTIONS + 1):
+        _emit(on_event, "review_started")
         review_round = narration_figures.check_script(lines, index, seen_urls)
         findings = review_round.findings
         if attempt == 0:
@@ -406,6 +480,15 @@ def _review_and_correct(
                 review.reviewer_cost_usd = reviewer_usage["cost_usd"]
                 review.reviewer_duration_ms = reviewer_usage["duration_ms"]
         review.rounds.append(review_round)
+        _emit(
+            on_event,
+            "review_finished",
+            round=len(review.rounds),
+            lines=review_round.lines,
+            figures_confirmed=review_round.figures_confirmed,
+            findings=len(findings),
+            must_fix=sum(1 for f in findings if f.must_fix),
+        )
 
         # Advice alone is worth one correction turn, not a second: the agent has
         # already looked at it once.
@@ -416,8 +499,12 @@ def _review_and_correct(
         input_items.extend(_as_input_item(item) for item in response.output)
         last_chance = attempt == MAX_CORRECTIONS - 1
         input_items.append({"role": "user", "content": _correction_request(lines, findings, last_chance)})
+        _emit(on_event, "turn_started", turn=len(turns) + 1, purpose="correction")
         start = time.monotonic()
-        response = client.responses.parse(
+        response, thinking = _call_model(
+            client,
+            on_event,
+            len(turns) + 1,
             model=llm_client.MODEL,
             instructions=INSTRUCTIONS,
             input=input_items,
@@ -435,12 +522,14 @@ def _review_and_correct(
                 turn=len(turns) + 1,
                 purpose="correction",
                 tool_calls=[],
+                thinking=thinking,
                 input_tokens=usage.input_tokens,
                 output_tokens=usage.output_tokens,
                 cost_usd=cost,
                 duration_ms=duration_ms,
             )
         )
+        _emit(on_event, "turn_finished", turn=turns[-1].model_dump(mode="json"))
         logger.info(
             "narration_correction turn=%d findings=%d must_fix=%d edits=%d applied=%d input_tokens=%d output_tokens=%d cost_usd=%.6f duration_ms=%d",
             len(turns),
@@ -468,6 +557,7 @@ def _review_and_correct(
 def generate_narration(
     report: FinancialReport,
     client: Any = None,
+    on_event: EventHandler | None = None,
 ) -> tuple[list[NarrationLine], NarrationTrace]:
     client = client or llm_client.client
     index = narration_tools.FigureIndex(report)
@@ -498,8 +588,12 @@ def generate_narration(
             # several times inside a single call, beyond this loop's control.
             search_kwargs["max_tool_calls"] = searches_left
 
+        _emit(on_event, "turn_started", turn=turn_number, purpose="draft")
         start = time.monotonic()
-        response = client.responses.parse(
+        response, thinking = _call_model(
+            client,
+            on_event,
+            turn_number,
             model=llm_client.MODEL,
             instructions=INSTRUCTIONS,
             input=input_items,
@@ -550,12 +644,14 @@ def generate_narration(
                 turn=turn_number,
                 tool_calls=turn_traces,
                 web_searches=web_searches,
+                thinking=thinking,
                 input_tokens=usage.input_tokens,
                 output_tokens=usage.output_tokens,
                 cost_usd=cost,
                 duration_ms=duration_ms,
             )
         )
+        _emit(on_event, "turn_finished", turn=turns[-1].model_dump(mode="json"))
         logger.info(
             "narration_turn turn=%d tool_calls=%d errors=%d web_searches=%d input_tokens=%d output_tokens=%d cost_usd=%.6f duration_ms=%d",
             turn_number,
@@ -581,7 +677,7 @@ def generate_narration(
 
     draft_lines = [line for line in parsed.lines if line.text.strip()]
     checked_lines, review = _review_and_correct(
-        client, report, index, seen_urls, input_items, response, draft_lines, turns
+        client, report, index, seen_urls, input_items, response, draft_lines, turns, on_event
     )
     narration_validator.check_removed_lines(len(review.removed_lines), review.rounds[-1].lines)
 

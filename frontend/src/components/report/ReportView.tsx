@@ -147,6 +147,7 @@ export function ReportView({ report, sampleLabel = null, onExit }: ReportViewPro
             report={report}
             status={narration.status}
             error={narration.error}
+            progress={narration.progress}
             lineCount={narration.script.length}
             durationMs={totalDurationMs}
             canResume={canResume}

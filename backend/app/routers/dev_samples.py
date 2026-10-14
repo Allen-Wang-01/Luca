@@ -1,7 +1,8 @@
-# Local development only - registered by app/main.py when DEV_SAMPLES_DIR is set.
+# Registered by app/main.py only when DEV_SAMPLES_DIR is set.
 # Serves a saved run (a parsed report, the narration scripts/narrate_sample.py generated
 # for it, and any speech clips scripts/synthesize_sample.py saved for that narration) so
-# the frontend can be previewed with real model output without making any API calls.
+# the frontend can show real model output without making any API calls: a preview while
+# developing, and the demos on the start page where the directory is deployed.
 import json
 import re
 import wave
@@ -29,6 +30,13 @@ _CLIP_RE = re.compile(r"^[0-9a-f]+\.wav$")
 class DevAudioClip(BaseModel):
     url: str
     duration_ms: int
+
+
+class DevSampleSummary(BaseModel):
+    name: str
+    company_name: str
+    report_type: str
+    fiscal_period: str
 
 
 class DevSample(BaseModel):
@@ -59,6 +67,31 @@ def _read(path: Path, model: type[BaseModel]) -> BaseModel:
         return model.model_validate(json.loads(path.read_text()))
     except (json.JSONDecodeError, ValidationError) as exc:
         raise HTTPException(status_code=422, detail=f"{path.name} is not a valid {model.__name__}: {exc}") from exc
+
+
+@router.get("", response_model=list[DevSampleSummary])
+def list_samples() -> list[DevSampleSummary]:
+    """The saved runs that can be opened: every `{name}.json` with a `{name}.narration.json`
+    next to it. A file that doesn't hold a report is left out rather than failing the list."""
+    directory = Path(settings.dev_samples_dir or "")
+    summaries: list[DevSampleSummary] = []
+    for path in sorted(directory.glob("*.json")):
+        name = path.stem
+        if not _NAME_RE.match(name) or not (directory / f"{name}.narration.json").is_file():
+            continue
+        try:
+            meta = FinancialReport.model_validate(json.loads(path.read_text())).meta
+        except (json.JSONDecodeError, ValidationError):
+            continue
+        summaries.append(
+            DevSampleSummary(
+                name=name,
+                company_name=meta.company_name,
+                report_type=meta.report_type,
+                fiscal_period=meta.fiscal_period,
+            )
+        )
+    return summaries
 
 
 @router.get("/{name}", response_model=DevSample)

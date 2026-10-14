@@ -147,7 +147,20 @@ const SEARCH_ACTION_LABELS: Record<WebSearchTrace['action'], string> = {
   find_in_page: 'Looked in',
 }
 
-function WebSearchView({ search }: { search: WebSearchTrace }) {
+// One summary of the model's reasoning, as the model gave it. It comes with Markdown
+// emphasis around its heading; shown as written otherwise, there being no Markdown
+// renderer here.
+export function ThoughtView({ text }: { text: string }) {
+  return <li className="advisor-notes__thought">{text.replace(/\*\*/g, '')}</li>
+}
+
+// A calculation, a chart or a note. A call that hasn't been run yet (no output) shows
+// what it asked for.
+export function CallView({ call }: { call: ToolCallTrace }) {
+  return isNoteCall(call) ? <NoteView call={call} /> : <ToolCallView call={call} />
+}
+
+export function WebSearchView({ search }: { search: WebSearchTrace }) {
   return (
     <li className="advisor-notes__call">
       <span className="advisor-notes__tool advisor-notes__tool--search">Web</span>
@@ -334,8 +347,10 @@ interface TurnViewProps {
   lineCount: number | null
 }
 
-function TurnView({ turn, wroteScript, lineCount }: TurnViewProps) {
+// One model call and what it led to. Also what the cover shows of a run still going.
+export function TurnView({ turn, wroteScript, lineCount }: TurnViewProps) {
   const searches = turn.web_searches ?? []
+  const thoughts = turn.thinking ?? []
   const didWork = turn.tool_calls.length > 0 || searches.length > 0
   const chartCount = turn.tool_calls.filter(isChartCall).length
   const noteCount = turn.tool_calls.filter(isNoteCall).length
@@ -360,6 +375,13 @@ function TurnView({ turn, wroteScript, lineCount }: TurnViewProps) {
           {formatTokens(turn.input_tokens)} in · {formatTokens(turn.output_tokens)} out · {formatSeconds(turn.duration_ms)}
         </span>
       </div>
+      {thoughts.length > 0 && (
+        <ul className="advisor-notes__calls">
+          {thoughts.map((text, i) => (
+            <ThoughtView key={i} text={text} />
+          ))}
+        </ul>
+      )}
       {didWork && (
         <>
           <p className="advisor-notes__turn-summary">{summary.charAt(0).toUpperCase() + summary.slice(1)}</p>
@@ -367,13 +389,9 @@ function TurnView({ turn, wroteScript, lineCount }: TurnViewProps) {
             {searches.map((search, i) => (
               <WebSearchView key={`search-${i}`} search={search} />
             ))}
-            {turn.tool_calls.map((call, i) =>
-              isNoteCall(call) ? (
-                <NoteView key={`call-${i}`} call={call} />
-              ) : (
-                <ToolCallView key={`call-${i}`} call={call} />
-              ),
-            )}
+            {turn.tool_calls.map((call, i) => (
+              <CallView key={`call-${i}`} call={call} />
+            ))}
           </ul>
         </>
       )}

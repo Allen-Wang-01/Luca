@@ -72,6 +72,35 @@ class _FakeClient:
         self.calls.append({**kwargs, "input": list(kwargs["input"])})
         return self._responses.pop(0)
 
+    def stream(self, reasoning=None, **kwargs):
+        self.reasoning = reasoning
+        return _FakeStream(self.parse(**kwargs))
+
+
+class _FakeStream:
+    """The streamed form of a scripted response: each output item as it is finished,
+    then the response's `snapshots` (its text so far, at successive moments), if any."""
+
+    def __init__(self, response):
+        self._response = response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_exc):
+        return False
+
+    def __iter__(self):
+        for thought in getattr(self._response, "thoughts", []):
+            yield SimpleNamespace(type="response.reasoning_summary_text.done", text=thought)
+        for item in self._response.output:
+            yield SimpleNamespace(type="response.output_item.done", item=item)
+        for snapshot in getattr(self._response, "snapshots", []):
+            yield SimpleNamespace(type="response.output_text.delta", snapshot=snapshot)
+
+    def get_final_response(self):
+        return self._response
+
 
 def _line(text, target_id, source_urls=(), chart_id=None, chart_emphasis=None, figures=(), calculations=()):
     return LLMNarrationLine(
@@ -118,6 +147,84 @@ def test_runs_tools_then_returns_script_with_trace(report):
     assert trace.turns[0].tool_calls[0].output["result_percent"] == 100.0
     assert trace.total_input_tokens == 2200
     assert trace.repaired_target_ids == 0
+
+
+def test_reports_each_turn_and_the_review_as_they_happen(report):
+    client = _FakeClient(
+        [
+            _tool_call_response(REVENUE_GROWTH),
+            _final_response(GOOD_LINES),
+        ]
+    )
+    events = []
+
+    _, trace = narration_agent.generate_narration(report, client=client, on_event=events.append)
+
+    assert [event["type"] for event in events] == [
+        "turn_started",
+        "tool_requested",
+        "turn_finished",
+        "turn_started",
+        "turn_finished",
+        "review_started",
+        "review_finished",
+    ]
+    assert events[0] == {"type": "turn_started", "turn": 1, "purpose": "draft"}
+    assert events[1] == {"type": "tool_requested", "turn": 1, "name": "percent_change", "arguments": REVENUE_GROWTH[1]}
+    # A finished turn is the trace's own record of it.
+    assert events[2]["turn"] == trace.turns[0].model_dump(mode="json")
+    assert events[2]["turn"]["tool_calls"][0]["output"]["result_percent"] == 100.0
+    assert events[-1]["lines"] == 2
+
+
+def test_reports_searches_and_script_lines_from_inside_a_turn(report):
+    final = _final_response(GOOD_LINES, searches=[("acme revenue", ["https://example.com/news"])])
+    # The script's JSON at three moments: mid-way through the first line, after it, and
+    # complete. A line is reported once, when its closing quote is there.
+    final.snapshots = [
+        '{"lines":[{"text":"Revenue dou',
+        '{"lines":[{"text":"Revenue doubled.","target_id":"t_income__r0_q2"},{"text":"That\'s the \\"head',
+        '{"lines":[{"text":"Revenue doubled.","target_id":"t_income__r0_q2"},{"text":"That\'s the \\"headline\\"."}]}',
+    ]
+    events = []
+
+    narration_agent.generate_narration(report, client=_FakeClient([final]), on_event=events.append)
+
+    in_turn = [event for event in events if event["type"] in ("web_search", "line_written")]
+    assert in_turn == [
+        {
+            "type": "web_search",
+            "turn": 1,
+            "search": {"action": "search", "query": "acme revenue", "sources": ["https://example.com/news"]},
+        },
+        {"type": "line_written", "turn": 1, "text": "Revenue doubled."},
+        {"type": "line_written", "turn": 1, "text": 'That\'s the "headline".'},
+    ]
+
+
+def test_reports_the_models_reasoning_summaries(report):
+    final = _final_response(GOOD_LINES)
+    final.thoughts = ["Comparing this year with last.\n", "  "]
+    client = _FakeClient([final])
+    events = []
+
+    _, trace = narration_agent.generate_narration(report, client=client, on_event=events.append)
+
+    assert client.reasoning == {"summary": "auto"}
+    # Kept on the turn as well, so the notes still have them once the run is over.
+    assert trace.turns[0].thinking == ["Comparing this year with last."]
+    assert [event for event in events if event["type"] == "thinking"] == [
+        {"type": "thinking", "turn": 1, "text": "Comparing this year with last."}
+    ]
+
+
+def test_without_a_listener_the_model_is_called_the_plain_way(report):
+    client = _FakeClient([_final_response(GOOD_LINES)])
+    client.stream = None  # would fail if it were used
+
+    lines, _ = narration_agent.generate_narration(report, client=client)
+
+    assert len(lines) == 2
 
 
 def test_tool_results_are_fed_back_on_the_next_turn(report):
