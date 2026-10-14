@@ -3,7 +3,7 @@
 #   fly secrets set OPENAI_API_KEY=... [OPENAI_BASE_URL=...]
 
 # App names are global on Fly; change this if it is taken.
-app = "luca-api"
+app = "luca-advisor-api"
 # Tokyo. Pick the region nearest to whoever will watch the demos (`fly platform regions`).
 primary_region = "nrt"
 
@@ -14,7 +14,7 @@ primary_region = "nrt"
   # just means no demos on the start page).
   DEV_SAMPLES_DIR = "samples"
   # The deployed frontend; change to its real URL.
-  CORS_ORIGINS = "https://luca.vercel.app"
+  CORS_ORIGINS = "https://luca-ruby.vercel.app"
 
 [http_service]
   internal_port = 8080
