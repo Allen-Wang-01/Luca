@@ -1,0 +1,4580 @@
+{
+  "meta": {
+    "company_name": "NVIDIA Corporation",
+    "ticker": "NVDA",
+    "report_type": "Quarterly financial results press release",
+    "fiscal_period": "First quarter fiscal 2027 ended April 26, 2026",
+    "currency": "USD",
+    "unit_scale": "millions",
+    "source_filename": "NVIDIAAn.pdf",
+    "parsed_at": "2026-10-14T15:54:51.954676Z"
+  },
+  "sections": [
+    {
+      "id": "sec_quarterly_results",
+      "title": "Quarterly Results",
+      "block_ids": [
+        "p_title",
+        "p_headline_results",
+        "p_ceo_commentary",
+        "p_shareholder_returns",
+        "p_reporting_framework",
+        "p_market_revenue",
+        "t_q1_summary_gaap",
+        "t_q1_summary_nongaap"
+      ]
+    },
+    {
+      "id": "sec_outlook_highlights",
+      "title": "Outlook and Highlights",
+      "block_ids": [
+        "p_outlook_heading",
+        "p_outlook_intro",
+        "p_outlook_revenue",
+        "p_outlook_margins",
+        "p_outlook_expenses",
+        "p_full_year_tax",
+        "p_highlights_heading",
+        "p_data_center_heading",
+        "p_data_center_highlights",
+        "p_edge_computing_heading",
+        "p_edge_computing_highlights"
+      ]
+    },
+    {
+      "id": "sec_commentary_and_measures",
+      "title": "CFO Commentary and Non-GAAP Measures",
+      "block_ids": [
+        "p_cfo_commentary_heading",
+        "p_cfo_commentary",
+        "p_conference_heading",
+        "p_conference_call",
+        "p_non_gaap_heading",
+        "p_non_gaap_explanation"
+      ]
+    },
+    {
+      "id": "sec_financial_statements",
+      "title": "Financial Statements",
+      "block_ids": [
+        "t_income_statement",
+        "t_balance_sheet",
+        "t_cash_flow_statement",
+        "t_gaap_nongaap_reconciliation",
+        "t_acquisition_costs",
+        "t_outlook_reconciliation"
+      ]
+    },
+    {
+      "id": "sec_company_and_risk_factors",
+      "title": "About NVIDIA and Risk Factors",
+      "block_ids": [
+        "p_about_nvidia_heading",
+        "p_about_nvidia",
+        "p_forward_looking_statement",
+        "p_risk_factors_continuation",
+        "p_trademark_notice",
+        "p_contacts"
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "id": "p_title",
+      "type": "paragraph",
+      "style": "heading",
+      "text": "NVIDIA Announces Financial Results for First Quarter Fiscal 2027",
+      "page": 1
+    },
+    {
+      "id": "p_headline_results",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Record revenue of $81.6 billion, up 85% from a year ago",
+      "page": 1
+    },
+    {
+      "id": "p_headline_data_center",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Record Data Center revenue of $75.2 billion, up 92% from a year ago",
+      "page": 1
+    },
+    {
+      "id": "p_headline_buyback_dividend",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "NVIDIA announces $80.0 billion additional share repurchase authorization and increases its quarterly cash dividend from $0.01 per share to $0.25 per share",
+      "page": 1
+    },
+    {
+      "id": "p_quarterly_revenue_commentary",
+      "type": "paragraph",
+      "style": "body",
+      "text": "NVIDIA (NASDAQ: NVDA) today reported record revenue for the first quarter ended April 26, 2026, of $81.6 billion, up 20% from the previous quarter and up 85% from a year ago.",
+      "page": 1
+    },
+    {
+      "id": "p_quarterly_margin_commentary",
+      "type": "paragraph",
+      "style": "body",
+      "text": "For the quarter, GAAP and non-GAAP gross margins were 74.9% and 75.0%, respectively.",
+      "page": 1
+    },
+    {
+      "id": "p_quarterly_eps_commentary",
+      "type": "paragraph",
+      "style": "body",
+      "text": "For the quarter, GAAP and non-GAAP earnings per diluted share were $2.39 and $1.87, respectively.",
+      "page": 1
+    },
+    {
+      "id": "p_ceo_commentary",
+      "type": "paragraph",
+      "style": "body",
+      "text": "“The buildout of AI factories -- the largest infrastructure expansion in human history -- is accelerating at extraordinary speed,'' said Jensen Huang, founder and CEO of NVIDIA. “Agentic AI has arrived, doing productive work, generating real value and scaling rapidly across companies and industries. NVIDIA is uniquely positioned at the center of this transformation as the only platform that runs in every cloud, powers every frontier and open source model, and scales everywhere AI is produced -- from hyperscale data centers to the edge.''",
+      "page": 1
+    },
+    {
+      "id": "p_shareholder_returns",
+      "type": "paragraph",
+      "style": "body",
+      "text": "During the first quarter of fiscal 2027, NVIDIA returned a record level of approximately $20.0 billion to shareholders in the form of shares repurchased and cash dividends. As of the end of the first quarter, the company had $38.5 billion remaining under its share repurchase authorization. On May 18, 2026, the Board of Directors approved an additional $80.0 billion to the Company's share repurchase authorization, without expiration. NVIDIA is increasing its quarterly cash dividend from $0.01 per share to $0.25 per share of common stock, which will be paid on June 26, 2026, to all shareholders of record on June 4, 2026.",
+      "page": 1
+    },
+    {
+      "id": "p_reporting_framework",
+      "type": "paragraph",
+      "style": "body",
+      "text": "NVIDIA is transitioning to a new reporting framework that better reflects its current and future growth drivers. NVIDIA will have two market platforms -- Data Center and Edge Computing. Within Data Center, NVIDIA will report two sub-markets, Hyperscale and ACIE, which incorporates AI Clouds, Industrial and Enterprise. Hyperscale will include revenue from the public clouds and the world's largest consumer internet companies, while ACIE addresses NVIDIA's growth opportunity in diverse AI purpose-built data centers and AI factories across industries and countries. Edge Computing highlights data processing devices for agentic and physical AI including PCs, game consoles, workstations, AI-RAN base stations, robotics and automotive.",
+      "page": 1
+    },
+    {
+      "id": "p_market_revenue",
+      "type": "paragraph",
+      "style": "body",
+      "text": "Under the previous sub-markets, Data Center compute revenue was a record $60.4 billion, up 77% from a year ago and up 18% sequentially. Data Center networking revenue was a record $14.8 billion, up 199% from a year ago and up 35% sequentially.",
+      "page": 1
+    },
+    {
+      "id": "t_q1_summary_gaap",
+      "type": "table",
+      "title": "Q1 Fiscal 2027 Summary — GAAP",
+      "unit": "$ in millions, except earnings per share",
+      "column_groups": [
+        {
+          "label": "GAAP",
+          "col_ids": [
+            "q1_fy27",
+            "q4_fy26",
+            "q1_fy26",
+            "qoq",
+            "yoy"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "q1_fy27",
+          "label": "Q1 FY27"
+        },
+        {
+          "id": "q4_fy26",
+          "label": "Q4 FY26"
+        },
+        {
+          "id": "q1_fy26",
+          "label": "Q1 FY26"
+        },
+        {
+          "id": "qoq",
+          "label": "Q/Q"
+        },
+        {
+          "id": "yoy",
+          "label": "Y/Y"
+        }
+      ],
+      "rows": [
+        {
+          "id": "t_q1_summary_gaap__r0",
+          "label": "Revenue",
+          "cells": [
+            {
+              "id": "t_q1_summary_gaap__r0_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 81615.0,
+              "raw_text": "$81,615",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r0_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 68127.0,
+              "raw_text": "$68,127",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r0_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 44062.0,
+              "raw_text": "$44,062",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r0_qoq",
+              "col_id": "qoq",
+              "value": 20.0,
+              "raw_text": "20%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_gaap__r0_yoy",
+              "col_id": "yoy",
+              "value": 85.0,
+              "raw_text": "85%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_q1_summary_gaap__r1",
+          "label": "Gross margin",
+          "cells": [
+            {
+              "id": "t_q1_summary_gaap__r1_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 74.9,
+              "raw_text": "74.9%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_gaap__r1_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 75.0,
+              "raw_text": "75.0%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_gaap__r1_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 60.5,
+              "raw_text": "60.5%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_gaap__r1_qoq",
+              "col_id": "qoq",
+              "value": -0.1,
+              "raw_text": "(0.1) pts",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_gaap__r1_yoy",
+              "col_id": "yoy",
+              "value": 14.4,
+              "raw_text": "14.4 pts",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "percent",
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_q1_summary_gaap__r2",
+          "label": "Operating expenses",
+          "cells": [
+            {
+              "id": "t_q1_summary_gaap__r2_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 7621.0,
+              "raw_text": "$7,621",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r2_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 6794.0,
+              "raw_text": "$6,794",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r2_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 5030.0,
+              "raw_text": "$5,030",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r2_qoq",
+              "col_id": "qoq",
+              "value": 12.0,
+              "raw_text": "12%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_gaap__r2_yoy",
+              "col_id": "yoy",
+              "value": 52.0,
+              "raw_text": "52%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_q1_summary_gaap__r3",
+          "label": "Operating income",
+          "cells": [
+            {
+              "id": "t_q1_summary_gaap__r3_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 53536.0,
+              "raw_text": "$53,536",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r3_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 44299.0,
+              "raw_text": "$44,299",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r3_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 21638.0,
+              "raw_text": "$21,638",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r3_qoq",
+              "col_id": "qoq",
+              "value": 21.0,
+              "raw_text": "21%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_gaap__r3_yoy",
+              "col_id": "yoy",
+              "value": 147.0,
+              "raw_text": "147%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_q1_summary_gaap__r4",
+          "label": "Net income",
+          "cells": [
+            {
+              "id": "t_q1_summary_gaap__r4_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 58321.0,
+              "raw_text": "$58,321",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r4_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 42960.0,
+              "raw_text": "$42,960",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r4_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 18775.0,
+              "raw_text": "$18,775",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r4_qoq",
+              "col_id": "qoq",
+              "value": 36.0,
+              "raw_text": "36%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_gaap__r4_yoy",
+              "col_id": "yoy",
+              "value": 211.0,
+              "raw_text": "211%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_q1_summary_gaap__r5",
+          "label": "Diluted earnings per share",
+          "cells": [
+            {
+              "id": "t_q1_summary_gaap__r5_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 2.39,
+              "raw_text": "$2.39",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r5_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 1.76,
+              "raw_text": "$1.76",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r5_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 0.76,
+              "raw_text": "$0.76",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_gaap__r5_qoq",
+              "col_id": "qoq",
+              "value": 36.0,
+              "raw_text": "36%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_gaap__r5_yoy",
+              "col_id": "yoy",
+              "value": 214.0,
+              "raw_text": "214%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "per_share",
+          "scale": "actual",
+          "group": null,
+          "sum_of": []
+        }
+      ],
+      "confidence": "high",
+      "flags": [],
+      "page": 1
+    },
+    {
+      "id": "t_q1_summary_nongaap",
+      "type": "table",
+      "title": "Q1 Fiscal 2027 Summary — Non-GAAP",
+      "unit": "$ in millions, except earnings per share",
+      "column_groups": [
+        {
+          "label": "Non-GAAP",
+          "col_ids": [
+            "q1_fy27",
+            "q4_fy26",
+            "q1_fy26",
+            "qoq",
+            "yoy"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "q1_fy27",
+          "label": "Q1 FY27"
+        },
+        {
+          "id": "q4_fy26",
+          "label": "Q4 FY26"
+        },
+        {
+          "id": "q1_fy26",
+          "label": "Q1 FY26"
+        },
+        {
+          "id": "qoq",
+          "label": "Q/Q"
+        },
+        {
+          "id": "yoy",
+          "label": "Y/Y"
+        }
+      ],
+      "rows": [
+        {
+          "id": "t_q1_summary_nongaap__r0",
+          "label": "Revenue",
+          "cells": [
+            {
+              "id": "t_q1_summary_nongaap__r0_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 81615.0,
+              "raw_text": "$81,615",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r0_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 68127.0,
+              "raw_text": "$68,127",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r0_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 44062.0,
+              "raw_text": "$44,062",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r0_qoq",
+              "col_id": "qoq",
+              "value": 20.0,
+              "raw_text": "20%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r0_yoy",
+              "col_id": "yoy",
+              "value": 85.0,
+              "raw_text": "85%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_q1_summary_nongaap__r1",
+          "label": "Gross margin",
+          "cells": [
+            {
+              "id": "t_q1_summary_nongaap__r1_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 75.0,
+              "raw_text": "75.0%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r1_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 75.1,
+              "raw_text": "75.1%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r1_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 60.8,
+              "raw_text": "60.8%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r1_qoq",
+              "col_id": "qoq",
+              "value": -0.1,
+              "raw_text": "(0.1) pts",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r1_yoy",
+              "col_id": "yoy",
+              "value": 14.2,
+              "raw_text": "14.2 pts",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "percent",
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_q1_summary_nongaap__r2",
+          "label": "Operating expenses",
+          "cells": [
+            {
+              "id": "t_q1_summary_nongaap__r2_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 7449.0,
+              "raw_text": "$7,449",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r2_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 6666.0,
+              "raw_text": "$6,666",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r2_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 4993.0,
+              "raw_text": "$4,993",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r2_qoq",
+              "col_id": "qoq",
+              "value": 12.0,
+              "raw_text": "12%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r2_yoy",
+              "col_id": "yoy",
+              "value": 49.0,
+              "raw_text": "49%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_q1_summary_nongaap__r3",
+          "label": "Operating income",
+          "cells": [
+            {
+              "id": "t_q1_summary_nongaap__r3_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 53783.0,
+              "raw_text": "$53,783",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r3_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 44474.0,
+              "raw_text": "$44,474",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r3_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 21801.0,
+              "raw_text": "$21,801",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r3_qoq",
+              "col_id": "qoq",
+              "value": 21.0,
+              "raw_text": "21%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r3_yoy",
+              "col_id": "yoy",
+              "value": 147.0,
+              "raw_text": "147%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_q1_summary_nongaap__r4",
+          "label": "Net income",
+          "cells": [
+            {
+              "id": "t_q1_summary_nongaap__r4_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 45548.0,
+              "raw_text": "$45,548",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r4_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 38969.0,
+              "raw_text": "$38,969",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r4_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 19094.0,
+              "raw_text": "$19,094",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r4_qoq",
+              "col_id": "qoq",
+              "value": 17.0,
+              "raw_text": "17%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r4_yoy",
+              "col_id": "yoy",
+              "value": 139.0,
+              "raw_text": "139%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_q1_summary_nongaap__r5",
+          "label": "Diluted earnings per share",
+          "cells": [
+            {
+              "id": "t_q1_summary_nongaap__r5_q1_fy27",
+              "col_id": "q1_fy27",
+              "value": 1.87,
+              "raw_text": "$1.87",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r5_q4_fy26",
+              "col_id": "q4_fy26",
+              "value": 1.59,
+              "raw_text": "$1.59",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r5_q1_fy26",
+              "col_id": "q1_fy26",
+              "value": 0.78,
+              "raw_text": "$0.78",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r5_qoq",
+              "col_id": "qoq",
+              "value": 18.0,
+              "raw_text": "18%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_q1_summary_nongaap__r5_yoy",
+              "col_id": "yoy",
+              "value": 140.0,
+              "raw_text": "140%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "per_share",
+          "scale": "actual",
+          "group": null,
+          "sum_of": []
+        }
+      ],
+      "confidence": "high",
+      "flags": [],
+      "page": 2
+    },
+    {
+      "id": "p_outlook_heading",
+      "type": "paragraph",
+      "style": "heading",
+      "text": "Outlook",
+      "page": 2
+    },
+    {
+      "id": "p_outlook_intro",
+      "type": "paragraph",
+      "style": "body",
+      "text": "NVIDIA's outlook for the second quarter of fiscal 2027 is as follows:",
+      "page": 2
+    },
+    {
+      "id": "p_outlook_revenue",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Revenue is expected to be $91.0 billion, plus or minus 2%. NVIDIA is not assuming any Data Center compute revenue from China in its outlook.",
+      "page": 2
+    },
+    {
+      "id": "p_outlook_margins",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "GAAP and non-GAAP gross margins are expected to be 74.9% and 75.0%, respectively, plus or minus 50 basis points.",
+      "page": 2
+    },
+    {
+      "id": "p_outlook_expenses",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "GAAP and non-GAAP operating expenses are expected to be approximately $8.5 billion and $8.3 billion, respectively.",
+      "page": 2
+    },
+    {
+      "id": "p_full_year_tax",
+      "type": "paragraph",
+      "style": "body",
+      "text": "For the full year fiscal 2027, NVIDIA expects GAAP and non-GAAP tax rates to be between 16.0% and 18.0%, excluding any discrete items and material changes to NVIDIA's tax environment.",
+      "page": 2
+    },
+    {
+      "id": "p_highlights_heading",
+      "type": "paragraph",
+      "style": "heading",
+      "text": "Highlights",
+      "page": 2
+    },
+    {
+      "id": "p_data_center_heading",
+      "type": "paragraph",
+      "style": "heading",
+      "text": "Data Center",
+      "page": 2
+    },
+    {
+      "id": "p_data_center_highlights",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "First-quarter revenue was a record $75.2 billion, up 21% from the previous quarter and up 92% from a year ago.",
+      "page": 2
+    },
+    {
+      "id": "p_data_center_highlight_2",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Announced the NVIDIA Vera Rubin platform, including the NVIDIA Vera CPU, the world's first processor purpose-built for agentic AI, and NVIDIA BlueField® -4 STX, accelerated storage infrastructure for agentic AI factories.",
+      "page": 2
+    },
+    {
+      "id": "p_data_center_highlight_3",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Entered production with NVIDIA Dynamo 1.0, open source software that boosts generative and agentic inference on NVIDIA Blackwell GPUs by up to 7x, with widespread global adoption.",
+      "page": 2
+    },
+    {
+      "id": "p_data_center_highlight_4",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Announced NVIDIA NemoClaw™ for the OpenClaw agent platform, NVIDIA OpenShell™ with privacy and security controls for autonomous AI agents, and NVIDIA Agent Toolkit, an open source platform for building autonomous enterprise AI agents.",
+      "page": 2
+    },
+    {
+      "id": "p_data_center_highlight_5",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Advanced open AI model development with new NVIDIA Nemotron™, NVIDIA BioNeMo™ and NVIDIA Ising models, and the launch of the NVIDIA Nemotron Coalition.",
+      "page": 2
+    },
+    {
+      "id": "p_data_center_highlight_6",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Expanded collaboration with Google Cloud to advance agentic and physical AI, including new NVIDIA Vera Rubin-powered A5X instances and a preview of Google Gemini models on Google Distributed Cloud running on NVIDIA Blackwell and Blackwell Ultra GPUs.",
+      "page": 2
+    },
+    {
+      "id": "p_data_center_highlight_7",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Expanded the AI ecosystem through a strategic partnership with Marvell via NVIDIA NVLink Fusion™, and collaboration on silicon photonics technology.",
+      "page": 2
+    },
+    {
+      "id": "p_data_center_highlight_8",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Announced multi-year strategic agreements with Coherent, Corning and Lumentum to accelerate innovation in advanced optics technologies.",
+      "page": 2
+    },
+    {
+      "id": "p_data_center_highlight_9",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Announced the NVIDIA RTX PRO™ 4500 Blackwell Server Edition GPU.",
+      "page": 2
+    },
+    {
+      "id": "p_edge_computing_heading",
+      "type": "paragraph",
+      "style": "heading",
+      "text": "Edge Computing",
+      "page": 2
+    },
+    {
+      "id": "p_edge_computing_highlights",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "First-quarter Edge Computing revenue was $6.4 billion, up 10% from the previous quarter and up 29% from a year ago.",
+      "page": 2
+    },
+    {
+      "id": "p_edge_highlight_2",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Released NVIDIA DLSS 4.5 Dynamic Multi Frame Generation and previewed the next generation of DLSS 3D-guided neural rendering model, DLSS 5, NVIDIA's most significant graphics breakthrough since ray tracing in 2018.",
+      "page": 2
+    },
+    {
+      "id": "p_edge_highlight_3",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Accelerated and optimized key local agentic models, including Gemma 4, Qwen, Mistral and NVIDIA Nemotron for NVIDIA RTX™ and edge devices.",
+      "page": 2
+    },
+    {
+      "id": "p_edge_highlight_4",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Announced the NVIDIA Alpamayo 1.5 open model and NVIDIA Omniverse NuRec technologies that enable autonomous driving systems at scale.",
+      "page": 2
+    },
+    {
+      "id": "p_edge_highlight_5",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Expanded partnership with Hyundai Motor Company and Kia for next-generation autonomous driving built on the NVIDIA DRIVE Hyperion™ platform, and expanded partnership with Uber to launch a fleet of autonomous vehicles powered by full-stack NVIDIA DRIVE AV software.",
+      "page": 2
+    },
+    {
+      "id": "p_edge_highlight_6",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Announced that BYD, Geely, Isuzu and Nissan are building level 4-ready vehicles on the NVIDIA DRIVE Hyperion platform, and introduced NVIDIA Halos OS, a unified safety architecture for AI-driven vehicles.",
+      "page": 2
+    },
+    {
+      "id": "p_edge_highlight_7",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Announced new NVIDIA Cosmos™ and NVIDIA Isaac™ GR00T N models, new Isaac simulation frameworks, the general availability of NVIDIA IGX Thor™ and physical AI leaders building on NVIDIA technology.",
+      "page": 2
+    },
+    {
+      "id": "p_edge_highlight_8",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Partnered with global industrial software leaders to accelerate AI-driven design, engineering and manufacturing using NVIDIA CUDA-X™, NVIDIA Omniverse™ and accelerated computing.",
+      "page": 2
+    },
+    {
+      "id": "p_edge_highlight_9",
+      "type": "paragraph",
+      "style": "list_item",
+      "text": "Announced collaboration with T-Mobile and Nokia to integrate physical AI applications on AI-RAN-ready infrastructure, as well as a commitment with global telecom leaders to build 6G wireless networks on AI-native, open and secure platforms.",
+      "page": 2
+    },
+    {
+      "id": "p_cfo_commentary_heading",
+      "type": "paragraph",
+      "style": "heading",
+      "text": "CFO Commentary",
+      "page": 3
+    },
+    {
+      "id": "p_cfo_commentary",
+      "type": "paragraph",
+      "style": "body",
+      "text": "Commentary on the quarter by Colette Kress, NVIDIA's executive vice president and chief financial officer, is available at https://investor.nvidia.com.",
+      "page": 3
+    },
+    {
+      "id": "p_conference_heading",
+      "type": "paragraph",
+      "style": "heading",
+      "text": "Conference Call and Webcast Information",
+      "page": 3
+    },
+    {
+      "id": "p_conference_call",
+      "type": "paragraph",
+      "style": "body",
+      "text": "NVIDIA will conduct a conference call with analysts and investors to discuss its first quarter fiscal 2027 financial results and current financial prospects today at 2 p.m. Pacific time (5 p.m. Eastern time). A live webcast (listen-only mode) of the conference call will be accessible at NVIDIA's investor relations website, https://investor.nvidia.com. The webcast will be recorded and available for replay until NVIDIA's conference call to discuss its financial results for its second quarter of fiscal 2027.",
+      "page": 3
+    },
+    {
+      "id": "p_non_gaap_heading",
+      "type": "paragraph",
+      "style": "heading",
+      "text": "Non-GAAP Measures",
+      "page": 3
+    },
+    {
+      "id": "p_non_gaap_explanation",
+      "type": "paragraph",
+      "style": "body",
+      "text": "To supplement NVIDIA's condensed consolidated financial statements presented in accordance with GAAP, the company uses non-GAAP measures of certain components of financial performance. These non-GAAP measures include non-GAAP gross profit, non-GAAP gross margin, non-GAAP operating expenses, non-GAAP operating income, non-GAAP other income (expense), net, non-GAAP net income, non-GAAP net income, or earnings, per diluted share, and free cash flow. For NVIDIA's investors to be better able to compare its current results with those of previous periods, the company has shown a reconciliation of GAAP to non-GAAP financial measures. These reconciliations adjust the related GAAP financial measures to exclude acquisition-related and other costs, other, gains/losses from equity securities, net, certain other income and expense, and the associated tax impact of these items where applicable. Beginning in the first quarter of fiscal 2027, NVIDIA's non-GAAP financial measures no longer exclude stock-based compensation expense. The historical non-GAAP financial information presented has been updated to include stock-based compensation expense. Free cash flow is calculated as GAAP net cash provided by operating activities less both purchases related to property and equipment and intangible assets and principal payments on property and equipment and intangible assets. NVIDIA believes the presentation of its non-GAAP financial measures enhances the users' overall understanding of the company's historical financial performance. The presentation of the company's non-GAAP financial measures is not meant to be considered in isolation or as a substitute for the company's financial results prepared in accordance with GAAP, and the company's non-GAAP measures may be different from non-GAAP measures used by other companies.",
+      "page": 3
+    },
+    {
+      "id": "t_income_statement",
+      "type": "table",
+      "title": "Condensed Consolidated Statements of Income",
+      "unit": "In millions, except per share data",
+      "column_groups": [
+        {
+          "label": "Three Months Ended",
+          "col_ids": [
+            "apr_26_2026",
+            "apr_27_2025"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "apr_26_2026",
+          "label": "April 26, 2026"
+        },
+        {
+          "id": "apr_27_2025",
+          "label": "April 27, 2025"
+        }
+      ],
+      "rows": [
+        {
+          "id": "t_income_statement__r0",
+          "label": "Revenue",
+          "cells": [
+            {
+              "id": "t_income_statement__r0_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 81615.0,
+              "raw_text": "$81,615",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r0_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 44062.0,
+              "raw_text": "$44,062",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r1",
+          "label": "Cost of revenue",
+          "cells": [
+            {
+              "id": "t_income_statement__r1_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 20458.0,
+              "raw_text": "20,458",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r1_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 17394.0,
+              "raw_text": "17,394",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r2",
+          "label": "Gross profit",
+          "cells": [
+            {
+              "id": "t_income_statement__r2_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 61157.0,
+              "raw_text": "61,157",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r2_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 26668.0,
+              "raw_text": "26,668",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_income_statement__r0",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_income_statement__r1",
+              "sign": "subtract"
+            }
+          ]
+        },
+        {
+          "id": "t_income_statement__r3",
+          "label": "Operating expenses",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r4",
+          "label": "Research and development",
+          "cells": [
+            {
+              "id": "t_income_statement__r4_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 6321.0,
+              "raw_text": "6,321",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r4_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 3989.0,
+              "raw_text": "3,989",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Operating expenses",
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r5",
+          "label": "Sales, general and administrative",
+          "cells": [
+            {
+              "id": "t_income_statement__r5_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 1300.0,
+              "raw_text": "1,300",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r5_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 1041.0,
+              "raw_text": "1,041",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Operating expenses",
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r6",
+          "label": "Total operating expenses",
+          "cells": [
+            {
+              "id": "t_income_statement__r6_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 7621.0,
+              "raw_text": "7,621",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r6_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 5030.0,
+              "raw_text": "5,030",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_income_statement__r4",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_income_statement__r5",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_income_statement__r7",
+          "label": "Operating income",
+          "cells": [
+            {
+              "id": "t_income_statement__r7_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 53536.0,
+              "raw_text": "53,536",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r7_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 21638.0,
+              "raw_text": "21,638",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_income_statement__r2",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_income_statement__r6",
+              "sign": "subtract"
+            }
+          ]
+        },
+        {
+          "id": "t_income_statement__r8",
+          "label": "Interest income",
+          "cells": [
+            {
+              "id": "t_income_statement__r8_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 540.0,
+              "raw_text": "540",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r8_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 515.0,
+              "raw_text": "515",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r9",
+          "label": "Interest expense",
+          "cells": [
+            {
+              "id": "t_income_statement__r9_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -102.0,
+              "raw_text": "(102)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r9_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -63.0,
+              "raw_text": "(63)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r10",
+          "label": "Other income (expense), net",
+          "cells": [
+            {
+              "id": "t_income_statement__r10_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 15929.0,
+              "raw_text": "15,929",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r10_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -180.0,
+              "raw_text": "(180)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r11",
+          "label": "Total other income, net",
+          "cells": [
+            {
+              "id": "t_income_statement__r11_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 16367.0,
+              "raw_text": "16,367",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r11_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 272.0,
+              "raw_text": "272",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_income_statement__r8",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_income_statement__r9",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_income_statement__r10",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_income_statement__r12",
+          "label": "Income before income tax",
+          "cells": [
+            {
+              "id": "t_income_statement__r12_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 69903.0,
+              "raw_text": "69,903",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r12_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 21910.0,
+              "raw_text": "21,910",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_income_statement__r7",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_income_statement__r11",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_income_statement__r13",
+          "label": "Income tax expense",
+          "cells": [
+            {
+              "id": "t_income_statement__r13_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 11582.0,
+              "raw_text": "11,582",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r13_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 3135.0,
+              "raw_text": "3,135",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r14",
+          "label": "Net income",
+          "cells": [
+            {
+              "id": "t_income_statement__r14_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 58321.0,
+              "raw_text": "$58,321",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r14_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 18775.0,
+              "raw_text": "$18,775",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_income_statement__r12",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_income_statement__r13",
+              "sign": "subtract"
+            }
+          ]
+        },
+        {
+          "id": "t_income_statement__r15",
+          "label": "Net income per share: Basic",
+          "cells": [
+            {
+              "id": "t_income_statement__r15_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 2.4,
+              "raw_text": "$2.40",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r15_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 0.77,
+              "raw_text": "$0.77",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "per_share",
+          "scale": "actual",
+          "group": "Net income per share",
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r16",
+          "label": "Net income per share: Diluted",
+          "cells": [
+            {
+              "id": "t_income_statement__r16_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 2.39,
+              "raw_text": "$2.39",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_income_statement__r16_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 0.76,
+              "raw_text": "$0.76",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "per_share",
+          "scale": "actual",
+          "group": "Net income per share",
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r17",
+          "label": "Weighted average shares used in per share computation: Basic",
+          "cells": [
+            {
+              "id": "t_income_statement__r17_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 24286.0,
+              "raw_text": "24,286",
+              "value_type": "number"
+            },
+            {
+              "id": "t_income_statement__r17_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 24441.0,
+              "raw_text": "24,441",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "share_count",
+          "scale": "millions",
+          "group": "Weighted average shares used in per share computation",
+          "sum_of": []
+        },
+        {
+          "id": "t_income_statement__r18",
+          "label": "Weighted average shares used in per share computation: Diluted",
+          "cells": [
+            {
+              "id": "t_income_statement__r18_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 24391.0,
+              "raw_text": "24,391",
+              "value_type": "number"
+            },
+            {
+              "id": "t_income_statement__r18_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 24611.0,
+              "raw_text": "24,611",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "share_count",
+          "scale": "millions",
+          "group": "Weighted average shares used in per share computation",
+          "sum_of": []
+        }
+      ],
+      "confidence": "high",
+      "flags": [],
+      "page": 3
+    },
+    {
+      "id": "t_balance_sheet",
+      "type": "table",
+      "title": "Condensed Consolidated Balance Sheets",
+      "unit": "In millions",
+      "column_groups": [
+        {
+          "label": "Balance Sheet Dates",
+          "col_ids": [
+            "apr_26_2026",
+            "jan_25_2026"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "apr_26_2026",
+          "label": "April 26, 2026"
+        },
+        {
+          "id": "jan_25_2026",
+          "label": "January 25, 2026"
+        }
+      ],
+      "rows": [
+        {
+          "id": "t_balance_sheet__r0",
+          "label": "ASSETS",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r1",
+          "label": "Current assets:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r2",
+          "label": "Cash and cash equivalents",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r2_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 13237.0,
+              "raw_text": "$13,237",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r2_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 10605.0,
+              "raw_text": "$10,605",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r3",
+          "label": "Marketable debt securities",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r3_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 37098.0,
+              "raw_text": "37,098",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r3_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 39065.0,
+              "raw_text": "39,065",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r4",
+          "label": "Marketable equity securities",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r4_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 30237.0,
+              "raw_text": "30,237",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r4_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 12886.0,
+              "raw_text": "12,886",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r5",
+          "label": "Accounts receivable, net",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r5_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 40710.0,
+              "raw_text": "40,710",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r5_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 38466.0,
+              "raw_text": "38,466",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r6",
+          "label": "Inventories",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r6_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 25797.0,
+              "raw_text": "25,797",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r6_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 21403.0,
+              "raw_text": "21,403",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r7",
+          "label": "Prepaid expenses and other current assets",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r7_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 3916.0,
+              "raw_text": "3,916",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r7_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 3180.0,
+              "raw_text": "3,180",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r8",
+          "label": "Total current assets",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r8_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 150995.0,
+              "raw_text": "150,995",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r8_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 125605.0,
+              "raw_text": "125,605",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheet__r2",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r3",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r4",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r5",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r6",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r7",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_balance_sheet__r9",
+          "label": "Property and equipment, net",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r9_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 12403.0,
+              "raw_text": "12,403",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r9_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 10383.0,
+              "raw_text": "10,383",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r10",
+          "label": "Operating lease assets",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r10_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 4258.0,
+              "raw_text": "4,258",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r10_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 2867.0,
+              "raw_text": "2,867",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r11",
+          "label": "Goodwill",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r11_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 20894.0,
+              "raw_text": "20,894",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r11_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 20832.0,
+              "raw_text": "20,832",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r12",
+          "label": "Intangible assets, net",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r12_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 3120.0,
+              "raw_text": "3,120",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r12_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 3306.0,
+              "raw_text": "3,306",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r13",
+          "label": "Deferred income tax assets",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r13_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 11707.0,
+              "raw_text": "11,707",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r13_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 13258.0,
+              "raw_text": "13,258",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r14",
+          "label": "Non-marketable securities",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r14_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 43364.0,
+              "raw_text": "43,364",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r14_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 22251.0,
+              "raw_text": "22,251",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r15",
+          "label": "Other assets",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r15_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 12733.0,
+              "raw_text": "12,733",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r15_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 8301.0,
+              "raw_text": "8,301",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r16",
+          "label": "Total assets",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r16_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 259474.0,
+              "raw_text": "$259,474",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r16_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 206803.0,
+              "raw_text": "$206,803",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheet__r8",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r9",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r10",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r11",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r12",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r13",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r14",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r15",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_balance_sheet__r17",
+          "label": "LIABILITIES AND SHAREHOLDERS' EQUITY",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r18",
+          "label": "Current liabilities:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r19",
+          "label": "Accounts payable",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r19_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 13097.0,
+              "raw_text": "$13,097",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r19_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 9812.0,
+              "raw_text": "$9,812",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r20",
+          "label": "Accrued and other current liabilities",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r20_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 29787.0,
+              "raw_text": "29,787",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r20_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 21352.0,
+              "raw_text": "21,352",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r21",
+          "label": "Short-term debt",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r21_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 1000.0,
+              "raw_text": "1,000",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r21_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 999.0,
+              "raw_text": "999",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r22",
+          "label": "Total current liabilities",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r22_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 43884.0,
+              "raw_text": "43,884",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r22_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 32163.0,
+              "raw_text": "32,163",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheet__r19",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r20",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r21",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_balance_sheet__r23",
+          "label": "Long-term debt",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r23_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 7470.0,
+              "raw_text": "7,470",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r23_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 7469.0,
+              "raw_text": "7,469",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r24",
+          "label": "Long-term operating lease liabilities",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r24_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 3878.0,
+              "raw_text": "3,878",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r24_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 2572.0,
+              "raw_text": "2,572",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r25",
+          "label": "Other long-term liabilities",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r25_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 8768.0,
+              "raw_text": "8,768",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r25_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 7306.0,
+              "raw_text": "7,306",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r26",
+          "label": "Total liabilities",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r26_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 64000.0,
+              "raw_text": "64,000",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r26_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 49510.0,
+              "raw_text": "49,510",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheet__r22",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r23",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r24",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r25",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_balance_sheet__r27",
+          "label": "Shareholders' equity",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r27_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 195474.0,
+              "raw_text": "195,474",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r27_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 157293.0,
+              "raw_text": "157,293",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheet__r28",
+          "label": "Total liabilities and shareholders' equity",
+          "cells": [
+            {
+              "id": "t_balance_sheet__r28_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 259474.0,
+              "raw_text": "$259,474",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheet__r28_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 206803.0,
+              "raw_text": "$206,803",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheet__r26",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheet__r27",
+              "sign": "add"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "flags": [],
+      "page": 4
+    },
+    {
+      "id": "t_cash_flow_statement",
+      "type": "table",
+      "title": "Condensed Consolidated Statements of Cash Flows",
+      "unit": "In millions",
+      "column_groups": [
+        {
+          "label": "Three Months Ended",
+          "col_ids": [
+            "apr_26_2026",
+            "apr_27_2025"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "apr_26_2026",
+          "label": "April 26, 2026"
+        },
+        {
+          "id": "apr_27_2025",
+          "label": "April 27, 2025"
+        }
+      ],
+      "rows": [
+        {
+          "id": "t_cash_flow_statement__r0",
+          "label": "Net income",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r0_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 58321.0,
+              "raw_text": "$58,321",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r0_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 18775.0,
+              "raw_text": "$18,775",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from operating activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r1",
+          "label": "Stock-based compensation expense",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r1_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 1928.0,
+              "raw_text": "1,928",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r1_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 1474.0,
+              "raw_text": "1,474",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Adjustments to reconcile net income to net cash provided by operating activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r2",
+          "label": "Deferred income taxes",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r2_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 1584.0,
+              "raw_text": "1,584",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r2_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -2177.0,
+              "raw_text": "(2,177)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Adjustments to reconcile net income to net cash provided by operating activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r3",
+          "label": "Depreciation and amortization",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r3_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 997.0,
+              "raw_text": "997",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r3_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 611.0,
+              "raw_text": "611",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Adjustments to reconcile net income to net cash provided by operating activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r4",
+          "label": "(Gains) losses from equity securities, net",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r4_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -15936.0,
+              "raw_text": "(15,936)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r4_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 175.0,
+              "raw_text": "175",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Adjustments to reconcile net income to net cash provided by operating activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r5",
+          "label": "Other",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r5_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -94.0,
+              "raw_text": "(94)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r5_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -98.0,
+              "raw_text": "(98)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Adjustments to reconcile net income to net cash provided by operating activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r6",
+          "label": "Accounts receivable",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r6_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -2243.0,
+              "raw_text": "(2,243)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r6_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 933.0,
+              "raw_text": "933",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities, net of acquisitions",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r7",
+          "label": "Inventories",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r7_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -4420.0,
+              "raw_text": "(4,420)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r7_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -1258.0,
+              "raw_text": "(1,258)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities, net of acquisitions",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r8",
+          "label": "Prepaid expenses and other assets",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r8_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -983.0,
+              "raw_text": "(983)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r8_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 560.0,
+              "raw_text": "560",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities, net of acquisitions",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r9",
+          "label": "Accounts payable",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r9_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 2210.0,
+              "raw_text": "2,210",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r9_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 941.0,
+              "raw_text": "941",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities, net of acquisitions",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r10",
+          "label": "Accrued and other current liabilities",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r10_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 7763.0,
+              "raw_text": "7,763",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r10_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 7128.0,
+              "raw_text": "7,128",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities, net of acquisitions",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r11",
+          "label": "Other long-term liabilities",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r11_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 1217.0,
+              "raw_text": "1,217",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r11_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 350.0,
+              "raw_text": "350",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities, net of acquisitions",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r12",
+          "label": "Net cash provided by operating activities",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r12_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 50344.0,
+              "raw_text": "50,344",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r12_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 27414.0,
+              "raw_text": "27,414",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r13",
+          "label": "Proceeds from maturities of marketable debt securities",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r13_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 1946.0,
+              "raw_text": "1,946",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r13_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 3122.0,
+              "raw_text": "3,122",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r14",
+          "label": "Proceeds from sales of non-marketable securities",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r14_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 26.0,
+              "raw_text": "26",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r14_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": null,
+              "raw_text": "-",
+              "value_type": "text"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r15",
+          "label": "Proceeds from sales of marketable debt securities",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r15_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 25.0,
+              "raw_text": "25",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r15_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 467.0,
+              "raw_text": "467",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r16",
+          "label": "Purchases of non-marketable securities",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r16_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -18582.0,
+              "raw_text": "(18,582)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r16_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -649.0,
+              "raw_text": "(649)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r17",
+          "label": "Purchases of marketable debt and equity securities",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r17_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -8000.0,
+              "raw_text": "(8,000)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r17_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -6546.0,
+              "raw_text": "(6,546)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r18",
+          "label": "Purchases related to property and equipment and intangible assets",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r18_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -1757.0,
+              "raw_text": "(1,757)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r18_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -1227.0,
+              "raw_text": "(1,227)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r19",
+          "label": "Acquisitions, net of cash acquired",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r19_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -87.0,
+              "raw_text": "(87)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r19_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -383.0,
+              "raw_text": "(383)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r20",
+          "label": "Net cash used in investing activities",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r20_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -26429.0,
+              "raw_text": "(26,429)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r20_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -5216.0,
+              "raw_text": "(5,216)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r21",
+          "label": "Proceeds related to employee stock plans",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r21_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 515.0,
+              "raw_text": "515",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r21_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 370.0,
+              "raw_text": "370",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r22",
+          "label": "Payments related to repurchases of common stock",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r22_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -19312.0,
+              "raw_text": "(19,312)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r22_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -14095.0,
+              "raw_text": "(14,095)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r23",
+          "label": "Payments related to employee stock plan taxes",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r23_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -2129.0,
+              "raw_text": "(2,129)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r23_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -1532.0,
+              "raw_text": "(1,532)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r24",
+          "label": "Dividends paid",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r24_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -243.0,
+              "raw_text": "(243)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r24_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -244.0,
+              "raw_text": "(244)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r25",
+          "label": "Principal payments on property and equipment and intangible assets",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r25_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -33.0,
+              "raw_text": "(33)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r25_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -52.0,
+              "raw_text": "(52)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r26",
+          "label": "Other",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r26_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -81.0,
+              "raw_text": "(81)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r26_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": null,
+              "raw_text": "-",
+              "value_type": "text"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cash flows from financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r27",
+          "label": "Net cash used in financing activities",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r27_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -21283.0,
+              "raw_text": "(21,283)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r27_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -15553.0,
+              "raw_text": "(15,553)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r28",
+          "label": "Change in cash and cash equivalents",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r28_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 2632.0,
+              "raw_text": "2,632",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r28_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 6645.0,
+              "raw_text": "6,645",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r29",
+          "label": "Cash and cash equivalents at beginning of period",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r29_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 10605.0,
+              "raw_text": "10,605",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r29_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 8589.0,
+              "raw_text": "8,589",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_cash_flow_statement__r30",
+          "label": "Cash and cash equivalents at end of period",
+          "cells": [
+            {
+              "id": "t_cash_flow_statement__r30_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 13237.0,
+              "raw_text": "$13,237",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_cash_flow_statement__r30_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 15234.0,
+              "raw_text": "$15,234",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_cash_flow_statement__r28",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_cash_flow_statement__r29",
+              "sign": "add"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "flags": [],
+      "page": 5
+    },
+    {
+      "id": "t_gaap_nongaap_reconciliation",
+      "type": "table",
+      "title": "Reconciliation of GAAP to Non-GAAP Financial Measures",
+      "unit": "$ in millions, except per share data",
+      "column_groups": [
+        {
+          "label": "Three Months Ended",
+          "col_ids": [
+            "apr_26_2026",
+            "jan_25_2026",
+            "apr_27_2025"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "apr_26_2026",
+          "label": "April 26, 2026"
+        },
+        {
+          "id": "jan_25_2026",
+          "label": "January 25, 2026"
+        },
+        {
+          "id": "apr_27_2025",
+          "label": "April 27, 2025"
+        }
+      ],
+      "rows": [
+        {
+          "id": "t_gaap_nongaap_reconciliation__r0",
+          "label": "GAAP cost of revenue",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r0_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 20458.0,
+              "raw_text": "$20,458",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r0_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 17034.0,
+              "raw_text": "$17,034",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r0_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 17394.0,
+              "raw_text": "$17,394",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r1",
+          "label": "GAAP gross profit",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r1_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 61157.0,
+              "raw_text": "$61,157",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r1_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 51093.0,
+              "raw_text": "$51,093",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r1_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 26668.0,
+              "raw_text": "$26,668",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r2",
+          "label": "GAAP gross margin",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r2_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 74.9,
+              "raw_text": "74.9%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r2_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 75.0,
+              "raw_text": "75.0%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r2_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 60.5,
+              "raw_text": "60.5%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "percent",
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r3",
+          "label": "Acquisition-related and other costs (A)",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r3_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 47.0,
+              "raw_text": "47",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r3_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 48.0,
+              "raw_text": "48",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r3_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 123.0,
+              "raw_text": "123",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r4",
+          "label": "Other",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r4_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 28.0,
+              "raw_text": "28",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r4_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": -1.0,
+              "raw_text": "(1)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r4_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 3.0,
+              "raw_text": "3",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r5",
+          "label": "Non-GAAP cost of revenue",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r5_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 20383.0,
+              "raw_text": "$20,383",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r5_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 16987.0,
+              "raw_text": "$16,987",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r5_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 17268.0,
+              "raw_text": "$17,268",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r0",
+              "sign": "subtract"
+            },
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r3",
+              "sign": "subtract"
+            },
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r4",
+              "sign": "subtract"
+            }
+          ]
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r6",
+          "label": "Non-GAAP gross profit",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r6_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 61232.0,
+              "raw_text": "$61,232",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r6_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 51140.0,
+              "raw_text": "$51,140",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r6_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 26794.0,
+              "raw_text": "$26,794",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r7",
+          "label": "Non-GAAP gross margin*",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r7_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 75.0,
+              "raw_text": "75.0%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r7_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 75.1,
+              "raw_text": "75.1%",
+              "value_type": "percent"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r7_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 60.8,
+              "raw_text": "60.8%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "percent",
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r8",
+          "label": "GAAP operating expenses",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r8_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 7621.0,
+              "raw_text": "$7,621",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r8_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 6794.0,
+              "raw_text": "$6,794",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r8_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 5030.0,
+              "raw_text": "$5,030",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r9",
+          "label": "Acquisition-related and other costs (A)",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r9_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -172.0,
+              "raw_text": "(172)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r9_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": -90.0,
+              "raw_text": "(90)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r9_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -37.0,
+              "raw_text": "(37)",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r10",
+          "label": "Other",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r10_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 0.0,
+              "raw_text": "-",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r10_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": -38.0,
+              "raw_text": "(38)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r10_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 0.0,
+              "raw_text": "-",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r11",
+          "label": "Non-GAAP operating expenses",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r11_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 7449.0,
+              "raw_text": "$7,449",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r11_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 6666.0,
+              "raw_text": "$6,666",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r11_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 4993.0,
+              "raw_text": "$4,993",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r8",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r9",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r10",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r12",
+          "label": "GAAP operating income",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r12_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 53536.0,
+              "raw_text": "$53,536",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r12_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 44299.0,
+              "raw_text": "$44,299",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r12_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 21638.0,
+              "raw_text": "$21,638",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r13",
+          "label": "Total impact of non-GAAP adjustments to operating income",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r13_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 247.0,
+              "raw_text": "247",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r13_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 175.0,
+              "raw_text": "175",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r13_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 163.0,
+              "raw_text": "163",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r14",
+          "label": "Non-GAAP operating income*",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r14_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 53783.0,
+              "raw_text": "$53,783",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r14_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 44474.0,
+              "raw_text": "$44,474",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r14_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 21801.0,
+              "raw_text": "$21,801",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r12",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r13",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r15",
+          "label": "GAAP total other income, net",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r15_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 16367.0,
+              "raw_text": "$16,367",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r15_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 6098.0,
+              "raw_text": "$6,098",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r15_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 272.0,
+              "raw_text": "$272",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r16",
+          "label": "(Gains) losses from equity securities, net",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r16_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -15936.0,
+              "raw_text": "(15,936)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r16_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": -5491.0,
+              "raw_text": "(5,491)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r16_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 175.0,
+              "raw_text": "175",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r17",
+          "label": "Other (B)",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r17_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 26.0,
+              "raw_text": "26",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r17_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 13.0,
+              "raw_text": "13",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r17_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 1.0,
+              "raw_text": "1",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r18",
+          "label": "Non-GAAP total other income, net",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r18_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 457.0,
+              "raw_text": "$457",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r18_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 620.0,
+              "raw_text": "$620",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r18_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 448.0,
+              "raw_text": "$448",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r15",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r16",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r17",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r19",
+          "label": "GAAP net income",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r19_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 58321.0,
+              "raw_text": "$58,321",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r19_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 42960.0,
+              "raw_text": "$42,960",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r19_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 18775.0,
+              "raw_text": "$18,775",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r20",
+          "label": "Total pre-tax impact of non-GAAP adjustments",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r20_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -15663.0,
+              "raw_text": "(15,663)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r20_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": -5303.0,
+              "raw_text": "(5,303)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r20_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 339.0,
+              "raw_text": "339",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r21",
+          "label": "Income tax impact of non-GAAP adjustments",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r21_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 2890.0,
+              "raw_text": "2,890",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r21_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 1312.0,
+              "raw_text": "1,312",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r21_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -20.0,
+              "raw_text": "(20)",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r22",
+          "label": "Non-GAAP net income*",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r22_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 45548.0,
+              "raw_text": "$45,548",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r22_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 38969.0,
+              "raw_text": "$38,969",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r22_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 19094.0,
+              "raw_text": "$19,094",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r19",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r20",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r21",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r23",
+          "label": "Diluted net income per share — GAAP",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r23_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 2.39,
+              "raw_text": "$2.39",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r23_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 1.76,
+              "raw_text": "$1.76",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r23_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 0.76,
+              "raw_text": "$0.76",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "per_share",
+          "scale": "actual",
+          "group": "Diluted net income per share",
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r24",
+          "label": "Diluted net income per share — Non-GAAP*",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r24_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 1.87,
+              "raw_text": "$1.87",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r24_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 1.59,
+              "raw_text": "$1.59",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r24_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 0.78,
+              "raw_text": "$0.78",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "per_share",
+          "scale": "actual",
+          "group": "Diluted net income per share",
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r25",
+          "label": "Weighted average shares used in diluted net income per share computation",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r25_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 24391.0,
+              "raw_text": "24,391",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r25_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 24432.0,
+              "raw_text": "24,432",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r25_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 24611.0,
+              "raw_text": "24,611",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "share_count",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r26",
+          "label": "GAAP net cash provided by operating activities",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r26_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 50344.0,
+              "raw_text": "$50,344",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r26_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 36190.0,
+              "raw_text": "$36,190",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r26_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 27414.0,
+              "raw_text": "$27,414",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r27",
+          "label": "Purchases related to property and equipment and intangible assets",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r27_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -1757.0,
+              "raw_text": "(1,757)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r27_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": -1284.0,
+              "raw_text": "(1,284)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r27_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -1227.0,
+              "raw_text": "(1,227)",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r28",
+          "label": "Principal payments on property and equipment and intangible assets",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r28_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": -33.0,
+              "raw_text": "(33)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r28_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": -4.0,
+              "raw_text": "(4)",
+              "value_type": "number"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r28_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": -52.0,
+              "raw_text": "(52)",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r29",
+          "label": "Free cash flow",
+          "cells": [
+            {
+              "id": "t_gaap_nongaap_reconciliation__r29_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 48554.0,
+              "raw_text": "$48,554",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r29_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 34902.0,
+              "raw_text": "$34,902",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_gaap_nongaap_reconciliation__r29_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 26135.0,
+              "raw_text": "$26,135",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r26",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r27",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_gaap_nongaap_reconciliation__r28",
+              "sign": "add"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "flags": [],
+      "page": 7
+    },
+    {
+      "id": "t_acquisition_costs",
+      "type": "table",
+      "title": "Acquisition-related and Other Costs",
+      "unit": "$ in millions",
+      "column_groups": [
+        {
+          "label": "Three Months Ended",
+          "col_ids": [
+            "apr_26_2026",
+            "jan_25_2026",
+            "apr_27_2025"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "apr_26_2026",
+          "label": "April 26, 2026"
+        },
+        {
+          "id": "jan_25_2026",
+          "label": "January 25, 2026"
+        },
+        {
+          "id": "apr_27_2025",
+          "label": "April 27, 2025"
+        }
+      ],
+      "rows": [
+        {
+          "id": "t_acquisition_costs__r0",
+          "label": "Cost of revenue",
+          "cells": [
+            {
+              "id": "t_acquisition_costs__r0_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 47.0,
+              "raw_text": "$47",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_acquisition_costs__r0_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 48.0,
+              "raw_text": "$48",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_acquisition_costs__r0_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 123.0,
+              "raw_text": "$123",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_acquisition_costs__r1",
+          "label": "Research and development",
+          "cells": [
+            {
+              "id": "t_acquisition_costs__r1_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 167.0,
+              "raw_text": "$167",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_acquisition_costs__r1_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 83.0,
+              "raw_text": "$83",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_acquisition_costs__r1_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 28.0,
+              "raw_text": "$28",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_acquisition_costs__r2",
+          "label": "Sales, general and administrative",
+          "cells": [
+            {
+              "id": "t_acquisition_costs__r2_apr_26_2026",
+              "col_id": "apr_26_2026",
+              "value": 5.0,
+              "raw_text": "$5",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_acquisition_costs__r2_jan_25_2026",
+              "col_id": "jan_25_2026",
+              "value": 7.0,
+              "raw_text": "$7",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_acquisition_costs__r2_apr_27_2025",
+              "col_id": "apr_27_2025",
+              "value": 9.0,
+              "raw_text": "$9",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        }
+      ],
+      "confidence": "high",
+      "flags": [],
+      "page": 8
+    },
+    {
+      "id": "t_outlook_reconciliation",
+      "type": "table",
+      "title": "Reconciliation of GAAP to Non-GAAP Outlook",
+      "unit": "$ in millions",
+      "column_groups": [
+        {
+          "label": "Q2 FY27 Outlook",
+          "col_ids": [
+            "q2_fy27"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "q2_fy27",
+          "label": "Q2 FY27 Outlook"
+        }
+      ],
+      "rows": [
+        {
+          "id": "t_outlook_reconciliation__r0",
+          "label": "GAAP gross margin",
+          "cells": [
+            {
+              "id": "t_outlook_reconciliation__r0_q2_fy27",
+              "col_id": "q2_fy27",
+              "value": 74.9,
+              "raw_text": "74.9%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "percent",
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_outlook_reconciliation__r1",
+          "label": "Impact of acquisition-related costs and other costs",
+          "cells": [
+            {
+              "id": "t_outlook_reconciliation__r1_q2_fy27",
+              "col_id": "q2_fy27",
+              "value": 0.1,
+              "raw_text": "0.1%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "percent",
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_outlook_reconciliation__r2",
+          "label": "Non-GAAP gross margin",
+          "cells": [
+            {
+              "id": "t_outlook_reconciliation__r2_q2_fy27",
+              "col_id": "q2_fy27",
+              "value": 75.0,
+              "raw_text": "75.0%",
+              "value_type": "percent"
+            }
+          ],
+          "flags": [],
+          "quantity": "percent",
+          "scale": null,
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_outlook_reconciliation__r0",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_outlook_reconciliation__r1",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_outlook_reconciliation__r3",
+          "label": "GAAP operating expenses",
+          "cells": [
+            {
+              "id": "t_outlook_reconciliation__r3_q2_fy27",
+              "col_id": "q2_fy27",
+              "value": 8500.0,
+              "raw_text": "$8,500",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_outlook_reconciliation__r4",
+          "label": "Acquisition-related costs and other costs",
+          "cells": [
+            {
+              "id": "t_outlook_reconciliation__r4_q2_fy27",
+              "col_id": "q2_fy27",
+              "value": -200.0,
+              "raw_text": "(200)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_outlook_reconciliation__r5",
+          "label": "Non-GAAP operating expenses",
+          "cells": [
+            {
+              "id": "t_outlook_reconciliation__r5_q2_fy27",
+              "col_id": "q2_fy27",
+              "value": 8300.0,
+              "raw_text": "$8,300",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_outlook_reconciliation__r3",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_outlook_reconciliation__r4",
+              "sign": "add"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "flags": [],
+      "page": 8
+    },
+    {
+      "id": "p_about_nvidia_heading",
+      "type": "paragraph",
+      "style": "heading",
+      "text": "About NVIDIA",
+      "page": 8
+    },
+    {
+      "id": "p_about_nvidia",
+      "type": "paragraph",
+      "style": "body",
+      "text": "NVIDIA (NASDAQ: NVDA) is the world leader in AI and accelerated computing.",
+      "page": 8
+    },
+    {
+      "id": "p_forward_looking_statement",
+      "type": "paragraph",
+      "style": "body",
+      "text": "Certain statements in this press release including, but not limited to, statements as to: the buildout of AI factories—the largest infrastructure expansion in human history—accelerating at extraordinary speed; the value generated by agentic AI; expectations with respect to growth, performance and benefits of NVIDIA’s products, services and technologies, including Blackwell, and related trends and drivers; expectations with respect to supply and demand for NVIDIA’s products, services and technologies, including Blackwell, and related matters including inventory, production and distribution; expectations with respect to NVIDIA’s third party arrangements, including with its collaborators and partners; expectations with respect to technology developments, including Vera Rubin, and related trends and drivers; future NVIDIA cash dividends or other returns to stockholders; NVIDIA’s financial and business outlook for the second quarter of fiscal 2027 and beyond; projected market growth and trends; expectations with respect to AI and related industries; and other statements that are not historical facts are forward-looking statements within the meaning of Section 27A of the Securities Act of 1933, as amended, and Section 21E of the Securities Exchange Act of 1934, as amended, which are subject to the “safe harbor” created by those sections based on management’s beliefs and assumptions and on information currently available to management and are subject to risks and uncertainties that could cause results to be materially different than expectations.",
+      "page": 8
+    },
+    {
+      "id": "p_risk_factors_continuation",
+      "type": "paragraph",
+      "style": "body",
+      "text": "Important factors that could cause actual results to differ materially include: global economic and political conditions; NVIDIA’s reliance on third parties to manufacture, assemble, package and test NVIDIA’s products; the impact of technological development and competition; development of new products and technologies or enhancements to NVIDIA’s existing products and technologies; market acceptance of NVIDIA’s products or NVIDIA’s partners’ products; design, manufacturing or software defects; changes in consumer preferences or demands; changes in industry standards and interfaces; unexpected loss of performance of NVIDIA’s products or technologies when integrated into systems; NVIDIA’s ability to realize the potential benefits of business investments or acquisitions; and changes in applicable laws and regulations, as well as other factors detailed from time to time in the most recent reports NVIDIA files with the Securities and Exchange Commission, or SEC, including, but not limited to, its Annual Report on Form 10-K and Quarterly Reports on Form 10-Q. Copies of reports filed with the SEC are posted on the company’s website and are available from NVIDIA without charge. These forward-looking statements are not guarantees of future performance and speak only as of the date hereof, and, except as required by law, NVIDIA disclaims any obligation to update these forward-looking statements to reflect future events or circumstances.",
+      "page": 9
+    },
+    {
+      "id": "p_trademark_notice",
+      "type": "paragraph",
+      "style": "note",
+      "text": "© 2026 NVIDIA Corporation. All rights reserved. NVIDIA, the NVIDIA logo, BlueField, Cosmos, NemoClaw, Nemotron, NVIDIA Isaac, BioNeMo, CUDA-X, NVIDIA DRIVE Hyperion, NVIDIA IGX Thor, NVIDIA Omniverse, NVIDIA OpenShell, NVIDIA RTX PRO, NVIDIA RTX, and NVLink Fusion are trademarks and/or registered trademarks of NVIDIA Corporation in the U.S. and/or other countries. Other company and product names may be trademarks of the respective companies with which they are associated. Features, pricing, availability and specifications are subject to change without notice.",
+      "page": 9
+    },
+    {
+      "id": "p_contacts",
+      "type": "paragraph",
+      "style": "body",
+      "text": "Toshiya Hari\nInvestor Relations\nNVIDIA Corporation\ntoshiyah@nvidia.com\nMylene Mangalindan\nCorporate Communications\nNVIDIA Corporation\npress@nvidia.com",
+      "page": 9
+    }
+  ]
+}

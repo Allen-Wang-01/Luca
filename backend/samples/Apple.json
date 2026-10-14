@@ -1,0 +1,3308 @@
+{
+  "meta": {
+    "company_name": "Apple Inc.",
+    "ticker": null,
+    "report_type": "Unaudited condensed consolidated financial statements",
+    "fiscal_period": "Nine months ended June 27, 2026",
+    "currency": "USD",
+    "unit_scale": "millions",
+    "source_filename": "Apple_Financial_Statements.pdf",
+    "parsed_at": "2026-10-09T16:03:35.117732Z"
+  },
+  "sections": [
+    {
+      "id": "sec_statements_of_operations",
+      "title": "CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS (Unaudited)",
+      "block_ids": [
+        "t_statements_of_operations"
+      ]
+    },
+    {
+      "id": "sec_balance_sheets",
+      "title": "CONDENSED CONSOLIDATED BALANCE SHEETS (Unaudited)",
+      "block_ids": [
+        "t_balance_sheets"
+      ]
+    },
+    {
+      "id": "sec_statements_of_cash_flows",
+      "title": "CONDENSED CONSOLIDATED STATEMENTS OF CASH FLOWS (Unaudited)",
+      "block_ids": [
+        "t_statements_of_cash_flows"
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "id": "t_statements_of_operations",
+      "type": "table",
+      "title": "CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS (Unaudited)",
+      "unit": "In millions, except number of shares, which are reflected in thousands, and per-share amounts",
+      "column_groups": [
+        {
+          "label": "Three Months Ended",
+          "col_ids": [
+            "three_months_ended_june_27_2026",
+            "three_months_ended_june_28_2025"
+          ]
+        },
+        {
+          "label": "Nine Months Ended",
+          "col_ids": [
+            "nine_months_ended_june_27_2026",
+            "nine_months_ended_june_28_2025"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "three_months_ended_june_27_2026",
+          "label": "June 27, 2026"
+        },
+        {
+          "id": "three_months_ended_june_28_2025",
+          "label": "June 28, 2025"
+        },
+        {
+          "id": "nine_months_ended_june_27_2026",
+          "label": "June 27, 2026"
+        },
+        {
+          "id": "nine_months_ended_june_28_2025",
+          "label": "June 28, 2025"
+        }
+      ],
+      "rows": [
+        {
+          "id": "t_statements_of_operations__r0",
+          "label": "Net sales:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r1",
+          "label": "Products",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r1_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 78678.0,
+              "raw_text": "$ 78,678",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r1_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 66613.0,
+              "raw_text": "$ 66,613",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r1_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 272629.0,
+              "raw_text": "$ 272,629",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r1_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 233287.0,
+              "raw_text": "$ 233,287",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r2",
+          "label": "Services",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r2_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 30739.0,
+              "raw_text": "30,739",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r2_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 27423.0,
+              "raw_text": "27,423",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r2_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 91728.0,
+              "raw_text": "91,728",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r2_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 80408.0,
+              "raw_text": "80,408",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r3",
+          "label": "Total net sales (1)",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 109417.0,
+              "raw_text": "109,417",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r3_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 94036.0,
+              "raw_text": "94,036",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r3_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 364357.0,
+              "raw_text": "364,357",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r3_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 313695.0,
+              "raw_text": "313,695",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_operations__r1",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r2",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_operations__r4",
+          "label": "Cost of sales:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r5",
+          "label": "Products",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r5_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 47153.0,
+              "raw_text": "47,153",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r5_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 43620.0,
+              "raw_text": "43,620",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r5_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 163810.0,
+              "raw_text": "163,810",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r5_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 147097.0,
+              "raw_text": "147,097",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cost of sales",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r6",
+          "label": "Services",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r6_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 7494.0,
+              "raw_text": "7,494",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r6_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 6698.0,
+              "raw_text": "6,698",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r6_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 21765.0,
+              "raw_text": "21,765",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r6_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 19738.0,
+              "raw_text": "19,738",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Cost of sales",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r7",
+          "label": "Total cost of sales",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r7_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 54647.0,
+              "raw_text": "54,647",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r7_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 50318.0,
+              "raw_text": "50,318",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r7_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 185575.0,
+              "raw_text": "185,575",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r7_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 166835.0,
+              "raw_text": "166,835",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_operations__r5",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r6",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_operations__r8",
+          "label": "Gross margin",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r8_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 54770.0,
+              "raw_text": "54,770",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r8_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 43718.0,
+              "raw_text": "43,718",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r8_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 178782.0,
+              "raw_text": "178,782",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r8_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 146860.0,
+              "raw_text": "146,860",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_operations__r3",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r7",
+              "sign": "subtract"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_operations__r9",
+          "label": "Operating expenses:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r10",
+          "label": "Research and development",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r10_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 11729.0,
+              "raw_text": "11,729",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r10_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 8866.0,
+              "raw_text": "8,866",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r10_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 34035.0,
+              "raw_text": "34,035",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r10_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 25684.0,
+              "raw_text": "25,684",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Operating expenses",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r11",
+          "label": "Selling, general and administrative",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r11_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 7346.0,
+              "raw_text": "7,346",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r11_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 6650.0,
+              "raw_text": "6,650",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r11_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 22315.0,
+              "raw_text": "22,315",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r11_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 20553.0,
+              "raw_text": "20,553",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Operating expenses",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r12",
+          "label": "Total operating expenses",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r12_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 19075.0,
+              "raw_text": "19,075",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r12_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 15516.0,
+              "raw_text": "15,516",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r12_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 56350.0,
+              "raw_text": "56,350",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r12_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 46237.0,
+              "raw_text": "46,237",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_operations__r10",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r11",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_operations__r13",
+          "label": "Operating income",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r13_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 35695.0,
+              "raw_text": "35,695",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r13_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 28202.0,
+              "raw_text": "28,202",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r13_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 122432.0,
+              "raw_text": "122,432",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r13_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 100623.0,
+              "raw_text": "100,623",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_operations__r8",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r12",
+              "sign": "subtract"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_operations__r14",
+          "label": "Other income/(expense), net",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r14_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 572.0,
+              "raw_text": "572",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r14_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": -171.0,
+              "raw_text": "(171)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r14_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 670.0,
+              "raw_text": "670",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r14_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -698.0,
+              "raw_text": "(698)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r15",
+          "label": "Income before provision for income taxes",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r15_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 36267.0,
+              "raw_text": "36,267",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r15_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 28031.0,
+              "raw_text": "28,031",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r15_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 123102.0,
+              "raw_text": "123,102",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r15_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 99925.0,
+              "raw_text": "99,925",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_operations__r13",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r14",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_operations__r16",
+          "label": "Provision for income taxes",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r16_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 6478.0,
+              "raw_text": "6,478",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r16_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 4597.0,
+              "raw_text": "4,597",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r16_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 21638.0,
+              "raw_text": "21,638",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r16_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 15381.0,
+              "raw_text": "15,381",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r17",
+          "label": "Net income",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r17_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 29789.0,
+              "raw_text": "$ 29,789",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r17_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 23434.0,
+              "raw_text": "$ 23,434",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r17_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 101464.0,
+              "raw_text": "$ 101,464",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r17_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 84544.0,
+              "raw_text": "$ 84,544",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_operations__r15",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r16",
+              "sign": "subtract"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_operations__r18",
+          "label": "Earnings per share:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r19",
+          "label": "Basic",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r19_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 2.03,
+              "raw_text": "$ 2.03",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r19_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 1.57,
+              "raw_text": "$ 1.57",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r19_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 6.91,
+              "raw_text": "$ 6.91",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r19_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 5.64,
+              "raw_text": "$ 5.64",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "per_share",
+          "scale": "actual",
+          "group": "Earnings per share",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r20",
+          "label": "Diluted",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r20_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 2.02,
+              "raw_text": "$ 2.02",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r20_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 1.57,
+              "raw_text": "$ 1.57",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r20_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 6.88,
+              "raw_text": "$ 6.88",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r20_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 5.62,
+              "raw_text": "$ 5.62",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "per_share",
+          "scale": "actual",
+          "group": "Earnings per share",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r21",
+          "label": "Shares used in computing earnings per share:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r22",
+          "label": "Basic",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r22_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 14656110.0,
+              "raw_text": "14,656,110",
+              "value_type": "number"
+            },
+            {
+              "id": "t_statements_of_operations__r22_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 14902886.0,
+              "raw_text": "14,902,886",
+              "value_type": "number"
+            },
+            {
+              "id": "t_statements_of_operations__r22_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 14692515.0,
+              "raw_text": "14,692,515",
+              "value_type": "number"
+            },
+            {
+              "id": "t_statements_of_operations__r22_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 14992898.0,
+              "raw_text": "14,992,898",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "share_count",
+          "scale": "thousands",
+          "group": "Shares used in computing earnings per share",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r23",
+          "label": "Diluted",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r23_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 14714676.0,
+              "raw_text": "14,714,676",
+              "value_type": "number"
+            },
+            {
+              "id": "t_statements_of_operations__r23_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 14948179.0,
+              "raw_text": "14,948,179",
+              "value_type": "number"
+            },
+            {
+              "id": "t_statements_of_operations__r23_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 14750302.0,
+              "raw_text": "14,750,302",
+              "value_type": "number"
+            },
+            {
+              "id": "t_statements_of_operations__r23_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 15051726.0,
+              "raw_text": "15,051,726",
+              "value_type": "number"
+            }
+          ],
+          "flags": [],
+          "quantity": "share_count",
+          "scale": "thousands",
+          "group": "Shares used in computing earnings per share",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r24",
+          "label": "Net sales by reportable segment:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r25",
+          "label": "Americas",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r25_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 45781.0,
+              "raw_text": "$ 45,781",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r25_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 41198.0,
+              "raw_text": "$ 41,198",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r25_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 149403.0,
+              "raw_text": "$ 149,403",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r25_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 134161.0,
+              "raw_text": "$ 134,161",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales by reportable segment",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r26",
+          "label": "Europe",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r26_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 29395.0,
+              "raw_text": "29,395",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r26_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 24014.0,
+              "raw_text": "24,014",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r26_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 95596.0,
+              "raw_text": "95,596",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r26_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 82329.0,
+              "raw_text": "82,329",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales by reportable segment",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r27",
+          "label": "Greater China",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r27_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 18816.0,
+              "raw_text": "18,816",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r27_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 15369.0,
+              "raw_text": "15,369",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r27_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 64839.0,
+              "raw_text": "64,839",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r27_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 49884.0,
+              "raw_text": "49,884",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales by reportable segment",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r28",
+          "label": "Japan",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r28_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 6554.0,
+              "raw_text": "6,554",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r28_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 5782.0,
+              "raw_text": "5,782",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r28_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 24368.0,
+              "raw_text": "24,368",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r28_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 22067.0,
+              "raw_text": "22,067",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales by reportable segment",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r29",
+          "label": "Rest of Asia Pacific",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r29_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 8871.0,
+              "raw_text": "8,871",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r29_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 7673.0,
+              "raw_text": "7,673",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r29_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 30151.0,
+              "raw_text": "30,151",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r29_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 25254.0,
+              "raw_text": "25,254",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales by reportable segment",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r30",
+          "label": "Total net sales",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r30_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 109417.0,
+              "raw_text": "$ 109,417",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r30_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 94036.0,
+              "raw_text": "$ 94,036",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r30_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 364357.0,
+              "raw_text": "$ 364,357",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r30_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 313695.0,
+              "raw_text": "$ 313,695",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_operations__r25",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r26",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r27",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r28",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r29",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_operations__r31",
+          "label": "Net sales by category:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r32",
+          "label": "iPhone",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 54252.0,
+              "raw_text": "$ 54,252",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r32_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 44582.0,
+              "raw_text": "$ 44,582",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r32_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 196515.0,
+              "raw_text": "$ 196,515",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r32_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 160561.0,
+              "raw_text": "$ 160,561",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales by category",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r33",
+          "label": "Mac",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r33_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 10352.0,
+              "raw_text": "10,352",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r33_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 8046.0,
+              "raw_text": "8,046",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r33_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 27137.0,
+              "raw_text": "27,137",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r33_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 24982.0,
+              "raw_text": "24,982",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales by category",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r34",
+          "label": "iPad",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r34_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 6191.0,
+              "raw_text": "6,191",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r34_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 6581.0,
+              "raw_text": "6,581",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r34_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 21700.0,
+              "raw_text": "21,700",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r34_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 21071.0,
+              "raw_text": "21,071",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales by category",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r35",
+          "label": "Wearables, Home and Accessories",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r35_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 7883.0,
+              "raw_text": "7,883",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r35_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 7404.0,
+              "raw_text": "7,404",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r35_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 27277.0,
+              "raw_text": "27,277",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r35_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 26673.0,
+              "raw_text": "26,673",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales by category",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r36",
+          "label": "Services",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r36_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 30739.0,
+              "raw_text": "30,739",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r36_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 27423.0,
+              "raw_text": "27,423",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r36_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 91728.0,
+              "raw_text": "91,728",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r36_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 80408.0,
+              "raw_text": "80,408",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Net sales by category",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_operations__r37",
+          "label": "Total net sales",
+          "cells": [
+            {
+              "id": "t_statements_of_operations__r37_three_months_ended_june_27_2026",
+              "col_id": "three_months_ended_june_27_2026",
+              "value": 109417.0,
+              "raw_text": "$ 109,417",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r37_three_months_ended_june_28_2025",
+              "col_id": "three_months_ended_june_28_2025",
+              "value": 94036.0,
+              "raw_text": "$ 94,036",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r37_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 364357.0,
+              "raw_text": "$ 364,357",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_operations__r37_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 313695.0,
+              "raw_text": "$ 313,695",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_operations__r32",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r33",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r34",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r35",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_operations__r36",
+              "sign": "add"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "flags": [],
+      "page": 1
+    },
+    {
+      "id": "t_balance_sheets",
+      "type": "table",
+      "title": "CONDENSED CONSOLIDATED BALANCE SHEETS (Unaudited)",
+      "unit": "In millions, except number of shares, which are reflected in thousands, and par value",
+      "column_groups": [],
+      "columns": [
+        {
+          "id": "june_27_2026",
+          "label": "June 27, 2026"
+        },
+        {
+          "id": "september_27_2025",
+          "label": "September 27, 2025"
+        }
+      ],
+      "rows": [
+        {
+          "id": "t_balance_sheets__r0",
+          "label": "ASSETS:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r1",
+          "label": "Current assets:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r2",
+          "label": "Cash and cash equivalents",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r2_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 39544.0,
+              "raw_text": "$ 39,544",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r2_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 35934.0,
+              "raw_text": "$ 35,934",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r3",
+          "label": "Marketable securities",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r3_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 22855.0,
+              "raw_text": "22,855",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r3_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 18763.0,
+              "raw_text": "18,763",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r4",
+          "label": "Accounts receivable, net",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r4_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 31398.0,
+              "raw_text": "31,398",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r4_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 39777.0,
+              "raw_text": "39,777",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r5",
+          "label": "Vendor non-trade receivables",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r5_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 27509.0,
+              "raw_text": "27,509",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r5_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 33180.0,
+              "raw_text": "33,180",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r6",
+          "label": "Inventories",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r6_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 11092.0,
+              "raw_text": "11,092",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r6_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 5718.0,
+              "raw_text": "5,718",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r7",
+          "label": "Other current assets",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r7_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 17420.0,
+              "raw_text": "17,420",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r7_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 14585.0,
+              "raw_text": "14,585",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r8",
+          "label": "Total current assets",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r8_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 149818.0,
+              "raw_text": "149,818",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r8_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 147957.0,
+              "raw_text": "147,957",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheets__r2",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r3",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r4",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r5",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r6",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r7",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_balance_sheets__r9",
+          "label": "Non-current assets:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r10",
+          "label": "Marketable securities",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r10_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 84118.0,
+              "raw_text": "84,118",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r10_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 77723.0,
+              "raw_text": "77,723",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Non-current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r11",
+          "label": "Property, plant and equipment, net",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r11_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 51431.0,
+              "raw_text": "51,431",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r11_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 49834.0,
+              "raw_text": "49,834",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Non-current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r12",
+          "label": "Intangible assets, net",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r12_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 20342.0,
+              "raw_text": "20,342",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r12_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 11093.0,
+              "raw_text": "11,093",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Non-current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r13",
+          "label": "Other non-current assets",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r13_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 77557.0,
+              "raw_text": "77,557",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r13_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 72634.0,
+              "raw_text": "72,634",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Non-current assets",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r14",
+          "label": "Total non-current assets",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r14_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 233448.0,
+              "raw_text": "233,448",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r14_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 211284.0,
+              "raw_text": "211,284",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheets__r10",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r11",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r12",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r13",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_balance_sheets__r15",
+          "label": "Total assets",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r15_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 383266.0,
+              "raw_text": "$ 383,266",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r15_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 359241.0,
+              "raw_text": "$ 359,241",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheets__r8",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r14",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_balance_sheets__r16",
+          "label": "LIABILITIES AND SHAREHOLDERS’ EQUITY:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r17",
+          "label": "Current liabilities:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r18",
+          "label": "Accounts payable",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r18_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 64525.0,
+              "raw_text": "$ 64,525",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r18_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 69860.0,
+              "raw_text": "$ 69,860",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r19",
+          "label": "Other current liabilities",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r19_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 62259.0,
+              "raw_text": "62,259",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r19_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 66387.0,
+              "raw_text": "66,387",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r20",
+          "label": "Deferred revenue",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r20_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 9538.0,
+              "raw_text": "9,538",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r20_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 9055.0,
+              "raw_text": "9,055",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r21",
+          "label": "Commercial paper",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r21_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 1997.0,
+              "raw_text": "1,997",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r21_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 7979.0,
+              "raw_text": "7,979",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r22",
+          "label": "Term debt",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r22_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 11007.0,
+              "raw_text": "11,007",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r22_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 12350.0,
+              "raw_text": "12,350",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Current liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r23",
+          "label": "Total current liabilities",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r23_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 149326.0,
+              "raw_text": "149,326",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r23_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 165631.0,
+              "raw_text": "165,631",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheets__r18",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r19",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r20",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r21",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r22",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_balance_sheets__r24",
+          "label": "Non-current liabilities:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r25",
+          "label": "Term debt",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r25_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 71340.0,
+              "raw_text": "71,340",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r25_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 78328.0,
+              "raw_text": "78,328",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Non-current liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r26",
+          "label": "Other non-current liabilities",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r26_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 55080.0,
+              "raw_text": "55,080",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r26_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 41549.0,
+              "raw_text": "41,549",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Non-current liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r27",
+          "label": "Total non-current liabilities",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r27_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 126420.0,
+              "raw_text": "126,420",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r27_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 119877.0,
+              "raw_text": "119,877",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheets__r25",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r26",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_balance_sheets__r28",
+          "label": "Total liabilities",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r28_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 275746.0,
+              "raw_text": "275,746",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r28_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 285508.0,
+              "raw_text": "285,508",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheets__r23",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r27",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_balance_sheets__r29",
+          "label": "Commitments and contingencies",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r30",
+          "label": "Shareholders’ equity:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r31",
+          "label": "Common stock and additional paid-in capital, $0.00001 par value: 50,400,000 shares authorized; 14,608,963 and 14,773,260 shares issued and outstanding, respectively",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r31_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 100702.0,
+              "raw_text": "100,702",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r31_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 93568.0,
+              "raw_text": "93,568",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Shareholders’ equity",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r32",
+          "label": "Retained earnings/(Accumulated deficit)",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r32_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 11326.0,
+              "raw_text": "11,326",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r32_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": -14264.0,
+              "raw_text": "(14,264)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Shareholders’ equity",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r33",
+          "label": "Accumulated other comprehensive loss",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r33_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": -4508.0,
+              "raw_text": "(4,508)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r33_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": -5571.0,
+              "raw_text": "(5,571)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Shareholders’ equity",
+          "sum_of": []
+        },
+        {
+          "id": "t_balance_sheets__r34",
+          "label": "Total shareholders’ equity",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r34_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 107520.0,
+              "raw_text": "107,520",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r34_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 73733.0,
+              "raw_text": "73,733",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheets__r31",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r32",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r33",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_balance_sheets__r35",
+          "label": "Total liabilities and shareholders’ equity",
+          "cells": [
+            {
+              "id": "t_balance_sheets__r35_june_27_2026",
+              "col_id": "june_27_2026",
+              "value": 383266.0,
+              "raw_text": "$ 383,266",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_balance_sheets__r35_september_27_2025",
+              "col_id": "september_27_2025",
+              "value": 359241.0,
+              "raw_text": "$ 359,241",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_balance_sheets__r28",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_balance_sheets__r34",
+              "sign": "add"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "flags": [],
+      "page": 2
+    },
+    {
+      "id": "t_statements_of_cash_flows",
+      "type": "table",
+      "title": "CONDENSED CONSOLIDATED STATEMENTS OF CASH FLOWS (Unaudited)",
+      "unit": "In millions",
+      "column_groups": [
+        {
+          "label": "Nine Months Ended",
+          "col_ids": [
+            "nine_months_ended_june_27_2026",
+            "nine_months_ended_june_28_2025"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "id": "nine_months_ended_june_27_2026",
+          "label": "June 27, 2026"
+        },
+        {
+          "id": "nine_months_ended_june_28_2025",
+          "label": "June 28, 2025"
+        }
+      ],
+      "rows": [
+        {
+          "id": "t_statements_of_cash_flows__r0",
+          "label": "Cash, cash equivalents, and restricted cash and cash equivalents, beginning balances",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r0_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 35934.0,
+              "raw_text": "$ 35,934",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r0_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 29943.0,
+              "raw_text": "$ 29,943",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r1",
+          "label": "Operating activities:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r2",
+          "label": "Net income",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r2_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 101464.0,
+              "raw_text": "101,464",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r2_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 84544.0,
+              "raw_text": "84,544",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Operating activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r3",
+          "label": "Adjustments to reconcile net income to cash generated by operating activities:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r4",
+          "label": "Depreciation and amortization",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r4_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 9973.0,
+              "raw_text": "9,973",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r4_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 8571.0,
+              "raw_text": "8,571",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Adjustments to reconcile net income to cash generated by operating activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r5",
+          "label": "Share-based compensation expense",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r5_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 10523.0,
+              "raw_text": "10,523",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r5_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 9680.0,
+              "raw_text": "9,680",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Adjustments to reconcile net income to cash generated by operating activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r6",
+          "label": "Other",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r6_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -2037.0,
+              "raw_text": "(2,037)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r6_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -1748.0,
+              "raw_text": "(1,748)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Adjustments to reconcile net income to cash generated by operating activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r7",
+          "label": "Changes in operating assets and liabilities:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r8",
+          "label": "Accounts receivable, net",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r8_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 8316.0,
+              "raw_text": "8,316",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r8_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 5685.0,
+              "raw_text": "5,685",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r9",
+          "label": "Vendor non-trade receivables",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r9_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 5671.0,
+              "raw_text": "5,671",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r9_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 13555.0,
+              "raw_text": "13,555",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r10",
+          "label": "Inventories",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r10_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -5461.0,
+              "raw_text": "(5,461)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r10_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 1223.0,
+              "raw_text": "1,223",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r11",
+          "label": "Other current and non-current assets",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r11_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -16266.0,
+              "raw_text": "(16,266)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r11_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -6116.0,
+              "raw_text": "(6,116)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r12",
+          "label": "Accounts payable",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r12_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -5203.0,
+              "raw_text": "(5,203)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r12_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -18479.0,
+              "raw_text": "(18,479)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r13",
+          "label": "Other current and non-current liabilities",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r13_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 10016.0,
+              "raw_text": "10,016",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r13_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -15161.0,
+              "raw_text": "(15,161)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Changes in operating assets and liabilities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r14",
+          "label": "Cash generated by operating activities",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 116996.0,
+              "raw_text": "116,996",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r14_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 81754.0,
+              "raw_text": "81,754",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_cash_flows__r2",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r4",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r5",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r6",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r8",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r9",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r10",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r11",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r12",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r13",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_cash_flows__r15",
+          "label": "Investing activities:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r16",
+          "label": "Purchases of marketable securities",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r16_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -48752.0,
+              "raw_text": "(48,752)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r16_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -17591.0,
+              "raw_text": "(17,591)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r17",
+          "label": "Proceeds from maturities of marketable securities",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r17_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 26504.0,
+              "raw_text": "26,504",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r17_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 35036.0,
+              "raw_text": "35,036",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r18",
+          "label": "Proceeds from sales of marketable securities",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r18_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 12016.0,
+              "raw_text": "12,016",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r18_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 10785.0,
+              "raw_text": "10,785",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r19",
+          "label": "Payments for acquisition of property, plant and equipment",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r19_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -6799.0,
+              "raw_text": "(6,799)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r19_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -9473.0,
+              "raw_text": "(9,473)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r20",
+          "label": "Other",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r20_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -1780.0,
+              "raw_text": "(1,780)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r20_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -975.0,
+              "raw_text": "(975)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Investing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r21",
+          "label": "Cash generated by/(used in) investing activities",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r21_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -18811.0,
+              "raw_text": "(18,811)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r21_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 17782.0,
+              "raw_text": "17,782",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_cash_flows__r16",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r17",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r18",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r19",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r20",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_cash_flows__r22",
+          "label": "Financing activities:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r23",
+          "label": "Payments for taxes related to net share settlement of equity awards",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r23_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -6462.0,
+              "raw_text": "(6,462)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r23_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -5719.0,
+              "raw_text": "(5,719)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r24",
+          "label": "Payments for dividends and dividend equivalents",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r24_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -11778.0,
+              "raw_text": "(11,778)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r24_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -11559.0,
+              "raw_text": "(11,559)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r25",
+          "label": "Repurchases of common stock",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r25_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -62094.0,
+              "raw_text": "(62,094)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r25_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -70579.0,
+              "raw_text": "(70,579)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r26",
+          "label": "Proceeds from issuance of term debt, net",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r26_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 0.0,
+              "raw_text": "—",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r26_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 4481.0,
+              "raw_text": "4,481",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r27",
+          "label": "Repayments of term debt",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r27_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -8146.0,
+              "raw_text": "(8,146)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r27_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -9682.0,
+              "raw_text": "(9,682)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r28",
+          "label": "Repayments of commercial paper, net",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r28_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -5911.0,
+              "raw_text": "(5,911)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r28_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -65.0,
+              "raw_text": "(65)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r29",
+          "label": "Other",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r29_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -184.0,
+              "raw_text": "(184)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r29_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -87.0,
+              "raw_text": "(87)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Financing activities",
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r30",
+          "label": "Cash used in financing activities",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r30_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": -94575.0,
+              "raw_text": "(94,575)",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r30_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": -93210.0,
+              "raw_text": "(93,210)",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_cash_flows__r23",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r24",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r25",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r26",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r27",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r28",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r29",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_cash_flows__r31",
+          "label": "Increase in cash, cash equivalents, and restricted cash and cash equivalents",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r31_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 3610.0,
+              "raw_text": "3,610",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r31_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 6326.0,
+              "raw_text": "6,326",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_cash_flows__r14",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r21",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r30",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_cash_flows__r32",
+          "label": "Cash, cash equivalents, and restricted cash and cash equivalents, ending balances",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r32_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 39544.0,
+              "raw_text": "$ 39,544",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r32_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 36269.0,
+              "raw_text": "$ 36,269",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": null,
+          "sum_of": [
+            {
+              "row_id": "t_statements_of_cash_flows__r0",
+              "sign": "add"
+            },
+            {
+              "row_id": "t_statements_of_cash_flows__r31",
+              "sign": "add"
+            }
+          ]
+        },
+        {
+          "id": "t_statements_of_cash_flows__r33",
+          "label": "Supplemental cash flow disclosure:",
+          "cells": [],
+          "flags": [],
+          "quantity": null,
+          "scale": null,
+          "group": null,
+          "sum_of": []
+        },
+        {
+          "id": "t_statements_of_cash_flows__r34",
+          "label": "Cash paid for income taxes, net",
+          "cells": [
+            {
+              "id": "t_statements_of_cash_flows__r34_nine_months_ended_june_27_2026",
+              "col_id": "nine_months_ended_june_27_2026",
+              "value": 26555.0,
+              "raw_text": "$ 26,555",
+              "value_type": "currency"
+            },
+            {
+              "id": "t_statements_of_cash_flows__r34_nine_months_ended_june_28_2025",
+              "col_id": "nine_months_ended_june_28_2025",
+              "value": 37332.0,
+              "raw_text": "$ 37,332",
+              "value_type": "currency"
+            }
+          ],
+          "flags": [],
+          "quantity": "money",
+          "scale": "millions",
+          "group": "Supplemental cash flow disclosure",
+          "sum_of": []
+        }
+      ],
+      "confidence": "high",
+      "flags": [],
+      "page": 3
+    }
+  ]
+}

@@ -12,8 +12,12 @@ class Settings(BaseSettings):
     # without any API calls: a preview while developing, and the demos on the start
     # page. Unset (the default) leaves that endpoint unregistered entirely.
     dev_samples_dir: str | None = None
+    # Comma-separated origins allowed to call this API from a browser, for a frontend
+    # deployed on its own domain (e.g. "https://app.example.com"). Unset in
+    # development, where the frontend's dev server proxies /api and no CORS is needed.
+    cors_origins: str | None = None
 
-    @field_validator("openai_api_key", "openai_base_url", "dev_samples_dir", mode="before")
+    @field_validator("openai_api_key", "openai_base_url", "dev_samples_dir", "cors_origins", mode="before")
     @classmethod
     def _blank_string_to_none(cls, value: object) -> object:
         # A blank line in .env (e.g. "OPENAI_BASE_URL=") loads as "" rather than

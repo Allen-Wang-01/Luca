@@ -1,9 +1,11 @@
-# Financial Agent
+# Luca
 
 Upload a company's financial report as a PDF and an AI advisor walks you through it out
 loud: what the numbers are, how they changed and what that means. As each figure is
 mentioned it is highlighted on the report, and a card next to it shows the figure or a
 chart.
+
+The name is after Luca Pacioli, who first set out double-entry bookkeeping in 1494.
 
 ## How it works
 

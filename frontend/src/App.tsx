@@ -122,7 +122,7 @@ function App() {
             <path d="M18 15V9" />
           </svg>
         </span>
-        <h1 className="app-header__title">Financial Agent</h1>
+        <h1 className="app-header__title">Luca</h1>
         <span className="app-header__tagline">AI-narrated financial report walkthroughs</span>
       </header>
 

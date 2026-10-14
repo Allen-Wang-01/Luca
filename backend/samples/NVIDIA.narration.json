@@ -1,0 +1,1470 @@
+{
+  "lines": [
+    {
+      "text": "NVIDIA’s AI boom is no longer just producing record growth; it is producing record scale. In the first quarter of fiscal 2027, revenue reached about $81.6 billion, while the company also committed to return even more cash to shareholders.",
+      "target_id": "p_headline_results",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_1",
+          "type": "bar",
+          "title": "Revenue growth",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "i1",
+              "label": "Q1 FY26",
+              "value": 44.062,
+              "role": "item",
+              "raw_text": "$44,062",
+              "source_id": "t_q1_summary_gaap__r0_q1_fy26",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Q4 FY26",
+              "value": 68.127,
+              "role": "item",
+              "raw_text": "$68,127",
+              "source_id": "t_q1_summary_gaap__r0_q4_fy26",
+              "computed": false
+            },
+            {
+              "key": "i3",
+              "label": "Q1 FY27",
+              "value": 81.615,
+              "role": "item",
+              "raw_text": "$81,615",
+              "source_id": "t_q1_summary_gaap__r0_q1_fy27",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": "i3"
+      },
+      "figures": [
+        {
+          "id": "t_q1_summary_gaap__r0_q1_fy27",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Sales rose 20% from the previous quarter and 85% from a year earlier. That is remarkable momentum, especially because the prior quarter was already enormous.",
+      "target_id": "p_quarterly_revenue_commentary",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_1",
+          "type": "bar",
+          "title": "Revenue growth",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "i1",
+              "label": "Q1 FY26",
+              "value": 44.062,
+              "role": "item",
+              "raw_text": "$44,062",
+              "source_id": "t_q1_summary_gaap__r0_q1_fy26",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Q4 FY26",
+              "value": 68.127,
+              "role": "item",
+              "raw_text": "$68,127",
+              "source_id": "t_q1_summary_gaap__r0_q4_fy26",
+              "computed": false
+            },
+            {
+              "key": "i3",
+              "label": "Q1 FY27",
+              "value": 81.615,
+              "role": "item",
+              "raw_text": "$81,615",
+              "source_id": "t_q1_summary_gaap__r0_q1_fy27",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": null
+      },
+      "figures": [
+        {
+          "id": "t_q1_summary_gaap__r0_qoq",
+          "quote": null
+        },
+        {
+          "id": "t_q1_summary_gaap__r0_yoy",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The result also cleared expectations. Analysts surveyed by FactSet had expected revenue of $78.91 billion and adjusted earnings of $1.75 per share; NVIDIA reported revenue of about $81.6 billion and non-GAAP, or adjusted, earnings of $1.87 per share.",
+      "target_id": "t_q1_summary_nongaap__r5_q1_fy27",
+      "sources": [
+        "https://apnews.com/article/955c699a0c91c423edc81b7903b80f85"
+      ],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_q1_summary_gaap__r0_q1_fy27",
+          "quote": null
+        },
+        {
+          "id": "t_q1_summary_nongaap__r5_q1_fy27",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The engine is overwhelmingly Data Center. Revenue there was $75.2 billion, up 92% from a year ago and 21% from the previous quarter.",
+      "target_id": "p_data_center_highlights",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_2",
+          "type": "share",
+          "title": "Q1 revenue by platform",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "i1",
+              "label": "Data Center",
+              "value": 75.2,
+              "role": "item",
+              "raw_text": "$75.2 billion",
+              "source_id": "p_headline_data_center",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Edge Computing",
+              "value": 6.4,
+              "role": "item",
+              "raw_text": "$6.4 billion",
+              "source_id": "p_edge_computing_highlights",
+              "computed": false
+            },
+            {
+              "key": "total",
+              "label": "Total",
+              "value": 81.615,
+              "role": "total",
+              "raw_text": "$81,615",
+              "source_id": "t_q1_summary_gaap__r0_q1_fy27",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": null
+      },
+      "figures": [
+        {
+          "id": "p_data_center_highlights",
+          "quote": "$75.2 billion"
+        },
+        {
+          "id": "p_data_center_highlights",
+          "quote": "92%"
+        },
+        {
+          "id": "p_data_center_highlights",
+          "quote": "21%"
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "That means Data Center supplied about 92% of total company revenue. Edge Computing contributed $6.4 billion, up 29% year over year, so it is growing, but it remains much smaller than the core data-center business.",
+      "target_id": "p_edge_computing_highlights",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_2",
+          "type": "share",
+          "title": "Q1 revenue by platform",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "i1",
+              "label": "Data Center",
+              "value": 75.2,
+              "role": "item",
+              "raw_text": "$75.2 billion",
+              "source_id": "p_headline_data_center",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Edge Computing",
+              "value": 6.4,
+              "role": "item",
+              "raw_text": "$6.4 billion",
+              "source_id": "p_edge_computing_highlights",
+              "computed": false
+            },
+            {
+              "key": "total",
+              "label": "Total",
+              "value": 81.615,
+              "role": "total",
+              "raw_text": "$81,615",
+              "source_id": "t_q1_summary_gaap__r0_q1_fy27",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": "i2"
+      },
+      "figures": [
+        {
+          "id": "calc_1",
+          "quote": null
+        },
+        {
+          "id": "p_edge_computing_highlights",
+          "quote": "$6.4 billion"
+        },
+        {
+          "id": "p_edge_computing_highlights",
+          "quote": "29%"
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Within Data Center, compute revenue reached $60.4 billion, up 77% year over year. Networking was smaller at $14.8 billion, but it grew much faster, up 199%, showing that connecting AI systems is becoming nearly as important as the processors themselves.",
+      "target_id": "p_market_revenue",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "p_market_revenue",
+          "quote": "$60.4 billion"
+        },
+        {
+          "id": "p_market_revenue",
+          "quote": "77%"
+        },
+        {
+          "id": "p_market_revenue",
+          "quote": "$14.8 billion"
+        },
+        {
+          "id": "p_market_revenue",
+          "quote": "199%"
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The company is also changing how it reports the business. Going forward, it will emphasize two platforms: Data Center and Edge Computing, with Data Center split between hyperscale customers and a broader group of AI clouds, enterprises, and industrial customers.",
+      "target_id": "p_reporting_framework",
+      "sources": [],
+      "visual": null,
+      "figures": [],
+      "calculations": []
+    },
+    {
+      "text": "Profit grew even faster than sales. GAAP operating income, meaning profit from the core business before interest and taxes, reached about $53.5 billion, up 147% from a year earlier.",
+      "target_id": "t_q1_summary_gaap__r3_q1_fy27",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_q1_summary_gaap__r3_q1_fy27",
+          "quote": null
+        },
+        {
+          "id": "t_q1_summary_gaap__r3_yoy",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "That put operating margin at about 65.6%, compared with roughly 49.1% a year earlier. In plain English, NVIDIA kept far more of each sales dollar after covering operating costs, a powerful sign of pricing strength and scale.",
+      "target_id": "t_q1_summary_gaap__r3",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_3",
+          "type": "bar",
+          "title": "Operating margin",
+          "unit": "percent",
+          "items": [
+            {
+              "key": "i1",
+              "label": "Q1 FY26",
+              "value": 49.1081,
+              "role": "item",
+              "raw_text": "49.1%",
+              "source_id": "calc_6",
+              "computed": true
+            },
+            {
+              "key": "i2",
+              "label": "Q1 FY27",
+              "value": 65.5958,
+              "role": "item",
+              "raw_text": "65.6%",
+              "source_id": "calc_5",
+              "computed": true
+            }
+          ]
+        },
+        "emphasis": "i2"
+      },
+      "figures": [
+        {
+          "id": "calc_5",
+          "quote": null
+        },
+        {
+          "id": "calc_6",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Gross margin, the share of each sales dollar left after the direct cost of making the product, was 74.9% on a GAAP basis and 75.0% on an adjusted basis. It was essentially flat sequentially, but more than 14 percentage points higher than a year ago.",
+      "target_id": "t_q1_summary_gaap__r1",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_q1_summary_gaap__r1_q1_fy27",
+          "quote": null
+        },
+        {
+          "id": "t_q1_summary_gaap__r1_qoq",
+          "quote": null
+        },
+        {
+          "id": "t_q1_summary_gaap__r1_yoy",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Operating expenses rose 52% year over year to about $7.6 billion, led by research and development. That is a large increase, but revenue grew faster, which is why profitability expanded rather than contracted.",
+      "target_id": "t_q1_summary_gaap__r2_q1_fy27",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_q1_summary_gaap__r2_q1_fy27",
+          "quote": null
+        },
+        {
+          "id": "t_q1_summary_gaap__r2_yoy",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "GAAP net income came in at about $58.3 billion, up 211% from a year ago, and GAAP diluted earnings per share reached $2.39, up 214%. Diluted means the calculation assumes potential additional shares, such as employee stock awards, are included.",
+      "target_id": "t_q1_summary_gaap__r4_q1_fy27",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_q1_summary_gaap__r4_q1_fy27",
+          "quote": null
+        },
+        {
+          "id": "t_q1_summary_gaap__r4_yoy",
+          "quote": null
+        },
+        {
+          "id": "t_q1_summary_gaap__r5_q1_fy27",
+          "quote": null
+        },
+        {
+          "id": "t_q1_summary_gaap__r5_yoy",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "There is an important caveat behind that headline profit number. Other income included a $15.9 billion gain, primarily from increases in the value of NVIDIA’s equity investments, rather than from selling more chips.",
+      "target_id": "t_income_statement__r10_apr_26_2026",
+      "sources": [
+        "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000052/nvda-20260426.htm"
+      ],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_income_statement__r10_apr_26_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The filing says those gains included about $13.4 billion on publicly traded equity securities and $2.6 billion on non-marketable investments. That is why GAAP net income was much higher than the adjusted figure this quarter.",
+      "target_id": "t_gaap_nongaap_reconciliation__r16_apr_26_2026",
+      "sources": [
+        "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000052/nvda-20260426.htm"
+      ],
+      "visual": {
+        "chart": {
+          "id": "chart_4",
+          "type": "waterfall",
+          "title": "GAAP to non-GAAP net income",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "start",
+              "label": "GAAP net income",
+              "value": 58.321,
+              "role": "start",
+              "raw_text": "$58,321",
+              "source_id": "t_gaap_nongaap_reconciliation__r19_apr_26_2026",
+              "computed": false
+            },
+            {
+              "key": "i1",
+              "label": "Equity-security gains excluded",
+              "value": -15.663,
+              "role": "item",
+              "raw_text": "(15,663)",
+              "source_id": "t_gaap_nongaap_reconciliation__r20_apr_26_2026",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Tax impact",
+              "value": 2.89,
+              "role": "item",
+              "raw_text": "2,890",
+              "source_id": "t_gaap_nongaap_reconciliation__r21_apr_26_2026",
+              "computed": false
+            },
+            {
+              "key": "end",
+              "label": "Non-GAAP net income",
+              "value": 45.548,
+              "role": "end",
+              "raw_text": "$45,548",
+              "source_id": "t_gaap_nongaap_reconciliation__r22_apr_26_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": "i1"
+      },
+      "figures": [],
+      "calculations": []
+    },
+    {
+      "text": "Non-GAAP net income was about $45.5 billion, with adjusted diluted earnings of $1.87 per share. Non-GAAP removes selected items to make operating performance easier to compare, but this quarter the difference from GAAP is unusually large because of those investment gains.",
+      "target_id": "t_gaap_nongaap_reconciliation__r22_apr_26_2026",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_4",
+          "type": "waterfall",
+          "title": "GAAP to non-GAAP net income",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "start",
+              "label": "GAAP net income",
+              "value": 58.321,
+              "role": "start",
+              "raw_text": "$58,321",
+              "source_id": "t_gaap_nongaap_reconciliation__r19_apr_26_2026",
+              "computed": false
+            },
+            {
+              "key": "i1",
+              "label": "Equity-security gains excluded",
+              "value": -15.663,
+              "role": "item",
+              "raw_text": "(15,663)",
+              "source_id": "t_gaap_nongaap_reconciliation__r20_apr_26_2026",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Tax impact",
+              "value": 2.89,
+              "role": "item",
+              "raw_text": "2,890",
+              "source_id": "t_gaap_nongaap_reconciliation__r21_apr_26_2026",
+              "computed": false
+            },
+            {
+              "key": "end",
+              "label": "Non-GAAP net income",
+              "value": 45.548,
+              "role": "end",
+              "raw_text": "$45,548",
+              "source_id": "t_gaap_nongaap_reconciliation__r22_apr_26_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": "end"
+      },
+      "figures": [
+        {
+          "id": "t_gaap_nongaap_reconciliation__r22_apr_26_2026",
+          "quote": null
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r24_apr_26_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Cash generation was still very strong. NVIDIA produced about $50.3 billion in operating cash flow and $48.6 billion in free cash flow, which is cash left after capital spending on property, equipment, and intangible assets.",
+      "target_id": "t_gaap_nongaap_reconciliation__r29_apr_26_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_gaap_nongaap_reconciliation__r26_apr_26_2026",
+          "quote": null
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r29_apr_26_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The balance sheet also looks unusually liquid. Cash, debt securities, and equity securities totaled about $80.6 billion, and after subtracting short- and long-term debt, NVIDIA had roughly $72.1 billion of those liquid assets left over.",
+      "target_id": "t_balance_sheet__r16_apr_26_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "calc_2",
+          "quote": null
+        },
+        {
+          "id": "calc_3",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Even so, NVIDIA spent heavily to deploy that capital. Investing cash flow was negative $26.4 billion, including $18.6 billion of purchases of non-marketable securities and $8.0 billion of marketable securities.",
+      "target_id": "t_cash_flow_statement__r20_apr_26_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_cash_flow_statement__r20_apr_26_2026",
+          "quote": null
+        },
+        {
+          "id": "t_cash_flow_statement__r16_apr_26_2026",
+          "quote": null
+        },
+        {
+          "id": "t_cash_flow_statement__r17_apr_26_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Shareholder returns were also substantial. NVIDIA repurchased about $19.3 billion of stock and paid $243 million in dividends during the quarter, returning approximately $20.0 billion in total.",
+      "target_id": "p_shareholder_returns",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_cash_flow_statement__r22_apr_26_2026",
+          "quote": null
+        },
+        {
+          "id": "t_cash_flow_statement__r24_apr_26_2026",
+          "quote": null
+        },
+        {
+          "id": "p_shareholder_returns",
+          "quote": "approximately $20.0 billion"
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Management then added another $80.0 billion to the repurchase authorization and raised the quarterly dividend from $0.01 to $0.25 per share. That signals confidence in cash generation, while also making clear that returning capital is becoming a bigger part of the story.",
+      "target_id": "p_headline_buyback_dividend",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "p_headline_buyback_dividend",
+          "quote": "$80.0 billion"
+        },
+        {
+          "id": "p_headline_buyback_dividend",
+          "quote": "$0.01 per share"
+        },
+        {
+          "id": "p_headline_buyback_dividend",
+          "quote": "$0.25 per share"
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "For the second quarter, NVIDIA expects revenue of $91.0 billion, plus or minus 2%. That implies about 11.5% growth from this quarter, so management expects the business to keep accelerating, even from an already elevated base.",
+      "target_id": "p_outlook_revenue",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "p_outlook_revenue",
+          "quote": "$91.0 billion"
+        },
+        {
+          "id": "p_outlook_revenue",
+          "quote": "2%"
+        },
+        {
+          "id": "calc_4",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The outlook assumes no Data Center compute revenue from China. That is an important built-in constraint: the forecast is being made without counting on that market, so any eventual contribution would be upside to the stated assumption, not part of the baseline.",
+      "target_id": "p_outlook_revenue",
+      "sources": [
+        "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2027/default.aspx"
+      ],
+      "visual": null,
+      "figures": [],
+      "calculations": []
+    },
+    {
+      "text": "Gross margin is expected to remain around 74.9% on GAAP and 75.0% on an adjusted basis, with a range of plus or minus 50 basis points. A basis point is one-hundredth of a percentage point, so this is a fairly tight profitability outlook.",
+      "target_id": "p_outlook_margins",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "p_outlook_margins",
+          "quote": "74.9%"
+        },
+        {
+          "id": "p_outlook_margins",
+          "quote": "75.0%"
+        },
+        {
+          "id": "p_outlook_margins",
+          "quote": "50 basis points"
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Operating expenses are expected to rise to about $8.5 billion on a GAAP basis and $8.3 billion on an adjusted basis. NVIDIA is spending more to support the opportunity, but the projected margin stability suggests management expects that investment to be absorbed by continued demand.",
+      "target_id": "p_outlook_expenses",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "p_outlook_expenses",
+          "quote": "$8.5 billion"
+        },
+        {
+          "id": "p_outlook_expenses",
+          "quote": "$8.3 billion"
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The product roadmap is broadening as well. NVIDIA highlighted Vera Rubin for data centers, software for agentic AI, and new partnerships in cloud computing, networking, optics, robotics, automotive, and telecommunications.",
+      "target_id": "p_data_center_highlight_2",
+      "sources": [],
+      "visual": null,
+      "figures": [],
+      "calculations": []
+    },
+    {
+      "text": "The main watch item is concentration. Data Center accounts for about 92% of revenue, and the company relies on third parties to manufacture, package, and test its products. That combination creates enormous scale, but it also makes supply, competition, regulations, and customer spending key risks.",
+      "target_id": "p_risk_factors_continuation",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "calc_1",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The other watch item is the quality of the profit mix this quarter. The operating business was exceptionally strong, but the unusually large investment gain lifted GAAP earnings well above adjusted earnings, so the adjusted figures are the cleaner guide to recurring performance.",
+      "target_id": "t_gaap_nongaap_reconciliation__r20_apr_26_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_gaap_nongaap_reconciliation__r20_apr_26_2026",
+          "quote": null
+        },
+        {
+          "id": "t_gaap_nongaap_reconciliation__r22_apr_26_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The first takeaway is scale: NVIDIA is now generating more than $80 billion in quarterly revenue, with Data Center doing most of the work. The second is profitability: margins and operating income expanded dramatically as sales grew.",
+      "target_id": "p_headline_results",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_q1_summary_gaap__r0_q1_fy27",
+          "quote": null
+        },
+        {
+          "id": "calc_1",
+          "quote": null
+        },
+        {
+          "id": "t_q1_summary_gaap__r3_q1_fy27",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "And the final takeaway is balance. NVIDIA is investing aggressively, returning substantial cash to shareholders, and still projecting another strong quarter, but investors should separate the strength of the AI operating business from the one-time-looking boost from equity investment gains.",
+      "target_id": "p_shareholder_returns",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "p_shareholder_returns",
+          "quote": "approximately $20.0 billion"
+        },
+        {
+          "id": "t_income_statement__r10_apr_26_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    }
+  ],
+  "trace": {
+    "turns": [
+      {
+        "turn": 1,
+        "purpose": "draft",
+        "tool_calls": [
+          {
+            "name": "note_finding",
+            "arguments": {
+              "fact": "Analysts polled by FactSet expected NVIDIA's fiscal first-quarter 2027 revenue of $78.91 billion and earnings of $1.75 per share; NVIDIA reported revenue of $81.62 billion and GAAP earnings of $2.39 per share, while adjusted earnings were $1.87 per share.",
+              "url": "https://apnews.com/article/955c699a0c91c423edc81b7903b80f85"
+            },
+            "output": {
+              "note_id": "note_1",
+              "fact": "Analysts polled by FactSet expected NVIDIA's fiscal first-quarter 2027 revenue of $78.91 billion and earnings of $1.75 per share; NVIDIA reported revenue of $81.62 billion and GAAP earnings of $2.39 per share, while adjusted earnings were $1.87 per share.",
+              "url": "https://apnews.com/article/955c699a0c91c423edc81b7903b80f85"
+            }
+          },
+          {
+            "name": "note_finding",
+            "arguments": {
+              "fact": "NVIDIA's increase in other income during the first quarter of fiscal 2027 was primarily driven by unrealized gains of $13.4 billion on publicly held equity securities and $2.6 billion on non-marketable equity securities.",
+              "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000052/nvda-20260426.htm"
+            },
+            "output": {
+              "note_id": "note_2",
+              "fact": "NVIDIA's increase in other income during the first quarter of fiscal 2027 was primarily driven by unrealized gains of $13.4 billion on publicly held equity securities and $2.6 billion on non-marketable equity securities.",
+              "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000052/nvda-20260426.htm"
+            }
+          },
+          {
+            "name": "note_finding",
+            "arguments": {
+              "fact": "NVIDIA said its second-quarter fiscal 2027 outlook assumes no Data Center compute revenue from China.",
+              "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2027/default.aspx"
+            },
+            "output": {
+              "note_id": "note_3",
+              "fact": "NVIDIA said its second-quarter fiscal 2027 outlook assumes no Data Center compute revenue from China.",
+              "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2027/default.aspx"
+            }
+          }
+        ],
+        "web_searches": [
+          {
+            "action": "search",
+            "query": "NVIDIA first quarter fiscal 2027 results April 26 2026 revenue EPS expectations analysts",
+            "sources": [
+              "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2027/default.aspx",
+              "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000052/nvda-20260426.htm",
+              "https://nvidianews.nvidia.com/_gallery/download_pdf/6a0e17dc3d633295d45282e6/",
+              "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000051/q1fy27cfocommentary.htm",
+              "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027?trk=article-ssr-frontend-pulse_little-text-block",
+              "https://nvidianews.nvidia.com/news/nvidia-sets-conference-call-for-first-quarter-financial-results-6919947",
+              "https://nvidianews.nvidia.com/_gallery/download_pdf/699f6ab43d6332ccaa689907/",
+              "https://ebs.publicnow.com/view/80369A1CCD12D4BAF49F925F9A367F452D8D1BD9",
+              "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-First-Quarter-Financial-Results/default.aspx",
+              "https://www.spglobal.com/market-intelligence/en/news-insights/research/2026/05/nvidia-earnings-preview-q1-2027",
+              "https://www.fool.com/investing/2026/05/15/prediction-nvidia-will-deliver-another-blowout-ear//",
+              "https://www.marketbeat.com/earnings/reports/2026-5-20-nvidia-co-stock/",
+              "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2027/default.aspx?trk=article-ssr-frontend-pulse_little-text-block",
+              "https://www.otcmarkets.com/filing/conv_pdf?guid=RhW-keXhzjOPGch&id=19467022",
+              "https://finance.yahoo.com/quote/NVDA/analysis/",
+              "https://www.otcmarkets.com/filing/conv_pdf?guid=RhW-keXhzjOPGch&id=19466774",
+              "https://www.reddit.com/r/u_hazxrrd/comments/1sw8x09/nvda_q1fy27_earnings_revenue_and_guidance_first/",
+              "https://www.youtube.com/watch?v=n77NEPxtaw4",
+              "https://www.reddit.com/r/stocks/comments/1tixrw9/nvda_quarterly_revenue_816_billion_up_85_yoy/",
+              "https://www.reddit.com/r/nvidia/comments/1rerhfb/nvidia_fiscal_q4_2026_financial_result/",
+              "https://www.reddit.com/r/nvidia/comments/1tiyi5e/nvidia_fiscal_q1_2027_financial_result/",
+              "https://www.reddit.com/r/NVDA_Stock/comments/1tixxdz/nvidias_revenue_jumped_85_to_8162_billion_from/",
+              "https://www.youtube.com/watch?v=lbrq9gOfDYI",
+              "https://www.reddit.com/r/amd_fundamentals/comments/1vz7omv/nvidia_2nd_quarter_fy27_financial_results_august/",
+              "https://www.reddit.com/r/amd_fundamentals/comments/1ra4fg1/nvidia_4th_quarter_fy26_financial_results/",
+              "https://apnews.com/article/955c699a0c91c423edc81b7903b80f85",
+              "https://apnews.com/article/dc8d556e709b50915cca9217a60b1991",
+              "https://www.tomshardware.com/tech-industry/artificial-intelligence/nvidia-no-longer-reports-sales-of-graphics-solutions-as-a-separate-segment-posts-eye-watering-usd81-6-billion-q1-profit-thanks-to-ai-boom",
+              "https://moneyweek.com/investments/tech-stocks/nvidia-earnings",
+              "https://www.tomshardware.com/pc-components/gpus/jensen-huang-expects-nvidia-to-sell-usd1-trillion-of-ai-hardware-through-2027-ai-buildout-intensifies-as-agentic-ai-takes-hold",
+              "https://www.axios.com/2026/08/26/nvidia-earnings-jensen-huang-ai"
+            ]
+          }
+        ],
+        "thinking": [
+          "**Collecting key URLs**\n\nI need to note the findings and gather exact URLs from the search results, specifically from AP and SEC. I should also consider any consensus or guidance from AP regarding expectations. It's important to understand the reasons behind equity gains, especially with China’s exclusion, and note how SEC and other press sources fit into that. I’ll be sure to document both SEC and AP URLs for reference."
+        ],
+        "input_tokens": 31833,
+        "output_tokens": 453,
+        "cost_usd": 0.0169102,
+        "duration_ms": 13507
+      },
+      {
+        "turn": 2,
+        "purpose": "draft",
+        "tool_calls": [
+          {
+            "name": "ratio",
+            "arguments": {
+              "numerator": {
+                "id": "p_headline_data_center",
+                "quote": "$75.2 billion"
+              },
+              "denominator": {
+                "id": "t_q1_summary_gaap__r0_q1_fy27",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_1",
+              "result": 0.9214,
+              "result_percent": 92.14,
+              "formula": "75.20 billion / 81.61 billion = 92.1%",
+              "inputs": [
+                {
+                  "id": "p_headline_data_center",
+                  "label": "quoted from p_headline_data_center",
+                  "value": 75.2,
+                  "raw_text": "$75.2 billion"
+                },
+                {
+                  "id": "t_q1_summary_gaap__r0_q1_fy27",
+                  "label": "Revenue · GAAP · Q1 FY27",
+                  "value": 81615.0,
+                  "raw_text": "$81,615"
+                }
+              ]
+            }
+          },
+          {
+            "name": "combine",
+            "arguments": {
+              "terms": [
+                {
+                  "figure": {
+                    "id": "t_balance_sheet__r2_apr_26_2026",
+                    "quote": null
+                  },
+                  "sign": "add"
+                },
+                {
+                  "figure": {
+                    "id": "t_balance_sheet__r3_apr_26_2026",
+                    "quote": null
+                  },
+                  "sign": "add"
+                },
+                {
+                  "figure": {
+                    "id": "t_balance_sheet__r4_apr_26_2026",
+                    "quote": null
+                  },
+                  "sign": "add"
+                }
+              ]
+            },
+            "output": {
+              "calc_id": "calc_2",
+              "result": 80572.0,
+              "formula": "13237 + 37098 + 30237 = 80572",
+              "inputs": [
+                {
+                  "id": "t_balance_sheet__r2_apr_26_2026",
+                  "label": "Cash and cash equivalents · Balance Sheet Dates · April 26, 2026",
+                  "value": 13237.0,
+                  "raw_text": "$13,237"
+                },
+                {
+                  "id": "t_balance_sheet__r3_apr_26_2026",
+                  "label": "Marketable debt securities · Balance Sheet Dates · April 26, 2026",
+                  "value": 37098.0,
+                  "raw_text": "37,098"
+                },
+                {
+                  "id": "t_balance_sheet__r4_apr_26_2026",
+                  "label": "Marketable equity securities · Balance Sheet Dates · April 26, 2026",
+                  "value": 30237.0,
+                  "raw_text": "30,237"
+                }
+              ]
+            }
+          },
+          {
+            "name": "combine",
+            "arguments": {
+              "terms": [
+                {
+                  "figure": {
+                    "id": "t_balance_sheet__r2_apr_26_2026",
+                    "quote": null
+                  },
+                  "sign": "add"
+                },
+                {
+                  "figure": {
+                    "id": "t_balance_sheet__r3_apr_26_2026",
+                    "quote": null
+                  },
+                  "sign": "add"
+                },
+                {
+                  "figure": {
+                    "id": "t_balance_sheet__r4_apr_26_2026",
+                    "quote": null
+                  },
+                  "sign": "add"
+                },
+                {
+                  "figure": {
+                    "id": "t_balance_sheet__r21_apr_26_2026",
+                    "quote": null
+                  },
+                  "sign": "subtract"
+                },
+                {
+                  "figure": {
+                    "id": "t_balance_sheet__r23_apr_26_2026",
+                    "quote": null
+                  },
+                  "sign": "subtract"
+                }
+              ]
+            },
+            "output": {
+              "calc_id": "calc_3",
+              "result": 72102.0,
+              "formula": "13237 + 37098 + 30237 - 1000 - 7470 = 72102",
+              "inputs": [
+                {
+                  "id": "t_balance_sheet__r2_apr_26_2026",
+                  "label": "Cash and cash equivalents · Balance Sheet Dates · April 26, 2026",
+                  "value": 13237.0,
+                  "raw_text": "$13,237"
+                },
+                {
+                  "id": "t_balance_sheet__r3_apr_26_2026",
+                  "label": "Marketable debt securities · Balance Sheet Dates · April 26, 2026",
+                  "value": 37098.0,
+                  "raw_text": "37,098"
+                },
+                {
+                  "id": "t_balance_sheet__r4_apr_26_2026",
+                  "label": "Marketable equity securities · Balance Sheet Dates · April 26, 2026",
+                  "value": 30237.0,
+                  "raw_text": "30,237"
+                },
+                {
+                  "id": "t_balance_sheet__r21_apr_26_2026",
+                  "label": "Short-term debt · Balance Sheet Dates · April 26, 2026",
+                  "value": 1000.0,
+                  "raw_text": "1,000"
+                },
+                {
+                  "id": "t_balance_sheet__r23_apr_26_2026",
+                  "label": "Long-term debt · Balance Sheet Dates · April 26, 2026",
+                  "value": 7470.0,
+                  "raw_text": "7,470"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_q1_summary_gaap__r0_q1_fy27",
+                "quote": null
+              },
+              "current": {
+                "id": "p_outlook_revenue",
+                "quote": "$91.0 billion"
+              }
+            },
+            "output": {
+              "calc_id": "calc_4",
+              "result_percent": 11.5,
+              "formula": "(91.00 billion - 81.61 billion) / |81.61 billion| = +11.5%",
+              "inputs": [
+                {
+                  "id": "t_q1_summary_gaap__r0_q1_fy27",
+                  "label": "Revenue · GAAP · Q1 FY27",
+                  "value": 81615.0,
+                  "raw_text": "$81,615"
+                },
+                {
+                  "id": "p_outlook_revenue",
+                  "label": "quoted from p_outlook_revenue",
+                  "value": 91.0,
+                  "raw_text": "$91.0 billion"
+                }
+              ]
+            }
+          },
+          {
+            "name": "ratio",
+            "arguments": {
+              "numerator": {
+                "id": "t_q1_summary_gaap__r3_q1_fy27",
+                "quote": null
+              },
+              "denominator": {
+                "id": "t_q1_summary_gaap__r0_q1_fy27",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_5",
+              "result": 0.656,
+              "result_percent": 65.6,
+              "formula": "53536 / 81615 = 65.6%",
+              "inputs": [
+                {
+                  "id": "t_q1_summary_gaap__r3_q1_fy27",
+                  "label": "Operating income · GAAP · Q1 FY27",
+                  "value": 53536.0,
+                  "raw_text": "$53,536"
+                },
+                {
+                  "id": "t_q1_summary_gaap__r0_q1_fy27",
+                  "label": "Revenue · GAAP · Q1 FY27",
+                  "value": 81615.0,
+                  "raw_text": "$81,615"
+                }
+              ]
+            }
+          },
+          {
+            "name": "ratio",
+            "arguments": {
+              "numerator": {
+                "id": "t_q1_summary_gaap__r3_q1_fy26",
+                "quote": null
+              },
+              "denominator": {
+                "id": "t_q1_summary_gaap__r0_q1_fy26",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_6",
+              "result": 0.4911,
+              "result_percent": 49.11,
+              "formula": "21638 / 44062 = 49.1%",
+              "inputs": [
+                {
+                  "id": "t_q1_summary_gaap__r3_q1_fy26",
+                  "label": "Operating income · GAAP · Q1 FY26",
+                  "value": 21638.0,
+                  "raw_text": "$21,638"
+                },
+                {
+                  "id": "t_q1_summary_gaap__r0_q1_fy26",
+                  "label": "Revenue · GAAP · Q1 FY26",
+                  "value": 44062.0,
+                  "raw_text": "$44,062"
+                }
+              ]
+            }
+          }
+        ],
+        "web_searches": [],
+        "thinking": [
+          "**Calculating financial metrics**\n\nI need to calculate various financial metrics and create charts. There's no need for recalculating printed percentages. I should determine the share of revenue from Data Centers and the difference between net income and non-GAAP figures. I'll create charts to support this, maybe 25-40 lines long.\n\nI want to compute Data Center revenue ratios, look at networking versus compute growth, and calculate operating income margins for both current and prior years. It’s a lot to consider!",
+          "**Calculating financial ratios and metrics**\n\nI think I need to confirm the operating margin, which looks like it could be roughly 65.6%. I want to calculate total cash and securities too: cash, marketable debt, and marketable equity add up to 80.572. I'll combine these and subtract debt for net liquidity.\n\nFor FCF conversion versus net income, the ratio seems distorted and may not be needed. Guidance growth looks like it’s 11.5%. I’m considering calculating the data center share and liquid assets, but I need the right tools for that!"
+        ],
+        "input_tokens": 24349,
+        "output_tokens": 854,
+        "cost_usd": 0.005894600000000001,
+        "duration_ms": 8111
+      },
+      {
+        "turn": 3,
+        "purpose": "draft",
+        "tool_calls": [
+          {
+            "name": "bar_chart",
+            "arguments": {
+              "title": "Revenue growth",
+              "items": [
+                {
+                  "label": "Q1 FY26",
+                  "figure": {
+                    "id": "t_q1_summary_gaap__r0_q1_fy26",
+                    "quote": null
+                  }
+                },
+                {
+                  "label": "Q4 FY26",
+                  "figure": {
+                    "id": "t_q1_summary_gaap__r0_q4_fy26",
+                    "quote": null
+                  }
+                },
+                {
+                  "label": "Q1 FY27",
+                  "figure": {
+                    "id": "t_q1_summary_gaap__r0_q1_fy27",
+                    "quote": null
+                  }
+                }
+              ]
+            },
+            "output": {
+              "chart_id": "chart_1",
+              "type": "bar",
+              "unit": "billions",
+              "items": [
+                {
+                  "key": "i1",
+                  "label": "Q1 FY26",
+                  "value": 44.062,
+                  "raw_text": "$44,062"
+                },
+                {
+                  "key": "i2",
+                  "label": "Q4 FY26",
+                  "value": 68.127,
+                  "raw_text": "$68,127"
+                },
+                {
+                  "key": "i3",
+                  "label": "Q1 FY27",
+                  "value": 81.615,
+                  "raw_text": "$81,615"
+                }
+              ]
+            }
+          },
+          {
+            "name": "share_bar",
+            "arguments": {
+              "title": "Q1 revenue by platform",
+              "total": {
+                "label": "Total",
+                "figure": {
+                  "id": "t_q1_summary_gaap__r0_q1_fy27",
+                  "quote": null
+                }
+              },
+              "parts": [
+                {
+                  "label": "Data Center",
+                  "figure": {
+                    "id": "p_headline_data_center",
+                    "quote": "$75.2 billion"
+                  }
+                },
+                {
+                  "label": "Edge Computing",
+                  "figure": {
+                    "id": "p_edge_computing_highlights",
+                    "quote": "$6.4 billion"
+                  }
+                }
+              ]
+            },
+            "output": {
+              "chart_id": "chart_2",
+              "type": "share",
+              "unit": "billions",
+              "items": [
+                {
+                  "key": "i1",
+                  "label": "Data Center",
+                  "value": 75.2,
+                  "raw_text": "$75.2 billion"
+                },
+                {
+                  "key": "i2",
+                  "label": "Edge Computing",
+                  "value": 6.4,
+                  "raw_text": "$6.4 billion"
+                },
+                {
+                  "key": "total",
+                  "label": "Total",
+                  "value": 81.615,
+                  "raw_text": "$81,615"
+                }
+              ]
+            }
+          },
+          {
+            "name": "bar_chart",
+            "arguments": {
+              "title": "Operating margin",
+              "items": [
+                {
+                  "label": "Q1 FY26",
+                  "figure": {
+                    "id": "calc_6",
+                    "quote": null
+                  }
+                },
+                {
+                  "label": "Q1 FY27",
+                  "figure": {
+                    "id": "calc_5",
+                    "quote": null
+                  }
+                }
+              ]
+            },
+            "output": {
+              "chart_id": "chart_3",
+              "type": "bar",
+              "unit": "percent",
+              "items": [
+                {
+                  "key": "i1",
+                  "label": "Q1 FY26",
+                  "value": 49.1081,
+                  "raw_text": "49.1%"
+                },
+                {
+                  "key": "i2",
+                  "label": "Q1 FY27",
+                  "value": 65.5958,
+                  "raw_text": "65.6%"
+                }
+              ]
+            }
+          },
+          {
+            "name": "waterfall",
+            "arguments": {
+              "title": "GAAP to non-GAAP net income",
+              "start": {
+                "label": "GAAP net income",
+                "figure": {
+                  "id": "t_gaap_nongaap_reconciliation__r19_apr_26_2026",
+                  "quote": null
+                }
+              },
+              "steps": [
+                {
+                  "label": "Equity-security gains excluded",
+                  "figure": {
+                    "id": "t_gaap_nongaap_reconciliation__r20_apr_26_2026",
+                    "quote": null
+                  },
+                  "operation": "add"
+                },
+                {
+                  "label": "Tax impact",
+                  "figure": {
+                    "id": "t_gaap_nongaap_reconciliation__r21_apr_26_2026",
+                    "quote": null
+                  },
+                  "operation": "add"
+                }
+              ],
+              "end": {
+                "label": "Non-GAAP net income",
+                "figure": {
+                  "id": "t_gaap_nongaap_reconciliation__r22_apr_26_2026",
+                  "quote": null
+                }
+              }
+            },
+            "output": {
+              "chart_id": "chart_4",
+              "type": "waterfall",
+              "unit": "billions",
+              "items": [
+                {
+                  "key": "start",
+                  "label": "GAAP net income",
+                  "value": 58.321,
+                  "raw_text": "$58,321"
+                },
+                {
+                  "key": "i1",
+                  "label": "Equity-security gains excluded",
+                  "value": -15.663,
+                  "raw_text": "(15,663)"
+                },
+                {
+                  "key": "i2",
+                  "label": "Tax impact",
+                  "value": 2.89,
+                  "raw_text": "2,890"
+                },
+                {
+                  "key": "end",
+                  "label": "Non-GAAP net income",
+                  "value": 45.548,
+                  "raw_text": "$45,548"
+                }
+              ]
+            }
+          }
+        ],
+        "web_searches": [],
+        "thinking": [
+          "**Calculating net income steps**\n\nI need to create some charts, starting with revenue and segment revenue for profitability. I’m thinking about a waterfall chart for net income to adjusted income. I want to start with GAAP net income and adjust for equity gain and tax impact. \n\nUsing my figures, I’ll show how to arrive at non-GAAP net income through these adjustments. Additionally, I’ll clarify the sign semantics for subtracting and adding figures. I could summarize everything neatly in a chart later.",
+          "**Planning chart calls**\n\nI need to set up multiple chart calls in parallel. I’m thinking about including revenue periods, segment comparisons, profitability margins, and a waterfall chart. \n\nI might want to share bar data comparing the total of the data center versus the edge. The two parts sum to about 81.6, using 75.2 billion and 6.4 billion. I'll use the share_bar function to display these figures accurately. Overall, I’m planning to create four charts for clarity."
+        ],
+        "input_tokens": 26495,
+        "output_tokens": 803,
+        "cost_usd": 0.006262600000000001,
+        "duration_ms": 7391
+      },
+      {
+        "turn": 4,
+        "purpose": "draft",
+        "tool_calls": [],
+        "web_searches": [],
+        "thinking": [
+          "**Clarifying calculations**\n\nI’m looking at operating margin calculations and liquid assets. I notice the calculations array is generally empty, which is concerning. If this isn’t a number in the tool or report, it feels incomplete. Perhaps it’s “nearly all” but lacking a specific number. I think it’s important to avoid referencing unbacked numerics. Is it okay to have “three takeaways” without specific numbers? I’ll work on constructing this properly."
+        ],
+        "input_tokens": 27833,
+        "output_tokens": 4011,
+        "cost_usd": 0.0103798,
+        "duration_ms": 31085
+      },
+      {
+        "turn": 5,
+        "purpose": "correction",
+        "tool_calls": [],
+        "web_searches": [],
+        "thinking": [],
+        "input_tokens": 29744,
+        "output_tokens": 457,
+        "cost_usd": 0.006497200000000001,
+        "duration_ms": 5906
+      }
+    ],
+    "total_input_tokens": 143216,
+    "total_output_tokens": 8145,
+    "total_cost_usd": 0.0484172,
+    "total_duration_ms": 82541,
+    "total_web_searches": 1,
+    "repaired_target_ids": 0,
+    "dropped_source_urls": 0,
+    "blocked_source_urls": 0,
+    "removed_sources": [],
+    "removed_visuals": [
+      {
+        "line": 2,
+        "chart_id": "chart_1",
+        "reason": "emphasis_dropped",
+        "detail": "'i3' (Q1 FY27) is not a figure the line highlights or cites."
+      },
+      {
+        "line": 4,
+        "chart_id": "chart_2",
+        "reason": "emphasis_dropped",
+        "detail": "'i1' (Data Center) is not a figure the line highlights or cites."
+      }
+    ],
+    "review": {
+      "rounds": [
+        {
+          "lines": 29,
+          "figures_confirmed": 50,
+          "findings": [
+            {
+              "line": 4,
+              "text": "The engine is overwhelmingly Data Center. Revenue there was $75.2 billion, up 92% from a year ago and 21% from the previous quarter.",
+              "check": "figure_mismatch",
+              "detail": "'92%' matches none of the figures the line cites: quoted from p_data_center_highlights ($75.2 billion), quoted from p_headline_data_center ($75.2 billion).",
+              "must_fix": true
+            },
+            {
+              "line": 4,
+              "text": "The engine is overwhelmingly Data Center. Revenue there was $75.2 billion, up 92% from a year ago and 21% from the previous quarter.",
+              "check": "figure_mismatch",
+              "detail": "'21%' matches none of the figures the line cites: quoted from p_data_center_highlights ($75.2 billion), quoted from p_headline_data_center ($75.2 billion).",
+              "must_fix": true
+            },
+            {
+              "line": 21,
+              "text": "For the second quarter, NVIDIA expects revenue of $91.0 billion, plus or minus 2%. That implies about 11.5% growth from this quarter, so management expects the business to keep accelerating, even from an already elevated base.",
+              "check": "figure_mismatch",
+              "detail": "'2%' matches none of the figures the line cites: quoted from p_outlook_revenue ($91.0 billion), (91.00 billion - 81.61 billion) / |81.61 billion| = +11.5% (11.5%).",
+              "must_fix": true
+            }
+          ],
+          "calculations": []
+        },
+        {
+          "lines": 29,
+          "figures_confirmed": 53,
+          "findings": [],
+          "calculations": []
+        }
+      ],
+      "removed_lines": [],
+      "reviewer_input_tokens": 2962,
+      "reviewer_output_tokens": 1567,
+      "reviewer_cost_usd": 0.0024728,
+      "reviewer_duration_ms": 16541
+    }
+  }
+}

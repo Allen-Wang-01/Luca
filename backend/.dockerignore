@@ -1,0 +1,11 @@
+# Kept out of the image: secrets (set with `fly secrets` instead), the local
+# virtualenv, and what only development uses.
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+tests/
+scripts/
+start.py
+requirements-dev.txt

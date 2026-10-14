@@ -1,5 +1,6 @@
 import type { NarrationEvent, NarrationResponse } from '../narration/types'
 import type { FinancialReport } from '../types/report'
+import { apiUrl } from './base'
 
 // The stream ends with one of these two, after the run's own events.
 type StreamMessage =
@@ -14,7 +15,7 @@ export async function generateNarration(
   report: FinancialReport,
   onEvent?: (event: NarrationEvent) => void,
 ): Promise<NarrationResponse> {
-  const response = await fetch('/api/reports/narration/stream', {
+  const response = await fetch(apiUrl('/api/reports/narration/stream'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ report }),

@@ -1,0 +1,2227 @@
+{
+  "lines": [
+    {
+      "text": "Apple delivered a standout quarter: sales climbed to about $109.4 billion, while net income jumped to about $29.8 billion. Profit grew much faster than revenue, which is the clearest sign that this was more than just a bigger-sales story.",
+      "target_id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_1",
+          "type": "bar",
+          "title": "Quarterly revenue",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "i1",
+              "label": "Q3 2025",
+              "value": 94.036,
+              "role": "item",
+              "raw_text": "94,036",
+              "source_id": "t_statements_of_operations__r3_three_months_ended_june_28_2025",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Q3 2026",
+              "value": 109.417,
+              "role": "item",
+              "raw_text": "109,417",
+              "source_id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": "i2"
+      },
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r17_three_months_ended_june_27_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "For the first nine months of fiscal 2026, Apple generated about $364.4 billion in sales and $101.5 billion in net income. That puts the company on a very strong earnings run before the fiscal year is even complete.",
+      "target_id": "t_statements_of_operations__r3_nine_months_ended_june_27_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r3_nine_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r17_nine_months_ended_june_27_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Quarterly revenue was up about 16% from the same quarter last year, reaching $109.4 billion. Analysts had expected roughly $109 billion, so the sales result was essentially in line, but earnings were the real surprise.",
+      "target_id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+      "sources": [
+        "https://apnews.com/article/94102918cb3592ebc1d2a38c4d7d819a"
+      ],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_1",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Diluted earnings per share, or profit allocated to each share assuming potential share dilution, rose about 29% to $2.02 from $1.57. FactSet analysts had expected $1.89, so Apple beat the earnings benchmark by a meaningful margin.",
+      "target_id": "t_statements_of_operations__r20_three_months_ended_june_27_2026",
+      "sources": [
+        "https://apnews.com/article/94102918cb3592ebc1d2a38c4d7d819a"
+      ],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r20_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_6",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The nine-month picture is just as strong: revenue was up about 16% from the prior year to $364.4 billion. That consistency matters because it shows the quarter was not a one-off spike.",
+      "target_id": "t_statements_of_operations__r3_nine_months_ended_june_27_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r3_nine_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_2",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The main growth engine was the iPhone. Quarterly iPhone sales rose about 22% to $54.3 billion, more than any other product category, and Apple attributed the increase primarily to stronger sales of its Pro models.",
+      "target_id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+      "sources": [
+        "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm"
+      ],
+      "visual": {
+        "chart": {
+          "id": "chart_3",
+          "type": "bar",
+          "title": "Q3 sales by category",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "i1",
+              "label": "iPhone",
+              "value": 54.252,
+              "role": "item",
+              "raw_text": "$ 54,252",
+              "source_id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Services",
+              "value": 30.739,
+              "role": "item",
+              "raw_text": "30,739",
+              "source_id": "t_statements_of_operations__r36_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i3",
+              "label": "Mac",
+              "value": 10.352,
+              "role": "item",
+              "raw_text": "10,352",
+              "source_id": "t_statements_of_operations__r33_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i4",
+              "label": "Wearables, Home, Accessories",
+              "value": 7.883,
+              "role": "item",
+              "raw_text": "7,883",
+              "source_id": "t_statements_of_operations__r35_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i5",
+              "label": "iPad",
+              "value": 6.191,
+              "role": "item",
+              "raw_text": "6,191",
+              "source_id": "t_statements_of_operations__r34_three_months_ended_june_27_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": "i1"
+      },
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_11",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Services added about $30.7 billion, up 12% year over year. Services include businesses such as subscriptions and digital services, and they made up about 28% of quarterly sales, giving Apple a large recurring-revenue base alongside hardware.",
+      "target_id": "t_statements_of_operations__r36_three_months_ended_june_27_2026",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_3",
+          "type": "bar",
+          "title": "Q3 sales by category",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "i1",
+              "label": "iPhone",
+              "value": 54.252,
+              "role": "item",
+              "raw_text": "$ 54,252",
+              "source_id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Services",
+              "value": 30.739,
+              "role": "item",
+              "raw_text": "30,739",
+              "source_id": "t_statements_of_operations__r36_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i3",
+              "label": "Mac",
+              "value": 10.352,
+              "role": "item",
+              "raw_text": "10,352",
+              "source_id": "t_statements_of_operations__r33_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i4",
+              "label": "Wearables, Home, Accessories",
+              "value": 7.883,
+              "role": "item",
+              "raw_text": "7,883",
+              "source_id": "t_statements_of_operations__r35_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i5",
+              "label": "iPad",
+              "value": 6.191,
+              "role": "item",
+              "raw_text": "6,191",
+              "source_id": "t_statements_of_operations__r34_three_months_ended_june_27_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": "i2"
+      },
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r36_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_12",
+          "quote": null
+        },
+        {
+          "id": "calc_13",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Mac sales reached about $10.4 billion, while Wearables, Home and Accessories contributed about $7.9 billion. The iPad was smaller at about $6.2 billion, and unlike the other major categories, it declined from the year-ago quarter.",
+      "target_id": "t_statements_of_operations__r31",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_3",
+          "type": "bar",
+          "title": "Q3 sales by category",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "i1",
+              "label": "iPhone",
+              "value": 54.252,
+              "role": "item",
+              "raw_text": "$ 54,252",
+              "source_id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Services",
+              "value": 30.739,
+              "role": "item",
+              "raw_text": "30,739",
+              "source_id": "t_statements_of_operations__r36_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i3",
+              "label": "Mac",
+              "value": 10.352,
+              "role": "item",
+              "raw_text": "10,352",
+              "source_id": "t_statements_of_operations__r33_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i4",
+              "label": "Wearables, Home, Accessories",
+              "value": 7.883,
+              "role": "item",
+              "raw_text": "7,883",
+              "source_id": "t_statements_of_operations__r35_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i5",
+              "label": "iPad",
+              "value": 6.191,
+              "role": "item",
+              "raw_text": "6,191",
+              "source_id": "t_statements_of_operations__r34_three_months_ended_june_27_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": null
+      },
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r33_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r35_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r34_three_months_ended_june_27_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Geographically, the Americas remained the largest market at about $45.8 billion in quarterly sales. Europe contributed about $29.4 billion, and Greater China reached about $18.8 billion, with Apple saying currency strength also helped China sales compared with last year.",
+      "target_id": "t_statements_of_operations__r25_three_months_ended_june_27_2026",
+      "sources": [
+        "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm"
+      ],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r25_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r26_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r27_three_months_ended_june_27_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Apple's gross margin — the share of sales left after the direct cost of making products and delivering services — was about 50% this quarter, compared with about 46.5% a year earlier. That is a major improvement in the economics of each dollar Apple sells.",
+      "target_id": "t_statements_of_operations__r8_three_months_ended_june_27_2026",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_2",
+          "type": "waterfall",
+          "title": "Q3 operating income bridge",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "start",
+              "label": "Revenue",
+              "value": 109.417,
+              "role": "start",
+              "raw_text": "109,417",
+              "source_id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i1",
+              "label": "Cost of sales",
+              "value": -54.647,
+              "role": "item",
+              "raw_text": "54,647",
+              "source_id": "t_statements_of_operations__r7_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Operating expenses",
+              "value": -19.075,
+              "role": "item",
+              "raw_text": "19,075",
+              "source_id": "t_statements_of_operations__r12_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "end",
+              "label": "Operating income",
+              "value": 35.695,
+              "role": "end",
+              "raw_text": "35,695",
+              "source_id": "t_statements_of_operations__r13_three_months_ended_june_27_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": null
+      },
+      "figures": [
+        {
+          "id": "calc_7",
+          "quote": null
+        },
+        {
+          "id": "calc_8",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Operating income, meaning profit from the core business before interest and taxes, reached about $35.7 billion. The operating margin was about 32.6%, up from roughly 30% last year, so Apple converted more of its revenue into operating profit even while spending more on research and development.",
+      "target_id": "t_statements_of_operations__r13_three_months_ended_june_27_2026",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_2",
+          "type": "waterfall",
+          "title": "Q3 operating income bridge",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "start",
+              "label": "Revenue",
+              "value": 109.417,
+              "role": "start",
+              "raw_text": "109,417",
+              "source_id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i1",
+              "label": "Cost of sales",
+              "value": -54.647,
+              "role": "item",
+              "raw_text": "54,647",
+              "source_id": "t_statements_of_operations__r7_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Operating expenses",
+              "value": -19.075,
+              "role": "item",
+              "raw_text": "19,075",
+              "source_id": "t_statements_of_operations__r12_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "end",
+              "label": "Operating income",
+              "value": 35.695,
+              "role": "end",
+              "raw_text": "35,695",
+              "source_id": "t_statements_of_operations__r13_three_months_ended_june_27_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": "end"
+      },
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r13_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_9",
+          "quote": null
+        },
+        {
+          "id": "calc_10",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The bridge is straightforward: Apple started with about $109.4 billion of revenue, spent about $54.6 billion on cost of sales, and another $19.1 billion on operating expenses. What remained was about $35.7 billion of operating income.",
+      "target_id": "t_statements_of_operations__r7_three_months_ended_june_27_2026",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_2",
+          "type": "waterfall",
+          "title": "Q3 operating income bridge",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "start",
+              "label": "Revenue",
+              "value": 109.417,
+              "role": "start",
+              "raw_text": "109,417",
+              "source_id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i1",
+              "label": "Cost of sales",
+              "value": -54.647,
+              "role": "item",
+              "raw_text": "54,647",
+              "source_id": "t_statements_of_operations__r7_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Operating expenses",
+              "value": -19.075,
+              "role": "item",
+              "raw_text": "19,075",
+              "source_id": "t_statements_of_operations__r12_three_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "end",
+              "label": "Operating income",
+              "value": 35.695,
+              "role": "end",
+              "raw_text": "35,695",
+              "source_id": "t_statements_of_operations__r13_three_months_ended_june_27_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": null
+      },
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r7_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r12_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r13_three_months_ended_june_27_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Research and development spending rose to about $11.7 billion from $8.9 billion. That is a substantial investment increase, but the wider gross margin more than offset it in this quarter.",
+      "target_id": "t_statements_of_operations__r10_three_months_ended_june_27_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r10_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r10_three_months_ended_june_28_2025",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Net income rose about 27% to $29.8 billion. Apple also reported $572 million of other income, compared with a $171 million expense last year, which gave the bottom line an additional lift beyond the core operating improvement.",
+      "target_id": "t_statements_of_operations__r17_three_months_ended_june_27_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r17_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_5",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r14_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r14_three_months_ended_june_28_2025",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "One important caveat: Apple said tariff refunds added 11 cents to quarterly earnings per share. That is helpful, but it is not the same as an improvement in products, services or recurring operations.",
+      "target_id": "t_statements_of_operations__r20_three_months_ended_june_27_2026",
+      "sources": [
+        "https://apnews.com/article/94102918cb3592ebc1d2a38c4d7d819a",
+        "https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/a8-kex991q3202606272026.htm"
+      ],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r20_three_months_ended_june_27_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The cash story is even stronger than the income statement. Apple generated about $117.0 billion from operating activities over nine months, up about 43% from the prior year, compared with nine-month net income of about $101.5 billion.",
+      "target_id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_4",
+          "type": "bar",
+          "title": "Nine-month cash generation",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "i1",
+              "label": "Operating cash flow",
+              "value": 116.996,
+              "role": "item",
+              "raw_text": "116,996",
+              "source_id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Capital spending",
+              "value": -6.799,
+              "role": "item",
+              "raw_text": "(6,799)",
+              "source_id": "t_statements_of_cash_flows__r19_nine_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i3",
+              "label": "Share repurchases",
+              "value": -62.094,
+              "role": "item",
+              "raw_text": "(62,094)",
+              "source_id": "t_statements_of_cash_flows__r25_nine_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i4",
+              "label": "Dividends",
+              "value": -11.778,
+              "role": "item",
+              "raw_text": "(11,778)",
+              "source_id": "t_statements_of_cash_flows__r24_nine_months_ended_june_27_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": "i1"
+      },
+      "figures": [
+        {
+          "id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_17",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_cash_flows__r2_nine_months_ended_june_27_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "After about $6.8 billion of capital spending — money invested in property, equipment and infrastructure — operating cash flow still left roughly $110.2 billion before other investing and financing decisions.",
+      "target_id": "t_statements_of_cash_flows__r19_nine_months_ended_june_27_2026",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_4",
+          "type": "bar",
+          "title": "Nine-month cash generation",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "i1",
+              "label": "Operating cash flow",
+              "value": 116.996,
+              "role": "item",
+              "raw_text": "116,996",
+              "source_id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Capital spending",
+              "value": -6.799,
+              "role": "item",
+              "raw_text": "(6,799)",
+              "source_id": "t_statements_of_cash_flows__r19_nine_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i3",
+              "label": "Share repurchases",
+              "value": -62.094,
+              "role": "item",
+              "raw_text": "(62,094)",
+              "source_id": "t_statements_of_cash_flows__r25_nine_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i4",
+              "label": "Dividends",
+              "value": -11.778,
+              "role": "item",
+              "raw_text": "(11,778)",
+              "source_id": "t_statements_of_cash_flows__r24_nine_months_ended_june_27_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": "i2"
+      },
+      "figures": [
+        {
+          "id": "t_statements_of_cash_flows__r19_nine_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_20",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "Apple returned about $62.1 billion through share repurchases and another $11.8 billion through dividends. In other words, the company generated enormous cash and sent most of it back to shareholders, while still ending the period with more cash than it started with.",
+      "target_id": "t_statements_of_cash_flows__r25_nine_months_ended_june_27_2026",
+      "sources": [],
+      "visual": {
+        "chart": {
+          "id": "chart_4",
+          "type": "bar",
+          "title": "Nine-month cash generation",
+          "unit": "billions",
+          "items": [
+            {
+              "key": "i1",
+              "label": "Operating cash flow",
+              "value": 116.996,
+              "role": "item",
+              "raw_text": "116,996",
+              "source_id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i2",
+              "label": "Capital spending",
+              "value": -6.799,
+              "role": "item",
+              "raw_text": "(6,799)",
+              "source_id": "t_statements_of_cash_flows__r19_nine_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i3",
+              "label": "Share repurchases",
+              "value": -62.094,
+              "role": "item",
+              "raw_text": "(62,094)",
+              "source_id": "t_statements_of_cash_flows__r25_nine_months_ended_june_27_2026",
+              "computed": false
+            },
+            {
+              "key": "i4",
+              "label": "Dividends",
+              "value": -11.778,
+              "role": "item",
+              "raw_text": "(11,778)",
+              "source_id": "t_statements_of_cash_flows__r24_nine_months_ended_june_27_2026",
+              "computed": false
+            }
+          ]
+        },
+        "emphasis": "i3"
+      },
+      "figures": [
+        {
+          "id": "t_statements_of_cash_flows__r25_nine_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_cash_flows__r24_nine_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_cash_flows__r32_nine_months_ended_june_27_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "On the balance sheet, Apple held about $146.5 billion in cash and marketable securities. Against commercial paper and term debt, that implies roughly $62.2 billion of net cash, a sizable financial cushion.",
+      "target_id": "t_balance_sheets__r10_june_27_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "calc_18",
+          "quote": null
+        }
+      ],
+      "calculations": [
+        {
+          "operation": "combine",
+          "terms": [
+            {
+              "id": "t_balance_sheets__r2_june_27_2026",
+              "quote": null,
+              "sign": "add"
+            },
+            {
+              "id": "t_balance_sheets__r3_june_27_2026",
+              "quote": null,
+              "sign": "add"
+            },
+            {
+              "id": "t_balance_sheets__r10_june_27_2026",
+              "quote": null,
+              "sign": "add"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Total liabilities fell to about $275.7 billion from $285.5 billion at the September year-end. Shareholders' equity rose to about $107.5 billion, helped by retained earnings moving from a deficit to a positive balance.",
+      "target_id": "t_balance_sheets__r28_june_27_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_balance_sheets__r28_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_balance_sheets__r28_september_27_2025",
+          "quote": null
+        },
+        {
+          "id": "t_balance_sheets__r34_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_balance_sheets__r32_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_balance_sheets__r32_september_27_2025",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The main balance-sheet item to watch is inventory. It nearly doubled from the September year-end to about $11.1 billion, even as accounts receivable and vendor receivables declined.",
+      "target_id": "t_balance_sheets__r6_june_27_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_balance_sheets__r6_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_19",
+          "quote": null
+        },
+        {
+          "id": "t_balance_sheets__r4_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_balance_sheets__r5_june_27_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "For the following quarter, Apple said it expected revenue to grow 9% to 11% from the prior year. Management also flagged foreign-exchange headwinds and much higher supply constraints for the iPhone, Mac and iPad than in the March-to-June quarter.",
+      "target_id": "t_statements_of_operations",
+      "sources": [
+        "https://www.axios.com/2026/07/30/apple-earnings-beat-estimates-boosted-by-tariff-refunds"
+      ],
+      "visual": null,
+      "figures": [],
+      "calculations": []
+    },
+    {
+      "text": "That outlook points to continued strong growth, but at a slower pace than this quarter's roughly 16% revenue increase. The tension is clear: demand looks healthy, while currency and supply availability could limit how much Apple can actually ship.",
+      "target_id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+      "sources": [
+        "https://www.axios.com/2026/07/30/apple-earnings-beat-estimates-boosted-by-tariff-refunds"
+      ],
+      "visual": null,
+      "figures": [
+        {
+          "id": "calc_1",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "One more watch item is the mix of growth. The iPhone drove the biggest dollar increase, while Services continued to expand but represented a slightly smaller share of sales than a year ago — about 28% versus about 29%.",
+      "target_id": "t_statements_of_operations__r36_three_months_ended_june_27_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_13",
+          "quote": null
+        },
+        {
+          "id": "calc_14",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The bottom line is impressive. Apple grew sales about 16%, expanded its gross and operating margins, and converted the earnings into even stronger operating cash flow.",
+      "target_id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+      "sources": [],
+      "visual": null,
+      "figures": [
+        {
+          "id": "calc_1",
+          "quote": null
+        },
+        {
+          "id": "calc_7",
+          "quote": null
+        },
+        {
+          "id": "calc_9",
+          "quote": null
+        },
+        {
+          "id": "calc_17",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "The second takeaway is that the iPhone remained the dominant growth engine, especially the Pro models, while Services supplied a large and increasingly important recurring-revenue stream.",
+      "target_id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+      "sources": [
+        "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm"
+      ],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "t_statements_of_operations__r36_three_months_ended_june_27_2026",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    },
+    {
+      "text": "And the final takeaway is balance. Apple has powerful cash generation and substantial net cash, but investors should keep an eye on tariff-related benefits, inventory levels, supply constraints and whether the next quarter can sustain this unusually strong momentum.",
+      "target_id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+      "sources": [
+        "https://apnews.com/article/94102918cb3592ebc1d2a38c4d7d819a",
+        "https://www.axios.com/2026/07/30/apple-earnings-beat-estimates-boosted-by-tariff-refunds"
+      ],
+      "visual": null,
+      "figures": [
+        {
+          "id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+          "quote": null
+        },
+        {
+          "id": "calc_18",
+          "quote": null
+        }
+      ],
+      "calculations": []
+    }
+  ],
+  "trace": {
+    "turns": [
+      {
+        "turn": 1,
+        "purpose": "draft",
+        "tool_calls": [
+          {
+            "name": "note_finding",
+            "arguments": {
+              "fact": "Apple's fiscal 2026 third-quarter diluted earnings per share was $2.02, up 29 percent year over year, and included a favorable impact of $0.11 from tariff refunds. Apple said it had double-digit revenue growth across iPhone, Mac and Services, and in every geographic segment.",
+              "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/a8-kex991q3202606272026.htm"
+            },
+            "output": {
+              "note_id": "note_1",
+              "fact": "Apple's fiscal 2026 third-quarter diluted earnings per share was $2.02, up 29 percent year over year, and included a favorable impact of $0.11 from tariff refunds. Apple said it had double-digit revenue growth across iPhone, Mac and Services, and in every geographic segment.",
+              "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/a8-kex991q3202606272026.htm"
+            }
+          },
+          {
+            "name": "note_finding",
+            "arguments": {
+              "fact": "For Apple's fiscal third quarter ended June 27, 2026, analysts polled by FactSet expected earnings of $1.89 per share on revenue of $109 billion; Apple reported $2.02 per share and $109.42 billion of revenue. Tariff refunds contributed 11 cents per share to the quarter's earnings.",
+              "url": "https://apnews.com/article/94102918cb3592ebc1d2a38c4d7d819a"
+            },
+            "output": {
+              "note_id": "note_2",
+              "fact": "For Apple's fiscal third quarter ended June 27, 2026, analysts polled by FactSet expected earnings of $1.89 per share on revenue of $109 billion; Apple reported $2.02 per share and $109.42 billion of revenue. Tariff refunds contributed 11 cents per share to the quarter's earnings.",
+              "url": "https://apnews.com/article/94102918cb3592ebc1d2a38c4d7d819a"
+            }
+          },
+          {
+            "name": "note_finding",
+            "arguments": {
+              "fact": "Apple's fiscal 2026 third-quarter results said iPhone net sales increased compared with the same period in 2025 primarily due to higher net sales of Pro models; the filing also said the strength of the renminbi relative to the U.S. dollar had a favorable year-over-year impact on Greater China net sales.",
+              "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm"
+            },
+            "output": {
+              "note_id": "note_3",
+              "fact": "Apple's fiscal 2026 third-quarter results said iPhone net sales increased compared with the same period in 2025 primarily due to higher net sales of Pro models; the filing also said the strength of the renminbi relative to the U.S. dollar had a favorable year-over-year impact on Greater China net sales.",
+              "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm"
+            }
+          },
+          {
+            "name": "note_finding",
+            "arguments": {
+              "fact": "Apple said it expected revenue in the following quarter to rise 9% to 11% from the prior year, while facing foreign-exchange headwinds and supply constraints for iPhone, Mac and iPad that were up significantly from the March-to-June quarter.",
+              "url": "https://www.axios.com/2026/07/30/apple-earnings-beat-estimates-boosted-by-tariff-refunds"
+            },
+            "output": {
+              "note_id": "note_4",
+              "fact": "Apple said it expected revenue in the following quarter to rise 9% to 11% from the prior year, while facing foreign-exchange headwinds and supply constraints for iPhone, Mac and iPad that were up significantly from the March-to-June quarter.",
+              "url": "https://www.axios.com/2026/07/30/apple-earnings-beat-estimates-boosted-by-tariff-refunds"
+            }
+          }
+        ],
+        "web_searches": [
+          {
+            "action": "search",
+            "query": "Apple fiscal third quarter 2026 results June 27 2026 revenue EPS expectations",
+            "sources": [
+              "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+              "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm",
+              "https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/a8-kex991q3202606272026.htm",
+              "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm?trk=article-ssr-frontend-pulse_little-text-block",
+              "https://images.apple.com/ca/newsroom/2026/07/apple-reports-third-quarter-results/",
+              "https://www.sec.gov/Archives/edgar/data/320193/000130817926000008/aapl_courtesy-pdf.pdf",
+              "https://www.apple.com/au/newsroom/2026/07/apple-reports-third-quarter-results/",
+              "https://images.apple.com/nz/newsroom/2026/07/apple-reports-third-quarter-results/",
+              "https://www.macrumors.com/2026/07/30/apple-3q-2026-earnings/",
+              "https://www.marketbeat.com/stocks/NASDAQ/AAPL/earnings/",
+              "https://arstechnica.com/gadgets/2026/07/tim-cooks-last-earnings-call-strong-iphone-sales-but-memory-costs-loom-large/",
+              "https://appleinsider.com/articles/26/07/27/what-wall-street-expects-from-apples-q3-2026-earnings-on-july-30",
+              "https://uk.finance.yahoo.com/news/apple-reports-third-quarter-results-203000826.html",
+              "https://www.apple.com/newsroom/pdfs/fy2026q2/FY26_Q2_Consolidated_Financial_Statements.pdf",
+              "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/quarterly-earnings/2026/3rd-quarter/c89c7479-82df-4c9f-a7be-957956430abd.pdf",
+              "https://www.youtube.com/watch?v=6ZWJ3euaCBY",
+              "https://www.youtube.com/watch?v=R2crquP5IFg",
+              "https://www.reddit.com/r/AAPL/comments/1vb5kkf/3q_results/",
+              "https://s2.q4cdn.com/470004039/files/doc_earnings/2025/q3/filing/10Q-Q3-2025-as-filed.pdf",
+              "https://s2.q4cdn.com/470004039/files/doc_earnings/2026/q1/filing/10Q-Q1-2026-as-filed.pdf",
+              "https://d18rn0p25nwr6d.cloudfront.net/CIK-0000320193/58428cb7-f80f-4dae-a4bb-e660f32bd47b.pdf",
+              "https://www.reddit.com/r/stocks/comments/1vb5ecw/apple_earnings_revenue_tops_estimates_as_iphone/",
+              "https://apnews.com/article/94102918cb3592ebc1d2a38c4d7d819a",
+              "https://www.reddit.com/r/stocks/comments/1vb5xl9/aapl_quarterly_revenue_1094_billion_up_16_yoy/",
+              "https://apnews.com/article/4e2a5c6f77876529d189c56b905a03b2",
+              "https://www.axios.com/2026/07/30/apple-earnings-beat-estimates-boosted-by-tariff-refunds",
+              "https://www.tomsguide.com/phones/iphones/we-reluctantly-raised-prices-tim-cook-weighs-in-on-hikes-as-apple-reports-usd109-billion-in-revenue",
+              "https://elpais.com/economia/2026-07-30/las-ventas-de-iphone-y-mac-impulsan-un-20-los-beneficios-de-apple-en-nueve-meses-hasta-los-101464-millones-de-dolares.html",
+              "https://time.com/4434935/apple-earnings-doomed/",
+              "https://www.reddit.com/r/earningsdigest/comments/1vbn83q/aapl_2026q3_earnings_call_summary_jul_30_2026/",
+              "https://www.reddit.com/r/apple/comments/1vb5drt/apple_reports_third_quarter_results/",
+              "https://www.reddit.com/r/EarningsCalls/comments/1vbgjhl/apple_aapl_the_good_the_bad_and_the_ugly_from/",
+              "https://www.reddit.com/r/AAPL/comments/1wssegl/how_much_of_apples_latest_earnings_growth_came/",
+              "https://www.reddit.com/r/moomoo_official/comments/1vewsqx/apple_q3_earnings_review_margin_pressure_builds/",
+              "https://www.reddit.com/r/walnutmarkets/comments/1v6vtlj/apple_q3_2026_earnings_preview_strong_momentum/",
+              "https://www.reddit.com/r/PocketQuantResearch/comments/1mf3tno",
+              "https://www.reddit.com/r/AAPL/comments/1vbcikq/apple_q3_earnings_strong_beat_but_guidance/",
+              "https://www.reddit.com/r/stocks/comments/1v823tm/apple_just_hit_a_fresh_ath_above_337_while_other/"
+            ]
+          }
+        ],
+        "thinking": [
+          "**Planning JSON format for search**\n\nI need to produce the data in JSON format. I should clarify the expectations around the web search, focusing on the time frame for reports expected in June or October 2026. To check if Apple's fiscal Q3 2026 results are accurate, I'll perform a web search to find exact information. Getting the details right is important to ensure everything is aligned!",
+          "**Gathering findings for notes**\n\nI need to take notes on my findings right away. I think I'll use official Apple sources for information on why certain things happen, and AP for general expectations. Maybe it'll be useful to include Apple’s official guidance regarding tariff refunds. The search results seem sufficient, so I'll focus on capturing the essential facts from those sources to ensure I'm thorough. It's all about getting the right details down!"
+        ],
+        "input_tokens": 27955,
+        "output_tokens": 605,
+        "cost_usd": 0.016317,
+        "duration_ms": 9344
+      },
+      {
+        "turn": 2,
+        "purpose": "draft",
+        "tool_calls": [
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_statements_of_operations__r3_three_months_ended_june_28_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_1",
+              "result_percent": 16.36,
+              "formula": "(109417 - 94036) / |94036| = +16.4%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r3_three_months_ended_june_28_2025",
+                  "label": "Total net sales (1) · Three Months Ended · June 28, 2025",
+                  "value": 94036.0,
+                  "raw_text": "94,036"
+                },
+                {
+                  "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+                  "label": "Total net sales (1) · Three Months Ended · June 27, 2026",
+                  "value": 109417.0,
+                  "raw_text": "109,417"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_statements_of_operations__r3_nine_months_ended_june_28_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_statements_of_operations__r3_nine_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_2",
+              "result_percent": 16.15,
+              "formula": "(364357 - 313695) / |313695| = +16.2%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r3_nine_months_ended_june_28_2025",
+                  "label": "Total net sales (1) · Nine Months Ended · June 28, 2025",
+                  "value": 313695.0,
+                  "raw_text": "313,695"
+                },
+                {
+                  "id": "t_statements_of_operations__r3_nine_months_ended_june_27_2026",
+                  "label": "Total net sales (1) · Nine Months Ended · June 27, 2026",
+                  "value": 364357.0,
+                  "raw_text": "364,357"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_statements_of_operations__r1_three_months_ended_june_28_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_statements_of_operations__r1_three_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_3",
+              "result_percent": 18.11,
+              "formula": "(78678 - 66613) / |66613| = +18.1%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r1_three_months_ended_june_28_2025",
+                  "label": "Net sales · Products · Three Months Ended · June 28, 2025",
+                  "value": 66613.0,
+                  "raw_text": "$ 66,613"
+                },
+                {
+                  "id": "t_statements_of_operations__r1_three_months_ended_june_27_2026",
+                  "label": "Net sales · Products · Three Months Ended · June 27, 2026",
+                  "value": 78678.0,
+                  "raw_text": "$ 78,678"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_statements_of_operations__r2_three_months_ended_june_28_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_statements_of_operations__r2_three_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_4",
+              "result_percent": 12.09,
+              "formula": "(30739 - 27423) / |27423| = +12.1%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r2_three_months_ended_june_28_2025",
+                  "label": "Net sales · Services · Three Months Ended · June 28, 2025",
+                  "value": 27423.0,
+                  "raw_text": "27,423"
+                },
+                {
+                  "id": "t_statements_of_operations__r2_three_months_ended_june_27_2026",
+                  "label": "Net sales · Services · Three Months Ended · June 27, 2026",
+                  "value": 30739.0,
+                  "raw_text": "30,739"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_statements_of_operations__r17_three_months_ended_june_28_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_statements_of_operations__r17_three_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_5",
+              "result_percent": 27.12,
+              "formula": "(29789 - 23434) / |23434| = +27.1%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r17_three_months_ended_june_28_2025",
+                  "label": "Net income · Three Months Ended · June 28, 2025",
+                  "value": 23434.0,
+                  "raw_text": "$ 23,434"
+                },
+                {
+                  "id": "t_statements_of_operations__r17_three_months_ended_june_27_2026",
+                  "label": "Net income · Three Months Ended · June 27, 2026",
+                  "value": 29789.0,
+                  "raw_text": "$ 29,789"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_statements_of_operations__r20_three_months_ended_june_28_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_statements_of_operations__r20_three_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_6",
+              "result_percent": 28.66,
+              "formula": "(2.02 - 1.57) / |1.57| = +28.7%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r20_three_months_ended_june_28_2025",
+                  "label": "Earnings per share · Diluted · Three Months Ended · June 28, 2025",
+                  "value": 1.57,
+                  "raw_text": "$ 1.57"
+                },
+                {
+                  "id": "t_statements_of_operations__r20_three_months_ended_june_27_2026",
+                  "label": "Earnings per share · Diluted · Three Months Ended · June 27, 2026",
+                  "value": 2.02,
+                  "raw_text": "$ 2.02"
+                }
+              ]
+            }
+          },
+          {
+            "name": "ratio",
+            "arguments": {
+              "numerator": {
+                "id": "t_statements_of_operations__r8_three_months_ended_june_27_2026",
+                "quote": null
+              },
+              "denominator": {
+                "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_7",
+              "result": 0.5006,
+              "result_percent": 50.06,
+              "formula": "54770 / 109417 = 50.1%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r8_three_months_ended_june_27_2026",
+                  "label": "Gross margin · Three Months Ended · June 27, 2026",
+                  "value": 54770.0,
+                  "raw_text": "54,770"
+                },
+                {
+                  "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+                  "label": "Total net sales (1) · Three Months Ended · June 27, 2026",
+                  "value": 109417.0,
+                  "raw_text": "109,417"
+                }
+              ]
+            }
+          },
+          {
+            "name": "ratio",
+            "arguments": {
+              "numerator": {
+                "id": "t_statements_of_operations__r8_three_months_ended_june_28_2025",
+                "quote": null
+              },
+              "denominator": {
+                "id": "t_statements_of_operations__r3_three_months_ended_june_28_2025",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_8",
+              "result": 0.4649,
+              "result_percent": 46.49,
+              "formula": "43718 / 94036 = 46.5%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r8_three_months_ended_june_28_2025",
+                  "label": "Gross margin · Three Months Ended · June 28, 2025",
+                  "value": 43718.0,
+                  "raw_text": "43,718"
+                },
+                {
+                  "id": "t_statements_of_operations__r3_three_months_ended_june_28_2025",
+                  "label": "Total net sales (1) · Three Months Ended · June 28, 2025",
+                  "value": 94036.0,
+                  "raw_text": "94,036"
+                }
+              ]
+            }
+          },
+          {
+            "name": "ratio",
+            "arguments": {
+              "numerator": {
+                "id": "t_statements_of_operations__r13_three_months_ended_june_27_2026",
+                "quote": null
+              },
+              "denominator": {
+                "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_9",
+              "result": 0.3262,
+              "result_percent": 32.62,
+              "formula": "35695 / 109417 = 32.6%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r13_three_months_ended_june_27_2026",
+                  "label": "Operating income · Three Months Ended · June 27, 2026",
+                  "value": 35695.0,
+                  "raw_text": "35,695"
+                },
+                {
+                  "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+                  "label": "Total net sales (1) · Three Months Ended · June 27, 2026",
+                  "value": 109417.0,
+                  "raw_text": "109,417"
+                }
+              ]
+            }
+          },
+          {
+            "name": "ratio",
+            "arguments": {
+              "numerator": {
+                "id": "t_statements_of_operations__r13_three_months_ended_june_28_2025",
+                "quote": null
+              },
+              "denominator": {
+                "id": "t_statements_of_operations__r3_three_months_ended_june_28_2025",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_10",
+              "result": 0.2999,
+              "result_percent": 29.99,
+              "formula": "28202 / 94036 = 30.0%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r13_three_months_ended_june_28_2025",
+                  "label": "Operating income · Three Months Ended · June 28, 2025",
+                  "value": 28202.0,
+                  "raw_text": "28,202"
+                },
+                {
+                  "id": "t_statements_of_operations__r3_three_months_ended_june_28_2025",
+                  "label": "Total net sales (1) · Three Months Ended · June 28, 2025",
+                  "value": 94036.0,
+                  "raw_text": "94,036"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_statements_of_operations__r32_three_months_ended_june_28_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_11",
+              "result_percent": 21.69,
+              "formula": "(54252 - 44582) / |44582| = +21.7%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r32_three_months_ended_june_28_2025",
+                  "label": "iPhone · Three Months Ended · June 28, 2025",
+                  "value": 44582.0,
+                  "raw_text": "$ 44,582"
+                },
+                {
+                  "id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+                  "label": "iPhone · Three Months Ended · June 27, 2026",
+                  "value": 54252.0,
+                  "raw_text": "$ 54,252"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_statements_of_operations__r36_three_months_ended_june_28_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_statements_of_operations__r36_three_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_12",
+              "result_percent": 12.09,
+              "formula": "(30739 - 27423) / |27423| = +12.1%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r36_three_months_ended_june_28_2025",
+                  "label": "Net sales by category · Services · Three Months Ended · June 28, 2025",
+                  "value": 27423.0,
+                  "raw_text": "27,423"
+                },
+                {
+                  "id": "t_statements_of_operations__r36_three_months_ended_june_27_2026",
+                  "label": "Net sales by category · Services · Three Months Ended · June 27, 2026",
+                  "value": 30739.0,
+                  "raw_text": "30,739"
+                }
+              ]
+            }
+          }
+        ],
+        "web_searches": [],
+        "thinking": [
+          "**Calculating financial metrics**\n\nI need to perform various calculations, focusing on growth rates, margins, and segment growth for quarterly and nine-month periods. I'm considering factors like cash and net debt, and I aim to create several charts for clarity. \n\nI’ll analyze revenue growth quarter over quarter and compare it to the previous year's same quarter, along with product and services growth, operating income, net income, EPS, and gross margin percentages. Additionally, I’ll look at cash flow versus net income and assess balance changes concerning total debt."
+        ],
+        "input_tokens": 20657,
+        "output_tokens": 991,
+        "cost_usd": 0.005320599999999999,
+        "duration_ms": 8521
+      },
+      {
+        "turn": 3,
+        "purpose": "draft",
+        "tool_calls": [
+          {
+            "name": "ratio",
+            "arguments": {
+              "numerator": {
+                "id": "t_statements_of_operations__r2_three_months_ended_june_27_2026",
+                "quote": null
+              },
+              "denominator": {
+                "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_13",
+              "result": 0.2809,
+              "result_percent": 28.09,
+              "formula": "30739 / 109417 = 28.1%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r2_three_months_ended_june_27_2026",
+                  "label": "Net sales · Services · Three Months Ended · June 27, 2026",
+                  "value": 30739.0,
+                  "raw_text": "30,739"
+                },
+                {
+                  "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+                  "label": "Total net sales (1) · Three Months Ended · June 27, 2026",
+                  "value": 109417.0,
+                  "raw_text": "109,417"
+                }
+              ]
+            }
+          },
+          {
+            "name": "ratio",
+            "arguments": {
+              "numerator": {
+                "id": "t_statements_of_operations__r2_three_months_ended_june_28_2025",
+                "quote": null
+              },
+              "denominator": {
+                "id": "t_statements_of_operations__r3_three_months_ended_june_28_2025",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_14",
+              "result": 0.2916,
+              "result_percent": 29.16,
+              "formula": "27423 / 94036 = 29.2%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r2_three_months_ended_june_28_2025",
+                  "label": "Net sales · Services · Three Months Ended · June 28, 2025",
+                  "value": 27423.0,
+                  "raw_text": "27,423"
+                },
+                {
+                  "id": "t_statements_of_operations__r3_three_months_ended_june_28_2025",
+                  "label": "Total net sales (1) · Three Months Ended · June 28, 2025",
+                  "value": 94036.0,
+                  "raw_text": "94,036"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_statements_of_operations__r13_nine_months_ended_june_28_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_statements_of_operations__r13_nine_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_15",
+              "result_percent": 21.67,
+              "formula": "(122432 - 100623) / |100623| = +21.7%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r13_nine_months_ended_june_28_2025",
+                  "label": "Operating income · Nine Months Ended · June 28, 2025",
+                  "value": 100623.0,
+                  "raw_text": "100,623"
+                },
+                {
+                  "id": "t_statements_of_operations__r13_nine_months_ended_june_27_2026",
+                  "label": "Operating income · Nine Months Ended · June 27, 2026",
+                  "value": 122432.0,
+                  "raw_text": "122,432"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_statements_of_operations__r14_nine_months_ended_june_28_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_statements_of_operations__r14_nine_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_16",
+              "result_percent": 195.99,
+              "formula": "(670 - -698) / |-698| = +196.0%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_operations__r14_nine_months_ended_june_28_2025",
+                  "label": "Other income/(expense), net · Nine Months Ended · June 28, 2025",
+                  "value": -698.0,
+                  "raw_text": "(698)"
+                },
+                {
+                  "id": "t_statements_of_operations__r14_nine_months_ended_june_27_2026",
+                  "label": "Other income/(expense), net · Nine Months Ended · June 27, 2026",
+                  "value": 670.0,
+                  "raw_text": "670"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_statements_of_cash_flows__r14_nine_months_ended_june_28_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_17",
+              "result_percent": 43.11,
+              "formula": "(116996 - 81754) / |81754| = +43.1%",
+              "inputs": [
+                {
+                  "id": "t_statements_of_cash_flows__r14_nine_months_ended_june_28_2025",
+                  "label": "Cash generated by operating activities · Nine Months Ended · June 28, 2025",
+                  "value": 81754.0,
+                  "raw_text": "81,754"
+                },
+                {
+                  "id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+                  "label": "Cash generated by operating activities · Nine Months Ended · June 27, 2026",
+                  "value": 116996.0,
+                  "raw_text": "116,996"
+                }
+              ]
+            }
+          },
+          {
+            "name": "combine",
+            "arguments": {
+              "terms": [
+                {
+                  "figure": {
+                    "id": "t_balance_sheets__r2_june_27_2026",
+                    "quote": null
+                  },
+                  "sign": "add"
+                },
+                {
+                  "figure": {
+                    "id": "t_balance_sheets__r3_june_27_2026",
+                    "quote": null
+                  },
+                  "sign": "add"
+                },
+                {
+                  "figure": {
+                    "id": "t_balance_sheets__r10_june_27_2026",
+                    "quote": null
+                  },
+                  "sign": "add"
+                },
+                {
+                  "figure": {
+                    "id": "t_balance_sheets__r21_june_27_2026",
+                    "quote": null
+                  },
+                  "sign": "subtract"
+                },
+                {
+                  "figure": {
+                    "id": "t_balance_sheets__r22_june_27_2026",
+                    "quote": null
+                  },
+                  "sign": "subtract"
+                },
+                {
+                  "figure": {
+                    "id": "t_balance_sheets__r25_june_27_2026",
+                    "quote": null
+                  },
+                  "sign": "subtract"
+                }
+              ]
+            },
+            "output": {
+              "calc_id": "calc_18",
+              "result": 62173.0,
+              "formula": "39544 + 22855 + 84118 - 1997 - 11007 - 71340 = 62173",
+              "inputs": [
+                {
+                  "id": "t_balance_sheets__r2_june_27_2026",
+                  "label": "Cash and cash equivalents · June 27, 2026",
+                  "value": 39544.0,
+                  "raw_text": "$ 39,544"
+                },
+                {
+                  "id": "t_balance_sheets__r3_june_27_2026",
+                  "label": "Current assets · Marketable securities · June 27, 2026",
+                  "value": 22855.0,
+                  "raw_text": "22,855"
+                },
+                {
+                  "id": "t_balance_sheets__r10_june_27_2026",
+                  "label": "Non-current assets · Marketable securities · June 27, 2026",
+                  "value": 84118.0,
+                  "raw_text": "84,118"
+                },
+                {
+                  "id": "t_balance_sheets__r21_june_27_2026",
+                  "label": "Commercial paper · June 27, 2026",
+                  "value": 1997.0,
+                  "raw_text": "1,997"
+                },
+                {
+                  "id": "t_balance_sheets__r22_june_27_2026",
+                  "label": "Current liabilities · Term debt · June 27, 2026",
+                  "value": 11007.0,
+                  "raw_text": "11,007"
+                },
+                {
+                  "id": "t_balance_sheets__r25_june_27_2026",
+                  "label": "Non-current liabilities · Term debt · June 27, 2026",
+                  "value": 71340.0,
+                  "raw_text": "71,340"
+                }
+              ]
+            }
+          },
+          {
+            "name": "percent_change",
+            "arguments": {
+              "base": {
+                "id": "t_balance_sheets__r6_september_27_2025",
+                "quote": null
+              },
+              "current": {
+                "id": "t_balance_sheets__r6_june_27_2026",
+                "quote": null
+              }
+            },
+            "output": {
+              "calc_id": "calc_19",
+              "result_percent": 93.98,
+              "formula": "(11092 - 5718) / |5718| = +94.0%",
+              "inputs": [
+                {
+                  "id": "t_balance_sheets__r6_september_27_2025",
+                  "label": "Inventories · September 27, 2025",
+                  "value": 5718.0,
+                  "raw_text": "5,718"
+                },
+                {
+                  "id": "t_balance_sheets__r6_june_27_2026",
+                  "label": "Inventories · June 27, 2026",
+                  "value": 11092.0,
+                  "raw_text": "11,092"
+                }
+              ]
+            }
+          },
+          {
+            "name": "combine",
+            "arguments": {
+              "terms": [
+                {
+                  "figure": {
+                    "id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+                    "quote": null
+                  },
+                  "sign": "add"
+                },
+                {
+                  "figure": {
+                    "id": "t_statements_of_cash_flows__r19_nine_months_ended_june_27_2026",
+                    "quote": null
+                  },
+                  "sign": "add"
+                }
+              ]
+            },
+            "output": {
+              "calc_id": "calc_20",
+              "result": 110197.0,
+              "formula": "116996 + (-6799) = 110197",
+              "inputs": [
+                {
+                  "id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+                  "label": "Cash generated by operating activities · Nine Months Ended · June 27, 2026",
+                  "value": 116996.0,
+                  "raw_text": "116,996"
+                },
+                {
+                  "id": "t_statements_of_cash_flows__r19_nine_months_ended_june_27_2026",
+                  "label": "Payments for acquisition of property, plant and equipment · Nine Months Ended · June 27, 2026",
+                  "value": -6799.0,
+                  "raw_text": "(6,799)"
+                }
+              ]
+            }
+          }
+        ],
+        "web_searches": [],
+        "thinking": [
+          "**Analyzing growth metrics**\n\nI need to chart the growth across various products and services, comparing current revenue against prior figures. It might be insightful to look at segment growth, especially in China. I should balance that with a net cash calculation to understand the cash flow and free cash flow better. By computing capital expenditures and subtracting them from cash from operations, I'll arrive at a total. Additionally, I need to consider inventory growth and operating expenses as well. Let's explore this further!"
+        ],
+        "input_tokens": 24103,
+        "output_tokens": 791,
+        "cost_usd": 0.0057698,
+        "duration_ms": 7022
+      },
+      {
+        "turn": 4,
+        "purpose": "draft",
+        "tool_calls": [
+          {
+            "name": "bar_chart",
+            "arguments": {
+              "title": "Quarterly revenue",
+              "items": [
+                {
+                  "label": "Q3 2025",
+                  "figure": {
+                    "id": "t_statements_of_operations__r3_three_months_ended_june_28_2025",
+                    "quote": null
+                  }
+                },
+                {
+                  "label": "Q3 2026",
+                  "figure": {
+                    "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+                    "quote": null
+                  }
+                }
+              ]
+            },
+            "output": {
+              "chart_id": "chart_1",
+              "type": "bar",
+              "unit": "billions",
+              "items": [
+                {
+                  "key": "i1",
+                  "label": "Q3 2025",
+                  "value": 94.036,
+                  "raw_text": "94,036"
+                },
+                {
+                  "key": "i2",
+                  "label": "Q3 2026",
+                  "value": 109.417,
+                  "raw_text": "109,417"
+                }
+              ]
+            }
+          },
+          {
+            "name": "waterfall",
+            "arguments": {
+              "title": "Q3 operating income bridge",
+              "start": {
+                "label": "Revenue",
+                "figure": {
+                  "id": "t_statements_of_operations__r3_three_months_ended_june_27_2026",
+                  "quote": null
+                }
+              },
+              "steps": [
+                {
+                  "label": "Cost of sales",
+                  "figure": {
+                    "id": "t_statements_of_operations__r7_three_months_ended_june_27_2026",
+                    "quote": null
+                  },
+                  "operation": "subtract"
+                },
+                {
+                  "label": "Operating expenses",
+                  "figure": {
+                    "id": "t_statements_of_operations__r12_three_months_ended_june_27_2026",
+                    "quote": null
+                  },
+                  "operation": "subtract"
+                }
+              ],
+              "end": {
+                "label": "Operating income",
+                "figure": {
+                  "id": "t_statements_of_operations__r13_three_months_ended_june_27_2026",
+                  "quote": null
+                }
+              }
+            },
+            "output": {
+              "chart_id": "chart_2",
+              "type": "waterfall",
+              "unit": "billions",
+              "items": [
+                {
+                  "key": "start",
+                  "label": "Revenue",
+                  "value": 109.417,
+                  "raw_text": "109,417"
+                },
+                {
+                  "key": "i1",
+                  "label": "Cost of sales",
+                  "value": -54.647,
+                  "raw_text": "54,647"
+                },
+                {
+                  "key": "i2",
+                  "label": "Operating expenses",
+                  "value": -19.075,
+                  "raw_text": "19,075"
+                },
+                {
+                  "key": "end",
+                  "label": "Operating income",
+                  "value": 35.695,
+                  "raw_text": "35,695"
+                }
+              ]
+            }
+          },
+          {
+            "name": "bar_chart",
+            "arguments": {
+              "title": "Q3 sales by category",
+              "items": [
+                {
+                  "label": "iPhone",
+                  "figure": {
+                    "id": "t_statements_of_operations__r32_three_months_ended_june_27_2026",
+                    "quote": null
+                  }
+                },
+                {
+                  "label": "Services",
+                  "figure": {
+                    "id": "t_statements_of_operations__r36_three_months_ended_june_27_2026",
+                    "quote": null
+                  }
+                },
+                {
+                  "label": "Mac",
+                  "figure": {
+                    "id": "t_statements_of_operations__r33_three_months_ended_june_27_2026",
+                    "quote": null
+                  }
+                },
+                {
+                  "label": "Wearables, Home, Accessories",
+                  "figure": {
+                    "id": "t_statements_of_operations__r35_three_months_ended_june_27_2026",
+                    "quote": null
+                  }
+                },
+                {
+                  "label": "iPad",
+                  "figure": {
+                    "id": "t_statements_of_operations__r34_three_months_ended_june_27_2026",
+                    "quote": null
+                  }
+                }
+              ]
+            },
+            "output": {
+              "chart_id": "chart_3",
+              "type": "bar",
+              "unit": "billions",
+              "items": [
+                {
+                  "key": "i1",
+                  "label": "iPhone",
+                  "value": 54.252,
+                  "raw_text": "$ 54,252"
+                },
+                {
+                  "key": "i2",
+                  "label": "Services",
+                  "value": 30.739,
+                  "raw_text": "30,739"
+                },
+                {
+                  "key": "i3",
+                  "label": "Mac",
+                  "value": 10.352,
+                  "raw_text": "10,352"
+                },
+                {
+                  "key": "i4",
+                  "label": "Wearables, Home, Accessories",
+                  "value": 7.883,
+                  "raw_text": "7,883"
+                },
+                {
+                  "key": "i5",
+                  "label": "iPad",
+                  "value": 6.191,
+                  "raw_text": "6,191"
+                }
+              ]
+            }
+          },
+          {
+            "name": "bar_chart",
+            "arguments": {
+              "title": "Nine-month cash generation",
+              "items": [
+                {
+                  "label": "Operating cash flow",
+                  "figure": {
+                    "id": "t_statements_of_cash_flows__r14_nine_months_ended_june_27_2026",
+                    "quote": null
+                  }
+                },
+                {
+                  "label": "Capital spending",
+                  "figure": {
+                    "id": "t_statements_of_cash_flows__r19_nine_months_ended_june_27_2026",
+                    "quote": null
+                  }
+                },
+                {
+                  "label": "Share repurchases",
+                  "figure": {
+                    "id": "t_statements_of_cash_flows__r25_nine_months_ended_june_27_2026",
+                    "quote": null
+                  }
+                },
+                {
+                  "label": "Dividends",
+                  "figure": {
+                    "id": "t_statements_of_cash_flows__r24_nine_months_ended_june_27_2026",
+                    "quote": null
+                  }
+                }
+              ]
+            },
+            "output": {
+              "chart_id": "chart_4",
+              "type": "bar",
+              "unit": "billions",
+              "items": [
+                {
+                  "key": "i1",
+                  "label": "Operating cash flow",
+                  "value": 116.996,
+                  "raw_text": "116,996"
+                },
+                {
+                  "key": "i2",
+                  "label": "Capital spending",
+                  "value": -6.799,
+                  "raw_text": "(6,799)"
+                },
+                {
+                  "key": "i3",
+                  "label": "Share repurchases",
+                  "value": -62.094,
+                  "raw_text": "(62,094)"
+                },
+                {
+                  "key": "i4",
+                  "label": "Dividends",
+                  "value": -11.778,
+                  "raw_text": "(11,778)"
+                }
+              ]
+            }
+          }
+        ],
+        "web_searches": [],
+        "thinking": [
+          "**Planning chart tools**\n\nI need to use chart tools for different financial aspects. First, I'll focus on revenue for 2025/26, and I think a waterfall chart could be great for showing revenue to operating income by subtracting cost of sales and operating expenses. \n\nI also want to create a bar chart comparing current and prior categories, and perhaps a cash flow chart showing CFO versus capital expenditures. I’ll end up with four charts total: revenue, waterfall, categories, and cash flows! I need to keep track of the chart IDs too."
+        ],
+        "input_tokens": 26715,
+        "output_tokens": 754,
+        "cost_usd": 0.0062478,
+        "duration_ms": 7019
+      },
+      {
+        "turn": 5,
+        "purpose": "draft",
+        "tool_calls": [],
+        "web_searches": [],
+        "thinking": [
+          "**Considering unit clarity**\n\nI think it might be better to use the term \"million\" instead of writing out the numbers. That could enhance clarity and make things more reader-friendly. So I’m pondering how to formulate this effectively, keeping it straightforward for whoever's reading. It's all about ensuring the information is easily digestible while still conveying the necessary details. I’ll definitely keep this in mind when I present the data!"
+        ],
+        "input_tokens": 28090,
+        "output_tokens": 4776,
+        "cost_usd": 0.0113492,
+        "duration_ms": 35832
+      },
+      {
+        "turn": 6,
+        "purpose": "correction",
+        "tool_calls": [],
+        "web_searches": [],
+        "thinking": [
+          "**Fixing JSON schema output**\n\nI need to focus on editing the JSON schema, particularly fixing line 19. It seems there's a mismatch because it says 146.5 matches none due to calc_18 being net cash only, but the actual source components sum to 146.517. I can add some component references. Also, while there's no tool call now, we can still reference calculations by combining cash and marketable securities. I realize we could use combined calculations for gross assets as well. \n\nThis is a bit of a puzzle!",
+          "**Updating calculations for clarity**\n\nI need to ensure that the calculations added later use the operation combine along with appropriate terms. The results will be compared, and I should use calculations rather than figures for the final numbers. The existing calc18 is indeed valid for 62.2. To address 146.5, I'll incorporate three calculation references. It’s clear I should keep the line figures focused on calc18. Instead of elaborating on 146.5, I might just refer to \"Apple's cash and marketable securities\" to simplify it. Let's enhance the balance sheet calculations with quoted format IDs."
+        ],
+        "input_tokens": 30483,
+        "output_tokens": 568,
+        "cost_usd": 0.006778200000000001,
+        "duration_ms": 7564
+      }
+    ],
+    "total_input_tokens": 161422,
+    "total_output_tokens": 10052,
+    "total_cost_usd": 0.0543468,
+    "total_duration_ms": 92740,
+    "total_web_searches": 1,
+    "repaired_target_ids": 0,
+    "dropped_source_urls": 0,
+    "blocked_source_urls": 0,
+    "removed_sources": [],
+    "removed_visuals": [
+      {
+        "line": 3,
+        "chart_id": "chart_1",
+        "reason": "reappeared",
+        "detail": "The chart was already shown earlier in the script."
+      }
+    ],
+    "review": {
+      "rounds": [
+        {
+          "lines": 27,
+          "figures_confirmed": 53,
+          "findings": [
+            {
+              "line": 19,
+              "text": "On the balance sheet, Apple held about $146.5 billion in cash and marketable securities. Against commercial paper and term debt, that implies roughly $62.2 billion of net cash, a sizable financial cushion.",
+              "check": "figure_mismatch",
+              "detail": "'$146.5 billion' matches none of the figures the line cites: 39544 + 22855 + 84118 - 1997 - 11007 - 71340 = 62173 (62173).",
+              "must_fix": true
+            }
+          ],
+          "calculations": []
+        },
+        {
+          "lines": 27,
+          "figures_confirmed": 54,
+          "findings": [],
+          "calculations": [
+            {
+              "line": 19,
+              "formula": "39544 + 22855 + 84118 = 146517"
+            }
+          ]
+        }
+      ],
+      "removed_lines": [],
+      "reviewer_input_tokens": 3419,
+      "reviewer_output_tokens": 1567,
+      "reviewer_cost_usd": 0.0025642,
+      "reviewer_duration_ms": 17438
+    }
+  }
+}

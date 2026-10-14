@@ -1,0 +1,39 @@
+# The backend on Fly.io. Deploy from backend/ with `fly deploy`.
+# Secrets are not here: set them once with
+#   fly secrets set OPENAI_API_KEY=... [OPENAI_BASE_URL=...]
+
+# App names are global on Fly; change this if it is taken.
+app = "luca-api"
+# Tokyo. Pick the region nearest to whoever will watch the demos (`fly platform regions`).
+primary_region = "nrt"
+
+[build]
+
+[env]
+  # The saved demos, copied into the image from backend/samples/ (a missing directory
+  # just means no demos on the start page).
+  DEV_SAMPLES_DIR = "samples"
+  # The deployed frontend; change to its real URL.
+  CORS_ORIGINS = "https://luca.vercel.app"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # Stopped when idle so it costs nothing between visits; the first request after that
+  # waits a few seconds for it to start. Fly doesn't stop a machine with a request still
+  # open, so a narration stream in progress is safe.
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    path = "/api/health"
+    timeout = "5s"
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1

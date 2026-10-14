@@ -90,8 +90,22 @@ no shared build step). The connection between them is:
    before changing either side of the schema — the two files must be kept in sync
    manually; there is no codegen step.
 2. **In dev, the frontend proxies `/api/*` to the backend** (`frontend/vite.config.ts`),
-   so there's no CORS handling — run both servers and hit relative `/api/...` URLs from
-   the frontend rather than hardcoding `localhost:8000`.
+   so there's no CORS handling — run both servers. Every request goes through
+   `apiUrl()` (`frontend/src/api/base.ts`) rather than hardcoding `localhost:8000`: it
+   leaves `/api/...` relative in dev, and puts `VITE_API_BASE_URL` in front of it when
+   the backend is deployed elsewhere, where the backend allows the frontend's origin
+   through `CORS_ORIGINS`.
+
+### Deployment
+
+The frontend goes to Vercel (root directory `frontend/`, `VITE_API_BASE_URL` set to the
+backend's URL) and the backend to Fly.io (`backend/Dockerfile`, `backend/fly.toml`,
+`fly deploy` from `backend/`; `OPENAI_API_KEY` set with `fly secrets`). No database:
+nothing is stored server-side. The demos are the files in `backend/samples/`, served
+through `DEV_SAMPLES_DIR`: Apple and NVIDIA, copied from the latest runs in `temp/`
+(`NVIDIAAn` renamed to `NVIDIA`), with reasoning summaries in their traces and no
+speech. `DEV_SAMPLES_DIR=samples` in `backend/.env` shows locally exactly what is
+deployed. Not deployed yet.
 
 ### Why the schema is shaped the way it is
 
@@ -273,10 +287,13 @@ while the walkthrough is prepared (`LiveActivity`, built from the notes panel's
 (`_call_model`, `client.responses.stream`), so three things are reported from inside a
 turn: each web search as it comes back, each tool call as the model asks for it, and
 each line of the script as its text is completed (read out of the JSON written so
-far). Tools still run after the call returns, so results come with `turn_finished`.
-Without a listener (`/narration`, `scripts/narrate_sample.py`) the call is the plain
-`responses.parse` it always was. The run is not cancelled when the listener
-disconnects. The streamed call has only been tested with fakes, not yet on a real run.
+far), and the model's reasoning summaries (`reasoning={"summary": "auto"}`, asked for
+only on this path), which are also kept on the turn (`AgentTurn.thinking`) for the
+advisor's notes. Tools still run after the call returns, so results come with
+`turn_finished`. `scripts/narrate_sample.py` follows its run too, so saved scripts have
+the summaries; only `/narration` makes the plain `responses.parse` call without them.
+The run is not cancelled when the listener disconnects. The streamed call has been seen
+working on the page against the real API.
 
 The agent loop is tested with a fake client (`tests/test_narration_agent.py`);
 `scripts/narrate_sample.py parsed.json` runs it against the real API (costs money).
@@ -390,9 +407,13 @@ been run against the real API on Apple**:
   that searched, so no run used a single search result until the model took notes.
 
 Still open after those runs:
-- **NVIDIA has not been narrated with this code.** Its saved parse has none of the new
-  row fields, so it is the test of the fallbacks; so far that rests on unit tests and
-  on replaying its saved tool calls.
+- NVIDIA was re-parsed and narrated with this code (October 2026). The new parse kept
+  all 304 figures of the old one unchanged, and its 17 declared totals held; the script
+  came out at 25 lines in five turns for about $0.07, with one figure fixed by the
+  correction turn and nothing cut. Its old parse is kept as `temp/NVIDIAAn.v1.json`, so
+  the fallbacks for a parse without the row fields still rest only on unit tests.
+- The parser can list a block in a section that it never wrote (`edge_10` on NVIDIA).
+  That used to fail the whole parse; the reference is now dropped with a warning.
 - Nothing checks the prose. The last Apple script opens with a garbled clause and
   calls term debt "total debt"; both passed, since the figures are right.
 - The reviewer sees a calculation as its formula, without the labels of the figures in
